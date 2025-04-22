@@ -1,0 +1,1079 @@
+fileFormatVersion: 2
+guid: ec55ea45b8e9bae4ba24a91135b7f5a6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9011460791942895598
+    second: Title_Button5_0
+  - first:
+      213: -2442131545490372465
+    second: Title_Button5_1
+  - first:
+      213: -3537775942973456278
+    second: Title_Button5_2
+  - first:
+      213: -1424250893048700137
+    second: Title_Button5_3
+  - first:
+      213: 5003758935239749365
+    second: Title_Button5_4
+  - first:
+      213: 7047874677463300184
+    second: Title_Button5_5
+  - first:
+      213: -8816080943536425597
+    second: Title_Button5_6
+  - first:
+      213: -6213329575145194240
+    second: Title_Button5_7
+  - first:
+      213: -4019064314041890673
+    second: Title_Button5_8
+  - first:
+      213: -9034041697323363934
+    second: Title_Button5_9
+  - first:
+      213: 5069833819753807724
+    second: Title_Button5_10
+  - first:
+      213: -3887035956335483551
+    second: Title_Button5_11
+  - first:
+      213: 3822772445664425054
+    second: Title_Button5_12
+  - first:
+      213: -8179109373677721633
+    second: Title_Button5_13
+  - first:
+      213: 588472461396560901
+    second: Title_Button5_14
+  - first:
+      213: 3616332456345050617
+    second: Title_Button5_15
+  - first:
+      213: -3089367593201378482
+    second: Title_Button5_16
+  - first:
+      213: 4041004687954802110
+    second: Title_Button5_17
+  - first:
+      213: 1067712424627377248
+    second: Title_Button5_18
+  - first:
+      213: 3202516601109403230
+    second: Title_Button5_19
+  - first:
+      213: -6900753048373568590
+    second: Title_Button5_20
+  - first:
+      213: -8800263780411339261
+    second: Title_Button5_21
+  - first:
+      213: 2995023743675673668
+    second: Title_Button5_22
+  - first:
+      213: 4629965593094652198
+    second: Title_Button5_23
+  - first:
+      213: -4812182135020517166
+    second: Title_Button5_24
+  - first:
+      213: 6228412034492528271
+    second: Title_Button5_25
+  - first:
+      213: -2746996876710226622
+    second: Title_Button5_26
+  - first:
+      213: 4726895714340783752
+    second: Title_Button5_27
+  - first:
+      213: 7244028737043166364
+    second: Title_Button5_28
+  - first:
+      213: 2120191283202085757
+    second: Title_Button5_29
+  - first:
+      213: 1637493287592544534
+    second: Title_Button5_30
+  - first:
+      213: 5041240418731834301
+    second: Title_Button5_31
+  - first:
+      213: -6966283973107899570
+    second: Title_Button5_32
+  - first:
+      213: 9040309155170119501
+    second: Title_Button5_33
+  - first:
+      213: -1617399896303011048
+    second: Title_Button5_34
+  - first:
+      213: 6566570835256971871
+    second: Title_Button5_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Title_Button5_0
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 608
+        width: 39
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee7dd1378d32f0d70800000000000000
+      internalID: 9011460791942895598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_1
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 613
+        width: 40
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8845406c4ecb1ed0800000000000000
+      internalID: -2442131545490372465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_2
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 608
+        width: 39
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a600528168b47eec0800000000000000
+      internalID: -3537775942973456278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_3
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 594
+        width: 38
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 713acc8db5b0c3ce0800000000000000
+      internalID: -1424250893048700137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_4
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 594
+        width: 39
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fee6a49d3ce07540800000000000000
+      internalID: 5003758935239749365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_5
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 573
+        width: 36
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 858bbab8da41fc160800000000000000
+      internalID: 7047874677463300184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_6
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 573
+        width: 36
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 385bb69671df6a580800000000000000
+      internalID: -8816080943536425597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_7
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 543
+        width: 34
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00dba09cba1d5c9a0800000000000000
+      internalID: -6213329575145194240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_8
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 543
+        width: 34
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f888510ec4a6938c0800000000000000
+      internalID: -4019064314041890673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_9
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 506
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a159f0d0f2a0a280800000000000000
+      internalID: -9034041697323363934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_10
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 506
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6fffa87ffaab5640800000000000000
+      internalID: 5069833819753807724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_11
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 461
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 165e37164697e0ac0800000000000000
+      internalID: -3887035956335483551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_12
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 461
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e54baf019473d0530800000000000000
+      internalID: 3822772445664425054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_13
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 408
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd72fd20c57fd7e80800000000000000
+      internalID: -8179109373677721633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_14
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 408
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50c44a5f59caa2800800000000000000
+      internalID: 588472461396560901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_15
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 350
+        width: 14
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fd992a753bcf2230800000000000000
+      internalID: 3616332456345050617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_16
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 350
+        width: 14
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4bd0aaca8c5025d0800000000000000
+      internalID: -3089367593201378482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 289
+        width: 5
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb5fb318a58841830800000000000000
+      internalID: 4041004687954802110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_18
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 289
+        width: 5
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0649f201bc641de00800000000000000
+      internalID: 1067712424627377248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_19
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 230
+        width: 14
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e56da6c81ef917c20800000000000000
+      internalID: 3202516601109403230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_20
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 230
+        width: 14
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bbdffc0aa99b30a0800000000000000
+      internalID: -6900753048373568590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_21
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 174
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30e88dea7be2fd580800000000000000
+      internalID: -8800263780411339261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_22
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 174
+        width: 21
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44c26aff936709920800000000000000
+      internalID: 2995023743675673668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_23
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 126
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62100b22d21f04040800000000000000
+      internalID: 4629965593094652198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_24
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 126
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d80f9f18d1b73db0800000000000000
+      internalID: -4812182135020517166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_25
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 85
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f86f1beeeb3cf6650800000000000000
+      internalID: 6228412034492528271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_26
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 85
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 245549415e4b0e9d0800000000000000
+      internalID: -2746996876710226622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_27
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 52
+        width: 34
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8864997ab9e499140800000000000000
+      internalID: 4726895714340783752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_28
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 52
+        width: 34
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c94fd2e71c5f78460800000000000000
+      internalID: 7244028737043166364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_29
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 27
+        width: 36
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d73d3232dbe6c6d10800000000000000
+      internalID: 2120191283202085757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_30
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 27
+        width: 36
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6194a01287b89b610800000000000000
+      internalID: 1637493287592544534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_31
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 10
+        width: 39
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbb3ad1837516f540800000000000000
+      internalID: 5041240418731834301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_32
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 0
+        width: 39
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e43286aa2a9c25f90800000000000000
+      internalID: -6966283973107899570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_33
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 0
+        width: 39
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4f60ad6741a57d70800000000000000
+      internalID: 9040309155170119501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_34
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 10
+        width: 38
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81bfa191d57dd89e0800000000000000
+      internalID: -1617399896303011048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Button5_35
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 0
+        width: 40
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f529eeb2265212b50800000000000000
+      internalID: 6566570835256971871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Title_Button5_0: 9011460791942895598
+      Title_Button5_1: -2442131545490372465
+      Title_Button5_10: 5069833819753807724
+      Title_Button5_11: -3887035956335483551
+      Title_Button5_12: 3822772445664425054
+      Title_Button5_13: -8179109373677721633
+      Title_Button5_14: 588472461396560901
+      Title_Button5_15: 3616332456345050617
+      Title_Button5_16: -3089367593201378482
+      Title_Button5_17: 4041004687954802110
+      Title_Button5_18: 1067712424627377248
+      Title_Button5_19: 3202516601109403230
+      Title_Button5_2: -3537775942973456278
+      Title_Button5_20: -6900753048373568590
+      Title_Button5_21: -8800263780411339261
+      Title_Button5_22: 2995023743675673668
+      Title_Button5_23: 4629965593094652198
+      Title_Button5_24: -4812182135020517166
+      Title_Button5_25: 6228412034492528271
+      Title_Button5_26: -2746996876710226622
+      Title_Button5_27: 4726895714340783752
+      Title_Button5_28: 7244028737043166364
+      Title_Button5_29: 2120191283202085757
+      Title_Button5_3: -1424250893048700137
+      Title_Button5_30: 1637493287592544534
+      Title_Button5_31: 5041240418731834301
+      Title_Button5_32: -6966283973107899570
+      Title_Button5_33: 9040309155170119501
+      Title_Button5_34: -1617399896303011048
+      Title_Button5_35: 6566570835256971871
+      Title_Button5_4: 5003758935239749365
+      Title_Button5_5: 7047874677463300184
+      Title_Button5_6: -8816080943536425597
+      Title_Button5_7: -6213329575145194240
+      Title_Button5_8: -4019064314041890673
+      Title_Button5_9: -9034041697323363934
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
