@@ -1,16 +1,27 @@
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class ChangeScene : MonoBehaviour
+public class SceneChange_Briefing : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Button Bt_Dialogue;
+
+   // private SFXManager sfxmanager;  //SFXManager 
+
+    // Start is called before the first frame update
+    public void Start()
     {
-        
+     //  sfxmanager = FindObjectOfType<SFXManager>();
+
+        Bt_Dialogue.onClick.AddListener(GotoDialogue);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void GotoDialogue()
     {
-        
+       // SFXManager.Instance.PlaySFX("ChangeScene");  //È¿°úÀ½ Àç»ý
+        //Debug.Log("ButtonClick");
+        SceneManager.LoadScene("SaveLoad");
     }
 }
