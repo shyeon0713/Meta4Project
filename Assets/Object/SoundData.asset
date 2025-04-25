@@ -22,7 +22,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   sfxClips:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: ee92eedce1707df49ad8882c865a3488, type: 3}
+  - {fileID: 8300000, guid: 24a1fc53d988629439340695baa9befa, type: 3}
+  - {fileID: 8300000, guid: beaafec58f4571742b720822a83fdb3e, type: 3}
+  - {fileID: 8300000, guid: 87146b9dddffefa4fbc3c4afd6fb7d50, type: 3}
+  - {fileID: 8300000, guid: d53a1970533cbde4f9ff583157de588a, type: 3}
+  - {fileID: 8300000, guid: a847ceaa90c98f64ca3647d0f466f08d, type: 3}
