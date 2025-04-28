@@ -5,17 +5,17 @@ using TMPro;
 using System.IO;
 public class ScriptUI : MonoBehaviour
 {
-    public Button nextbutton;  //¹öÆ° È°¼ºÈ­
+    public Button nextbutton;  //ë²„íŠ¼ í™œì„±í™”
 
-    private DialogueData dialogueData;  // json¿¡¼­ ºÒ·¯¿Â ´ë»ç µ¥ÀÌÅÍ ÂüÁ¶¸¦ À§ÇØ
+    private DialogueData dialogueData;  // jsonì—ì„œ ë¶ˆëŸ¬ì˜¨ ëŒ€ì‚¬ ë°ì´í„° ì°¸ì¡°ë¥¼ ìœ„í•´
     public TMP_Text npcnametext;
     public TMP_Text dialogueText;
 
-    public Image npcImage;  //NPC ÀÌ¹ÌÁö 
+    public Image npcImage;  //NPC ì´ë¯¸ì§€ 
     public List<Sprite> npcSpriteList;
     public List<string> npcSpriteNames;
 
-    float gray = 111f / 225f;  //³»°¡ ¸»ÇÒ °æ¿ì, NPC È¸»öÃ³¸®¸¦ À§ÇØ
+    float gray = 111f / 225f;  //ë‚´ê°€ ë§í•  ê²½ìš°, NPC íšŒìƒ‰ì²˜ë¦¬ë¥¼ ìœ„í•´
 
     private Dictionary<string, Sprite> npcSpriteDict = new();
 
@@ -23,24 +23,24 @@ public class ScriptUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        nextbutton.onClick.AddListener(OutputScript);  // ¹öÆ° ¿¬°á
+        nextbutton.onClick.AddListener(OutputScript);  // ë²„íŠ¼ ì—°ê²°
 
-        // JSON ÆÄÀÏ ·Îµå
+        // JSON íŒŒì¼ ë¡œë“œ
         string path = Path.Combine(Application.streamingAssetsPath, "MainStory.json");
 
-        // DialogueData ÃÊ±âÈ­
-        dialogueData = DialogueData.LoadFromJson(path);  // `LoadFromJson` »ç¿ë!
+        // DialogueData ì´ˆê¸°í™”
+        dialogueData = DialogueData.LoadFromJson(path);  // `LoadFromJson` ì‚¬ìš©!
 
         Debug.Log("Path to JSON: " + path);
 
-        // ÆÄÀÏ °æ·Î È®ÀÎ ¹× µ¥ÀÌÅÍ °ËÁõ
+        // íŒŒì¼ ê²½ë¡œ í™•ì¸ ë° ë°ì´í„° ê²€ì¦
         if (dialogueData == null || dialogueData.dialogues == null || dialogueData.dialogues.Length == 0)
         {
-            Debug.LogError("Dialogue data is empty or could not be loaded.");  //·Îµå°¡ µÇÁö ¾ÊÀ» °æ¿ì
+            Debug.LogError("Dialogue data is empty or could not be loaded.");  //ë¡œë“œê°€ ë˜ì§€ ì•Šì„ ê²½ìš°
             return;
         }
 
-        // ½ºÇÁ¶óÀÌÆ® µñ¼Å³Ê¸® ÃÊ±âÈ­
+        // ìŠ¤í”„ë¼ì´íŠ¸ ë”•ì…”ë„ˆë¦¬ ì´ˆê¸°í™”
         if (npcSpriteList.Count != npcSpriteNames.Count)
         {
             Debug.LogError("Sprite list and sprite name list do not match in length!");
@@ -56,23 +56,23 @@ public class ScriptUI : MonoBehaviour
     }
 
 
-    void OutputScript()  // ´ÙÀ½ ¹öÆ° ´©¸£¸é ´ÙÀ½ ´ë»ç Ãâ·Â
+    void OutputScript()  // ë‹¤ìŒ ë²„íŠ¼ ëˆ„ë¥´ë©´ ë‹¤ìŒ ëŒ€ì‚¬ ì¶œë ¥
     {
         currentIndex++;
 
-        if (dialogueData == null || dialogueData.dialogues == null)  //0424¼öÁ¤ : nullÀÏ °æ¿ì¸¦ »ı°¢¾ÈÇÔ
+        if (dialogueData == null || dialogueData.dialogues == null)  //0424ìˆ˜ì • : nullì¼ ê²½ìš°ë¥¼ ìƒê°ì•ˆí•¨
         {
             Debug.LogError("Dialogue data or dialogues is null!");
-            return;  // ´õ ÀÌ»ó ÁøÇàÇÏÁö ¾ÊÀ½
+            return;  // ë” ì´ìƒ ì§„í–‰í•˜ì§€ ì•ŠìŒ
         }
 
         if (currentIndex < dialogueData.dialogues.Length)
         {
             OutputDialogue(currentIndex);
         }
-        else  //¸¶Áö¸· ´ë»ç ÀÌÈÄ Ã³¸®
+        else  //ë§ˆì§€ë§‰ ëŒ€ì‚¬ ì´í›„ ì²˜ë¦¬
         {
-         //  nextbutton.interactable = false;  // ¹öÆ° ºñÈ°¼ºÈ­
+         //  nextbutton.interactable = false;  // ë²„íŠ¼ ë¹„í™œì„±í™”
             dialogueText.text = ""; 
         }
 
@@ -81,30 +81,30 @@ public class ScriptUI : MonoBehaviour
 
     void OutputDialogue(int index)
     {
-        var line = dialogueData.dialogues[index];  // var: ÄÄÆÄÀÏ·¯°¡ º¯¼öÀÇ Å¸ÀÔÀ» ÀÚµ¿À¸·Î Ãß·ĞÇÏ°Ô ÇØÁÖ´Â Å°¿öµå
+        var line = dialogueData.dialogues[index];  // var: ì»´íŒŒì¼ëŸ¬ê°€ ë³€ìˆ˜ì˜ íƒ€ì…ì„ ìë™ìœ¼ë¡œ ì¶”ë¡ í•˜ê²Œ í•´ì£¼ëŠ” í‚¤ì›Œë“œ
         npcnametext.text = line.speaker;
         dialogueText.text = line.text;
 
-        npcImage.color = new Color(1f, 1f, 1f, 1f);  //±âº»»ö -> Èò»ö
+        npcImage.color = new Color(1f, 1f, 1f, 1f);  //ê¸°ë³¸ìƒ‰ -> í°ìƒ‰
 
-        if (line.speaker == "¼ö³ë")  //¼ö³ë°¡ ¸»ÇÒ °æ¿ì, ¼ö³ëLD´Â Èò»ö
+        if (line.speaker == "ìˆ˜ë…¸")  //ìˆ˜ë…¸ê°€ ë§í•  ê²½ìš°, ìˆ˜ë…¸LDëŠ” í°ìƒ‰
         {
             npcImage.sprite = GetSpriteFromDict(line.sprite);
 
         }
-        else  // ³»°¡ ¸»ÇÒ °æ¿ì, ¼ö³ëLD´Â È¸»ö
+        else  // ë‚´ê°€ ë§í•  ê²½ìš°, ìˆ˜ë…¸LDëŠ” íšŒìƒ‰
         {
             npcImage.sprite = GetSpriteFromDict(line.sprite);
-            npcImage.color = new Color(gray, gray, gray, 1f); // È¸»ö Ã³¸®
+            npcImage.color = new Color(gray, gray, gray, 1f); // íšŒìƒ‰ ì²˜ë¦¬
         }
     }
 
     Sprite GetSpriteFromDict(string spriteName) 
-      //JSON¿¡¼­ ³Ñ¾î¿Â sprite ÀÌ¸§À» ½ÇÁ¦ UnityÀÇ Sprite °´Ã¼·Î ¹Ù²Ù±â
+      //JSONì—ì„œ ë„˜ì–´ì˜¨ sprite ì´ë¦„ì„ ì‹¤ì œ Unityì˜ Sprite ê°ì²´ë¡œ ë°”ê¾¸ê¸°
     {
         if (npcSpriteDict.TryGetValue(spriteName, out Sprite sprite))
-        //TryGetValue : Dictionary¿¡¼­ °ªÀÌ Á¸ÀçÇÏ´ÂÁö ¾ÈÀüÇÏ°Ô ²¨³»´Â ¹æ¹ı + null ¿¡·¯ ¹æÁö
-        //Á¸ÀçÇÏ¸é °ª ¹İÈ¯, ¾øÀ¸¸é ¿¡·¯ ¾øÀÌ Ã³¸® °¡´É
+        //TryGetValue : Dictionaryì—ì„œ ê°’ì´ ì¡´ì¬í•˜ëŠ”ì§€ ì•ˆì „í•˜ê²Œ êº¼ë‚´ëŠ” ë°©ë²• + null ì—ëŸ¬ ë°©ì§€
+        //ì¡´ì¬í•˜ë©´ ê°’ ë°˜í™˜, ì—†ìœ¼ë©´ ì—ëŸ¬ ì—†ì´ ì²˜ë¦¬ ê°€ëŠ¥
         {
             return sprite;
         }
