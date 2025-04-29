@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneChange_Briefing : MonoBehaviour
+public class SceneManage_Title : MonoBehaviour
 {
     public Button Bt_Dialogue;
 

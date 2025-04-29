@@ -276,7 +276,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84983922}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1735897561}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &84983922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,11 +1066,11 @@ Transform:
   m_GameObject: {fileID: 726140838}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.0005004349, w: 0.9999999}
-  m_LocalPosition: {x: 0.0941, y: -0.1618, z: 0}
+  m_LocalPosition: {x: -959.9059, y: -540.1618, z: 0}
   m_LocalScale: {x: 0.6213045, y: 0.6144621, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1735897565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.057}
 --- !u!1 &740363481
 GameObject:
@@ -1205,6 +1217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 820470428}
+  - component: {fileID: 820470429}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -1232,6 +1245,23 @@ Transform:
   - {fileID: 1849242035}
   m_Father: {fileID: 1735897565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820470429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820470427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b3aee99996539340867ee16b712fab5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bt1: {fileID: 1834330222}
+  Bt2: {fileID: 1460708413}
+  Bt3: {fileID: 84983921}
+  Bt4: {fileID: 542645949}
+  Bt5: {fileID: 1849242036}
 --- !u!1 &928893357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1380,7 +1410,7 @@ GameObject:
   - component: {fileID: 1118545827}
   - component: {fileID: 1118545826}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: NPCinfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1949,7 +1979,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1460708414}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1735897561}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1460708414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2000,7 +2042,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b3aee99996539340867ee16b712fab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bt_Dialogue: {fileID: 1460708413}
+  Bt1: {fileID: 0}
+  Bt2: {fileID: 0}
+  Bt3: {fileID: 0}
+  Bt4: {fileID: 0}
+  Bt5: {fileID: 0}
 --- !u!1 &1529251290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,7 +2059,7 @@ GameObject:
   - component: {fileID: 1529251293}
   - component: {fileID: 1529251292}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2233,6 +2279,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 726140840}
   - {fileID: 1222120951}
   - {fileID: 1831461441}
   - {fileID: 1435017092}
@@ -2708,6 +2755,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 726140840}
   - {fileID: 1735897565}
   - {fileID: 170303510}
