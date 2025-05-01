@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 using System.IO;
 public class ScriptUI : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class ScriptUI : MonoBehaviour
     private DialogueData dialogueData;  // json에서 불러온 대사 데이터 참조를 위해
     public TMP_Text npcnametext;
     public TMP_Text dialogueText;
+
 
     public float delay = 0.1f; //타이핑 효과
 
@@ -124,6 +126,7 @@ public class ScriptUI : MonoBehaviour
         foreach (char index in text)
         {
             dialogueText.text += index;
+            SoundSetting.Instance.PlaySfx(6);  //Typtwritter1 sfx
             yield return new WaitForSeconds(delay);  //0.05f 코루틴 딜레이
         }
 

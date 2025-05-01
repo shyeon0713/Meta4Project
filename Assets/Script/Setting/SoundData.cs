@@ -10,7 +10,7 @@ public class SoundData : ScriptableObject
     public bool isSfxOn = true;
 
     [Header("BGM Clips")]
-    public AudioClip[] bgmClips; // BGM Clips 배열 (4개)
+    public AudioClip[] bgmClips; // BGM Clips 배열 
    //public int currentBgmIndex = 0; // 현재 재생 중인 BGM 인덱스
 
     [Header("SFX Settings")]

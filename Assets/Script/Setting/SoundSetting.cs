@@ -41,7 +41,7 @@ public class SoundSetting : MonoBehaviour
         }
     }
 
-    //SoundManager.Instance.Play BGM(index); 로 호출 -> SoundData에셋 활용
+    //SoundManager.Instance.PlayBGM(index); 로 호출 -> SoundData에셋 활용
 
     // SFX 재생
     public void PlaySfx(int index)
@@ -54,7 +54,7 @@ public class SoundSetting : MonoBehaviour
     }
 
 
-    //SoundManager.Instance.PlaySfx(index); 로 호출 -> SoundData에셋 활용
+    //SoundControl.Instance.PlaySfx(index); 로 호출 -> SoundData에셋 활용
 
     public void ApplySettings()  //초기 설정
     {

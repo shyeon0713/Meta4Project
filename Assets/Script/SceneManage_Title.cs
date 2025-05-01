@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class SceneMange_Title: MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class SceneMange_Title: MonoBehaviour
     public Button Bt4;  //설정
     public Button Bt5;  //종료하기
 
-    // private SFXManager sfxmanager;  //SFXManager 
+    private SoundControl soundmanager;  //SoundManager 
+
 
     // Start is called before the first frame update
     public void Start()
