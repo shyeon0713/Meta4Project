@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -11,6 +12,8 @@ public class ScriptUI : MonoBehaviour
     public TMP_Text npcnametext;
     public TMP_Text dialogueText;
 
+    public float delay = 0.1f; //타이핑 효과
+
     public Image npcImage;  //NPC 이미지 
     public List<Sprite> npcSpriteList;
     public List<string> npcSpriteNames;
@@ -20,6 +23,7 @@ public class ScriptUI : MonoBehaviour
     private Dictionary<string, Sprite> npcSpriteDict = new();
 
     private int currentIndex = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,19 +35,19 @@ public class ScriptUI : MonoBehaviour
         // DialogueData 초기화
         dialogueData = DialogueData.LoadFromJson(path);  // `LoadFromJson` 사용!
 
-        Debug.Log("Path to JSON: " + path);
+      //  Debug.Log("Path to JSON: " + path);
 
         // 파일 경로 확인 및 데이터 검증
         if (dialogueData == null || dialogueData.dialogues == null || dialogueData.dialogues.Length == 0)
         {
-            Debug.LogError("Dialogue data is empty or could not be loaded.");  //로드가 되지 않을 경우
+            //Debug.LogError("Dialogue data is empty or could not be loaded.");  //로드가 되지 않을 경우
             return;
         }
 
         // 스프라이트 딕셔너리 초기화
         if (npcSpriteList.Count != npcSpriteNames.Count)
         {
-            Debug.LogError("Sprite list and sprite name list do not match in length!");
+          //  Debug.LogError("Sprite list and sprite name list do not match in length!");
             return;
         }
 
@@ -62,7 +66,7 @@ public class ScriptUI : MonoBehaviour
 
         if (dialogueData == null || dialogueData.dialogues == null)  //0424수정 : null일 경우를 생각안함
         {
-            Debug.LogError("Dialogue data or dialogues is null!");
+           // Debug.LogError("Dialogue data or dialogues is null!");
             return;  // 더 이상 진행하지 않음
         }
 
@@ -83,7 +87,10 @@ public class ScriptUI : MonoBehaviour
     {
         var line = dialogueData.dialogues[index];  // var: 컴파일러가 변수의 타입을 자동으로 추론하게 해주는 키워드
         npcnametext.text = line.speaker;
-        dialogueText.text = line.text;
+        // dialogueText.text = line.text;
+        StopAllCoroutines(); //이전 코루틴이 겹치지 않도록 정리
+        StartCoroutine(Typetext(line.text)); //타이핑 효과 
+
 
         npcImage.color = new Color(1f, 1f, 1f, 1f);  //기본색 -> 흰색
 
@@ -109,6 +116,17 @@ public class ScriptUI : MonoBehaviour
             return sprite;
         }
         return null;
+    }
+
+    IEnumerator Typetext(string text)   //타이핑 효과 -> 코루틴 활용
+    {
+        dialogueText.text = " ";
+        foreach (char index in text)
+        {
+            dialogueText.text += index;
+            yield return new WaitForSeconds(delay);  //0.05f 코루틴 딜레이
+        }
+
     }
 
 }

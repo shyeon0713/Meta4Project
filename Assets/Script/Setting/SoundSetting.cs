@@ -29,40 +29,19 @@ public class SoundSetting : MonoBehaviour
     {
         // 초기 설정
         ApplySettings();
-        SceneManager.sceneLoaded += OnSceneLoaded; // 씬이 로드될 때 호출될 메서드
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)  //씬이 로드될 때 호출될 메서드
+
+    public void PlayBGM(int index)
     {
-        SetBgmForScene(scene.name); // 씬 이름에 맞는 BGM을 설정
+        if (sounddata.isSfxOn)
+        {
+            sfxSource.clip = sounddata.sfxClips[index];
+            sfxSource.Play();
+        }
     }
 
-
-
-    // 씬 이름에 맞는 BGM을 설정
-    public void SetBgmForScene(string sceneName)
-    {
-        int sceneIndex = GetSceneBgmIndex(sceneName); // 씬에 맞는 BGM 인덱스를 반환
-        PlayBgm(sceneIndex); // 해당 인덱스로 BGM 재생
-    }
-
-
-    // 씬 이름에 맞는 BGM 인덱스를 반환
-    private int GetSceneBgmIndex(string sceneName)
-    {
-        // 예시로, 씬 이름에 따라 인덱스를 다르게 설정
-        if (sceneName == "MainMenu") return 0; 
-        if (sceneName == "Level1") return 1; 
-        if (sceneName == "Level2") return 2;
-        if (sceneName == "GameOver") return 3; 
-        return 0; // 기본 BGM
-    }
-
-    public void PlayBgm(int index)
-    {
-        bgmSource.clip = sounddata.bgmClips[index];
-        bgmSource.Play();
-    }
+    //SoundManager.Instance.Play BGM(index); 로 호출 -> SoundData에셋 활용
 
     // SFX 재생
     public void PlaySfx(int index)
@@ -75,9 +54,7 @@ public class SoundSetting : MonoBehaviour
     }
 
 
-    //SoundManager.Instance.PlaySfx(indexvalue); 로 호출
-
-
+    //SoundManager.Instance.PlaySfx(index); 로 호출 -> SoundData에셋 활용
 
     public void ApplySettings()  //초기 설정
     {

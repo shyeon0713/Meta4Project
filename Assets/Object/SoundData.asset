@@ -12,15 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f962563ab19b9f4090a4b439dacc923, type: 3}
   m_Name: SoundData
   m_EditorClassIdentifier: 
-  bgmvolume: 0.5
-  sfxvolume: 0.5
+  bgmvolume: 1
+  sfxvolume: 1
   isBgmOn: 1
   isSfxOn: 1
   bgmClips:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 407761be9448e6646bc1827495b93168, type: 3}
+  - {fileID: 8300000, guid: d5cd0323b01683e45901b9b000da0c8f, type: 3}
+  - {fileID: 8300000, guid: 5f22c956b778ee04fbcb331e04febed7, type: 3}
+  - {fileID: 8300000, guid: c29b0c5bcedc772418fc8cf7a8ae062e, type: 3}
+  - {fileID: 8300000, guid: 07a245923e4f6874db591afb79339887, type: 3}
+  - {fileID: 8300000, guid: 4d79059f4746542418039bd829f2e424, type: 3}
+  - {fileID: 8300000, guid: 36d28f16789081545a7c5d02d241c2c1, type: 3}
+  - {fileID: 8300000, guid: cdcc04e86a6c41b4c99a35ced7f2991e, type: 3}
+  - {fileID: 8300000, guid: c5fafcf1b339f2842ad6dc8d077b82aa, type: 3}
+  - {fileID: 8300000, guid: aff3c1b831abe674a93212882530eb23, type: 3}
   sfxClips:
   - {fileID: 8300000, guid: ee92eedce1707df49ad8882c865a3488, type: 3}
   - {fileID: 8300000, guid: 24a1fc53d988629439340695baa9befa, type: 3}
