@@ -43,7 +43,6 @@ class DialogueBase(BaseModel):
 # save용
 class SaveBase(BaseModel):
     likeability: float
-    line: str
     last_speaker: str
     last_line: str
     class Config:
@@ -64,7 +63,7 @@ async def ping():
 # log 생성 api
 @app.post("/dialogue/", status_code=status.HTTP_201_CREATED)
 async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
-    db_dialogue = models.CharacterInfo(**dialogue.dict())
+    db_dialogue = models.Dialogue(**dialogue.dict())
     db.add(db_dialogue)
     db.commit()
 
