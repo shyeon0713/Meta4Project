@@ -20,7 +20,7 @@ public class ScriptUI : MonoBehaviour
     public List<Sprite> npcSpriteList;
     public List<string> npcSpriteNames;
 
-    float gray = 111f / 225f;  //내가 말할 경우, NPC 회색처리를 위해
+    float Alpha = 190f / 225f;  //내가 말할 경우, NPC 투명도 조절
 
     private Dictionary<string, Sprite> npcSpriteDict = new();
 
@@ -104,7 +104,7 @@ public class ScriptUI : MonoBehaviour
         else  // 내가 말할 경우, 수노LD는 회색
         {
             npcImage.sprite = GetSpriteFromDict(line.sprite);
-            npcImage.color = new Color(gray, gray, gray, 1f); // 회색 처리
+            npcImage.color = new Color(1f, 1f,1f, Alpha); // 투명도 190으로 조정
         }
     }
 
