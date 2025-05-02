@@ -78,3 +78,9 @@ Packages/
 
 # Optional: Ignore specific assets
 Assets/TextMesh Pro/
+
+# python venv Setting
+.venv/
+
+# DB Server Setting
+Server/database.py
