@@ -25,19 +25,19 @@ public class SoundSetting : MonoBehaviour
         }
     }
 
-    private void Start()
+     void Start()
     {
         // 초기 설정
         ApplySettings();
     }
 
 
-    public void PlayBGM(int index)
+    public void PlayBgm(int index)
     {
-        if (sounddata.isSfxOn)
+        if (sounddata.isBgmOn)
         {
-            sfxSource.clip = sounddata.sfxClips[index];
-            sfxSource.Play();
+            bgmSource.clip = sounddata.bgmClips[index];
+            bgmSource.Play();
         }
     }
 
@@ -58,13 +58,19 @@ public class SoundSetting : MonoBehaviour
 
     public void ApplySettings()  //초기 설정
     {
-        float bgmDb = sounddata.isBgmOn ? Mathf.Log10(sounddata.bgmvolume) * 20f : -80f;  // Slider 초기 설정 , AudioMixer 설정활용
-        float sfxDb = sounddata.isSfxOn ? Mathf.Log10(sounddata.sfxvolume) * 20f : -80f;  // Slider 초기 설정 , AudioMixer 설정활용
+        float bgmLinear = Mathf.Clamp(sounddata.bgmvolume, 0.0001f, 1f);
+        float sfxLinear = Mathf.Clamp(sounddata.sfxvolume, 0.0001f, 1f);  
+        // 0일 경우 안전값
 
-        audioMixer.SetFloat("BgmVolume", bgmDb);   // AudioMixer 초기값 설정
-        audioMixer.SetFloat("SfxVolume", sfxDb);   // AudioMixer 초기값 설정
+        float bgmDb = sounddata.isBgmOn ? Mathf.Log10(bgmLinear) * 20f : -80f;
+        float sfxDb = sounddata.isSfxOn ? Mathf.Log10(sfxLinear) * 20f : -80f;
+
+      
+
+        audioMixer.SetFloat("Bgmvolume", bgmDb);   // AudioMixer 초기값 설정
+        audioMixer.SetFloat("Sfxvolume", sfxDb);   // AudioMixer 초기값 설정
     }
 
 
 
-}
+}//  SoundControl.SetFloat("sfxvolume", Mathf.Log10(Slidervalue) * 20);

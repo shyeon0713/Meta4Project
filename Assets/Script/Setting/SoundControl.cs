@@ -27,7 +27,7 @@ public class SoundControl : MonoBehaviour
         sfxButtonImage = sfxbutton.GetComponent<Image>();
 
         LoadSettings();
-
+        SoundSetting.Instance.ApplySettings();  // volume 설정 반영
 
         bgmslider.value = sounddata.bgmvolume;   //초기값 설정
         sfxslider.value = sounddata.sfxvolume;   //초기값 설정
@@ -48,24 +48,30 @@ public class SoundControl : MonoBehaviour
     {
         sounddata.bgmvolume = vloume;
         SoundSetting.Instance.ApplySettings();
+        SaveSettings();
     }
 
     public void Set_SfxVolume(float vloume)
     {
         sounddata.sfxvolume = vloume;
         SoundSetting.Instance.ApplySettings();
+        SaveSettings();
     }
 
     public void BgmOn()
     {
         sounddata.isBgmOn = !sounddata.isBgmOn;
         SoundSetting.Instance.ApplySettings();
+        UpdateButtonImages(); 
+        SaveSettings();       
     }
 
     public void SfxOn()
     {
         sounddata.isSfxOn = !sounddata.isSfxOn;
         SoundSetting.Instance.ApplySettings();
+        UpdateButtonImages();
+        SaveSettings();
     }
 
     private void UpdateButtonImages()

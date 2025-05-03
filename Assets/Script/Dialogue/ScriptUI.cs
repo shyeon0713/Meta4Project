@@ -57,6 +57,7 @@ public class ScriptUI : MonoBehaviour
         {
             npcSpriteDict[npcSpriteNames[i]] = npcSpriteList[i];
         }
+        SoundSetting.Instance.PlayBgm(3);  //3번 브금
 
         OutputDialogue(currentIndex);
     }
