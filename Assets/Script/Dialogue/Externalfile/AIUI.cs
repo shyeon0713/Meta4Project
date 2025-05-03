@@ -13,7 +13,7 @@ public class AIUI : MonoBehaviour
     private void Start()
     {
         Inputbutton.onClick.AddListener(InputSend);
-        StartCoroutine(DialogueAPI)
+        StartCoroutine(DialogueAPI)  // DialogAPI ÂüÁ¶
     }
 
     // Update is called once per frame
