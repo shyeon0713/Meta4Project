@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel
 from typing import Annotated
-from . import models
-from .database import engine, SessionLocal
+from Server import models
+from Server.database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from typing import Optional
 
@@ -60,3 +60,36 @@ class SaveBase(BaseModel):
 @app.get("/ping")
 async def ping():
     return {"message": "Server is running"}
+
+
+# log
+# log 생성 api
+@app.post("/dialogue/", status_code=status.HTTP_201_CREATED)
+async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
+    db_dialogue = models.Dialogue(**dialogue.dict())
+    db.add(db_dialogue)
+    db.commit()
+
+# log 읽기 api (이건 대사 하나만 읽는 코드래...)
+'''
+@app.get("/dialogue/{dialogue_id}", response_model=DialogueBase, status_code=status.HTTP_200_OK)
+async def read_dialogue(dialogue_id: int, db: db_dependency):
+    dialogue = db.query(models.Dialogue).filter(models.dialogue.id == dialogue_id).first()
+    if dialogue is None:
+        raise HTTPException(status_code=404, detail='Dialogue not found')
+    return dialogue
+'''
+
+# log (누적 50개) 읽기 api
+@app.get("/dialogue/logs", response_model=list[DialogueBase], status_code=status.HTTP_200_OK)
+async def read_dialogue(db: db_dependency):
+    dialogue = (
+        db.query(models.Dialogue)  #특정 테이블(모델)을 조회할 준비를 함.
+        .order_by(models.Dialogue.id.desc())  #소문자 dialogue는 지역변수를 선언해야 쓸 수 있기 때문에 models.Dialogue로 정확하게 클래스 이름 사용해야함
+        .limit(50)
+        .all()  #-> 리스트 반환
+        # 위의 매개변수 response_model=DialogueBase는 단일 객체 반환하는 걸로 인식하기 때문에 validationError 남. list[DialogueBase]로 바꾸어야 한다.
+    )
+    if dialogue is None:
+        raise HTTPException(status_code=404, detail='Dialogue not found')
+    return dialogue
