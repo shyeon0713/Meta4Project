@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PopupSetting: MonoBehaviour
+public class PopupSetting2 : MonoBehaviour
 {
     public GameObject PopUpSetting;  // ºº∆√√¢
 

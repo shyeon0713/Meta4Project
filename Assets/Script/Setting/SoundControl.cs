@@ -26,22 +26,22 @@ public class SoundControl : MonoBehaviour
         bgmButtonImage = bgmbutton.GetComponent<Image>();
         sfxButtonImage = sfxbutton.GetComponent<Image>();
 
-        LoadSettings();
-        SoundSetting.Instance.ApplySettings();  // volume 설정 반영
+        LoadSettings(); 
 
-        bgmslider.value = sounddata.bgmvolume;   //초기값 설정
-        sfxslider.value = sounddata.sfxvolume;   //초기값 설정
-
+        // 슬라이더 초기값
+        bgmslider.value = sounddata.bgmvolume;
+        sfxslider.value = sounddata.sfxvolume;
 
         bgmslider.onValueChanged.AddListener(Set_BgmVolume);
         sfxslider.onValueChanged.AddListener(Set_SfxVolume);
-
-
         bgmbutton.onClick.AddListener(BgmOn);
         sfxbutton.onClick.AddListener(SfxOn);
 
-        UpdateButtonImages();
+        //오디오 믹서 값 적용 (슬라이더 초기값 설정 이후)
+        SoundSetting.Instance.ApplySettings();
 
+       
+        UpdateButtonImages();
     }
 
     public void Set_BgmVolume(float vloume)

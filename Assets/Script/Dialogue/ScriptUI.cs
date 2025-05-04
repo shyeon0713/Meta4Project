@@ -57,7 +57,7 @@ public class ScriptUI : MonoBehaviour
         {
             npcSpriteDict[npcSpriteNames[i]] = npcSpriteList[i];
         }
-        SoundSetting.Instance.PlayBgm(3);  //3번 브금
+        SoundSetting.Instance.PlayBgm(2);  //3번 브금
 
         OutputDialogue(currentIndex);
     }
@@ -127,7 +127,7 @@ public class ScriptUI : MonoBehaviour
         foreach (char index in text)
         {
             dialogueText.text += index;
-            SoundSetting.Instance.PlaySfx(6);  //Typtwritter1 sfx
+            SoundSetting.Instance.PlaySfx(7);  //Typtwritter1 sfx
             yield return new WaitForSeconds(delay);  //0.05f 코루틴 딜레이
         }
 

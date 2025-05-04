@@ -58,19 +58,19 @@ public class SoundSetting : MonoBehaviour
 
     public void ApplySettings()  //초기 설정
     {
-        float bgmLinear = Mathf.Clamp(sounddata.bgmvolume, 0.0001f, 1f);
-        float sfxLinear = Mathf.Clamp(sounddata.sfxvolume, 0.0001f, 1f);  
+        float bgmLinear = Mathf.Clamp(sounddata.bgmvolume, 0.000001f, 1f);
+        float sfxLinear = Mathf.Clamp(sounddata.sfxvolume, 0.000001f, 1f);  
         // 0일 경우 안전값
 
         float bgmDb = sounddata.isBgmOn ? Mathf.Log10(bgmLinear) * 20f : -80f;
         float sfxDb = sounddata.isSfxOn ? Mathf.Log10(sfxLinear) * 20f : -80f;
 
-      
+        audioMixer.SetFloat("BgmVolume", bgmDb);   // AudioMixer 초기값 설정
+        audioMixer.SetFloat("SfxVolume", sfxDb);   // AudioMixer 초기값 설정
 
-        audioMixer.SetFloat("Bgmvolume", bgmDb);   // AudioMixer 초기값 설정
-        audioMixer.SetFloat("Sfxvolume", sfxDb);   // AudioMixer 초기값 설정
+
     }
 
 
 
-}//  SoundControl.SetFloat("sfxvolume", Mathf.Log10(Slidervalue) * 20);
+}
