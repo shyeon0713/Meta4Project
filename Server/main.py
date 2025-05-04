@@ -93,3 +93,24 @@ async def read_dialogue(db: db_dependency):
     if dialogue is None:
         raise HTTPException(status_code=404, detail='Dialogue not found')
     return dialogue
+
+
+# save
+# save 생성 api (근데 세이브할 때 마지막 대사랑 화자, 대사 순서 id같이 저장해야해서 음...... 그건 어떻게 통신해야하나.... 코드 점검 필요)
+@app.post("/save/", status_code=status.HTTP_201_CREATED)
+async def create_save(save:SaveBase, db: db_dependency):
+    db_save = models.Save(**save.dict())
+    db.add(db_save)
+    db.commit()
+
+# save (모두) 읽기 api
+@app.get("/save/all", response_model=list[SaveBase], status_code=status.HTTP_200_OK)
+async def read_save(db: db_dependency):
+    save = (
+        db.query(models.Save)
+        .order_by(models.Save.primary_key.asc())
+        .all()
+    )
+    if save is None:
+        raise HTTPException(status_code=404, detail='Save not found')
+    return save
