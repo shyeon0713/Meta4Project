@@ -102,6 +102,8 @@ async def create_save(save:SaveBase, db: db_dependency):
     db_save = models.Save(**save.dict())
     db.add(db_save)
     db.commit()
+    db.refresh(db_save)  #새로 생성된 id포함하여 리턴
+    return db_save
 
 # save (모두) 읽기 api
 @app.get("/save/all", response_model=list[SaveBase], status_code=status.HTTP_200_OK)
