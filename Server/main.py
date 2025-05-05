@@ -85,7 +85,7 @@ async def read_dialogue(dialogue_id: int, db: db_dependency):
 async def read_dialogue(db: db_dependency):
     dialogue = (
         db.query(models.Dialogue)  #특정 테이블(모델)을 조회할 준비를 함.
-        .order_by(models.Dialogue.id.desc())  #소문자 dialogue는 지역변수를 선언해야 쓸 수 있기 때문에 models.Dialogue로 정확하게 클래스 이름 사용해야함
+        .order_by(models.Dialogue.id.asc())  #소문자 dialogue는 지역변수를 선언해야 쓸 수 있기 때문에 models.Dialogue로 정확하게 클래스 이름 사용해야함
         .limit(50)
         .all()  #-> 리스트 반환
         # 위의 매개변수 response_model=DialogueBase는 단일 객체 반환하는 걸로 인식하기 때문에 validationError 남. list[DialogueBase]로 바꾸어야 한다.
