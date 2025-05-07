@@ -1,20 +1,22 @@
 from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, JSON
-from database import Base
+from .database import Base
 
 
 # log db
 class Dialogue(Base):
     __tablename__ = "dialogue"
 
-    primary_key = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     speaker = Column(String(100))
-    line = Column(text)
+    line = Column(Text)
 
 # save db
 class Save(Base):
     __tablename__ = "save"
 
     primary_key = Column(Integer, primary_key=True, autoincrement=True)
+    day = Column(Integer)
     likeability = Column(Float)
+    last_dialogue_id = Column(Integer, ForeignKey('dialogue.id'))  #dialogue id 가지고 옴
     last_speaker = Column(String(100))
-    last_line = Column(text)
+    last_line = Column(Text)

@@ -83,4 +83,4 @@ Assets/TextMesh Pro/
 .venv/
 
 # DB Sever Setting
-Sever/database.py
+Server/database.py
