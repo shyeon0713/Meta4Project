@@ -2872,7 +2872,7 @@ PrefabInstance:
       objectReference: {fileID: 1501279403}
     - target: {fileID: 6889147961986766671, guid: decff16e1972fc34ba705609f3e811c0, type: 3}
       propertyPath: rolloffMode
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6889147961986766671, guid: decff16e1972fc34ba705609f3e811c0, type: 3}
       propertyPath: m_PlayOnAwake
@@ -3056,7 +3056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8146629875713452010, guid: decff16e1972fc34ba705609f3e811c0, type: 3}
       propertyPath: rolloffMode
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8146629875713452010, guid: decff16e1972fc34ba705609f3e811c0, type: 3}
       propertyPath: m_PlayOnAwake
@@ -7348,7 +7348,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

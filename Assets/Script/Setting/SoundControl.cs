@@ -7,6 +7,7 @@ public class SoundControl : MonoBehaviour
     public SoundData sounddata;
     public Slider bgmslider;
     public Slider sfxslider;
+
     public Button bgmbutton;
     public Button sfxbutton;
 
@@ -19,6 +20,13 @@ public class SoundControl : MonoBehaviour
     private Image bgmButtonImage;
     private Image sfxButtonImage;
 
+
+    /*
+      void Awake()   //씬 전환 후 Sound 저장 이슈생김 0507
+    {   
+    DontDestroyOnLoad(gameObject);
+    }
+*/
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,21 +34,24 @@ public class SoundControl : MonoBehaviour
         bgmButtonImage = bgmbutton.GetComponent<Image>();
         sfxButtonImage = sfxbutton.GetComponent<Image>();
 
-        LoadSettings(); 
+        LoadSettings();
+        SyncUIToData();  // 슬라이더, 버튼 이미지 업데이트
 
-        // 슬라이더 초기값
-        bgmslider.value = sounddata.bgmvolume;
-        sfxslider.value = sounddata.sfxvolume;
-
-        bgmslider.onValueChanged.AddListener(Set_BgmVolume);
-        sfxslider.onValueChanged.AddListener(Set_SfxVolume);
+       //이벤트 리스너 추가
+         bgmslider.onValueChanged.AddListener(Set_BgmVolume);
+         sfxslider.onValueChanged.AddListener(Set_SfxVolume);
         bgmbutton.onClick.AddListener(BgmOn);
         sfxbutton.onClick.AddListener(SfxOn);
 
         //오디오 믹서 값 적용 (슬라이더 초기값 설정 이후)
         SoundSetting.Instance.ApplySettings();
 
-       
+    }
+
+    void SyncUIToData()   //UI 동기화 문제 해결 0508수정 
+    {
+        bgmslider.value = sounddata.bgmvolume;  //bgm값 가져오기
+        sfxslider.value = sounddata.sfxvolume;  //sfx값 가져오기
         UpdateButtonImages();
     }
 
@@ -82,8 +93,8 @@ public class SoundControl : MonoBehaviour
 
     private void SaveSettings()  //세팅 저장 -> PlayerPrefs 활용
     {
-        PlayerPrefs.SetFloat("BgmVolume", sounddata.bgmvolume);
-        PlayerPrefs.SetFloat("SfxVolume", sounddata.sfxvolume);
+        PlayerPrefs.SetFloat("Bgmvolume", sounddata.bgmvolume);
+        PlayerPrefs.SetFloat("Sfxvolume", sounddata.sfxvolume);
         PlayerPrefs.SetInt("BgmOn", sounddata.isBgmOn ? 1 : 0);
         PlayerPrefs.SetInt("SfxOn", sounddata.isSfxOn ? 1 : 0);
         PlayerPrefs.Save();   
@@ -91,10 +102,11 @@ public class SoundControl : MonoBehaviour
 
     private void LoadSettings()  //세팅 가져오기 -> PlayerPrefs 활용
     {
-        sounddata.bgmvolume = PlayerPrefs.GetFloat("BgmVolume", 1f);
-        sounddata.sfxvolume = PlayerPrefs.GetFloat("SfxVolume", 1f);
+        sounddata.bgmvolume = PlayerPrefs.GetFloat("Bgmvolume", 1f);
+        sounddata.sfxvolume = PlayerPrefs.GetFloat("Sfxvolume", 1f);
         sounddata.isBgmOn = PlayerPrefs.GetInt("BgmOn", 1) == 1;
         sounddata.isSfxOn = PlayerPrefs.GetInt("SfxOn", 1) == 1;
     }
+
 
 }
