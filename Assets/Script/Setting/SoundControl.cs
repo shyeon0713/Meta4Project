@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class SoundControl : MonoBehaviour
 {
+    private static SoundControl instance;  //싱글톤 활용
 
     public SoundData sounddata;
     public Slider bgmslider;
@@ -20,13 +21,19 @@ public class SoundControl : MonoBehaviour
     private Image bgmButtonImage;
     private Image sfxButtonImage;
 
-
-    /*
-      void Awake()   //씬 전환 후 Sound 저장 이슈생김 0507
-    {   
-    DontDestroyOnLoad(gameObject);
+    void Awake()  //씬 변경시, 설정 동기화 
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // 씬에 새로 생긴 건 삭제
+        }
     }
-*/
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
