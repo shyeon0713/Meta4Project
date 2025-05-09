@@ -27,6 +27,7 @@ public class SoundSetting : MonoBehaviour
 
      void Start()
     {
+        SoundSetting.Instance.PlayBgm(6);  //6번 BGM
         // 초기 설정
         ApplySettings();
     }

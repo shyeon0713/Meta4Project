@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 public class SoundControl : MonoBehaviour
 {
-    private static SoundControl instance;  //싱글톤 활용
+    [SerializeField] 
+    private GameObject uiPanel;  // Canvas (혹은 Panel)
 
     public SoundData sounddata;
     public Slider bgmslider;
@@ -21,18 +22,6 @@ public class SoundControl : MonoBehaviour
     private Image bgmButtonImage;
     private Image sfxButtonImage;
 
-    void Awake()  //씬 변경시, 설정 동기화 
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // 씬에 새로 생긴 건 삭제
-        }
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -97,7 +86,15 @@ public class SoundControl : MonoBehaviour
         bgmButtonImage.sprite = sounddata.isBgmOn ? bgmOnSprite : bgmOffSprite;
         sfxButtonImage.sprite = sounddata.isSfxOn ? sfxOnSprite : sfxOffSprite;
     }
+    public void CloseWindow()
+    {
+        uiPanel.SetActive(false);
+    }
 
+    public void OpenWindow()
+    {
+        uiPanel.SetActive(true);
+    }
     private void SaveSettings()  //세팅 저장 -> PlayerPrefs 활용
     {
         PlayerPrefs.SetFloat("Bgmvolume", sounddata.bgmvolume);
@@ -114,6 +111,7 @@ public class SoundControl : MonoBehaviour
         sounddata.isBgmOn = PlayerPrefs.GetInt("BgmOn", 1) == 1;
         sounddata.isSfxOn = PlayerPrefs.GetInt("SfxOn", 1) == 1;
     }
+
 
 
 }
