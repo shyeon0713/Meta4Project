@@ -83,4 +83,4 @@ Assets/TextMesh Pro/
 .venv/
 
 # DB Sever Password
-Server/password.py
+.env
