@@ -6,7 +6,7 @@ using System;
 
 public class DialogueAPI : MonoBehaviour
 {
-    private const string API_URL = "fastapi sever URL";  //서버 URL넣기
+    private const string API_URL = "http://127.0.0.1:8000/docs#";  //서버 URL넣기
     public IEnumerator SendPlayerReply(string playerInput, Action<string> callback)
     {
         var json = JsonUtility.ToJson(new PlayerReply { reply = playerInput });
@@ -24,9 +24,9 @@ public class DialogueAPI : MonoBehaviour
             {
                 callback?.Invoke(request.downloadHandler.text);
             }
-            else
+            else  // 연결 실패
             {
-                Debug.LogError("API Error: " + request.error);
+                Debug.LogError("API Error: " + request.error);  
             }
         }
     }
