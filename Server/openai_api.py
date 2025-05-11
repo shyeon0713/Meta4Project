@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-def ask_gpt(user_input: str , model: str = "gpt-3.5-turbo") -> str:
+def ask_gpt(user_input: str , model: str = "gpt-4o-mini") -> str:
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
