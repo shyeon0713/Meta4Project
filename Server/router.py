@@ -4,10 +4,19 @@ from Server import models
 from typing import List
 from Server.schema import DialogueBase, SaveBase
 from Server.database import get_db, db_dependency  #의존성 주입
+from Server.openai_api import ask_gpt  #open ai api 가지고 오기
 
 
 # 라우터임을 명시, 라우터임을 선언
 router = APIRouter()
+
+
+# open ai test api
+@router.get("/llm/test")
+async def llm_test(user_input: str):
+    answer = ask_gpt(user_input)
+    return {"response": answer}
+
 
 
 # api
@@ -64,3 +73,4 @@ async def read_save(db: db_dependency):
         .all()  #결과가 없다면 항상 빈 리스트 반환
     )
     return save
+
