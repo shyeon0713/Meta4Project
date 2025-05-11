@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from Server import models
 from typing import List
 from Server.schema import DialogueBase, SaveBase
-from Server.database import get_db, db_dependency  #의존성 주입
+from Server.database import db_dependency  #의존성 주입
 from Server.openai_api import ask_gpt  #open ai api 가지고 오기
 
 
@@ -11,34 +11,57 @@ from Server.openai_api import ask_gpt  #open ai api 가지고 오기
 router = APIRouter()
 
 
-# open ai test api
-@router.get("/llm/test")
-async def llm_test(user_input: str):
-    answer = ask_gpt(user_input)
-    return {"response": answer}
 
 
-
-# api
-
-# log
-# log 생성 api
+# 플레이어 입력 받아 db저장 api
 @router.post("/dialogue/", status_code=status.HTTP_201_CREATED)
 async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
-    db_dialogue = models.Dialogue(**dialogue.dict())
-    db.add(db_dialogue)
+
+    # 플레이어의 답변 db저장용
+    db_user = models.Dialogue(
+        speaker="나",
+        line=dialogue.line
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)  # ID 확인용
+
+    # GPT에게 전송 (응답까지 저장장)
+    answer = ask_gpt(dialogue.line)
+
+    db_llm = models.Dialogue(
+        speaker="수노",
+        line=answer
+    )
+    db.add(db_llm)
     db.commit()
 
-# log 읽기 api (이건 대사 하나만 읽는 코드래...)
-'''
-@app.get("/dialogue/{dialogue_id}", response_model=DialogueBase, status_code=status.HTTP_200_OK)
-async def read_dialogue(dialogue_id: int, db: db_dependency):
-    dialogue = db.query(models.Dialogue).filter(models.dialogue.id == dialogue_id).first()
-    if dialogue is None:
-        raise HTTPException(status_code=404, detail='Dialogue not found')
-    return dialogue
-'''
 
+    # 그냥 응답 확인용 return
+    return {
+        "user_id": db_user.id,
+        "llm_id": db_llm.id,
+        "response": answer
+    }
+
+
+# open ai test api
+@router.get("/dialogue/{dialogue_id}")
+async def bring_dialogue(id: int, db: db_dependency):
+    llm_line = db.query(models.Dialogue).filter(models.Dialogue.id == id).first()
+    if not llm_line:
+        raise HTTPException(status_code=404, detail="Dialogue not found")
+    return {
+        "speaker": llm_line.speaker,
+        "line": llm_line.line
+        }
+
+
+
+
+
+
+# log버튼 눌렀을 시 기존에 쌓인 로그들 불러오는 api
 # log (누적 50개) 읽기 api
 @router.get("/dialogue/logs", response_model=list[DialogueBase], status_code=status.HTTP_200_OK)
 async def read_dialogue(db: db_dependency):
@@ -52,6 +75,11 @@ async def read_dialogue(db: db_dependency):
     if dialogue is None:
         raise HTTPException(status_code=404, detail='Dialogue not found')
     return dialogue
+
+
+
+
+
 
 
 # save
@@ -74,3 +102,15 @@ async def read_save(db: db_dependency):
     )
     return save
 
+
+
+
+# log 읽기 api (이건 대사 하나만 읽는 코드래...)
+'''
+@app.get("/dialogue/{dialogue_id}", response_model=DialogueBase, status_code=status.HTTP_200_OK)
+async def read_dialogue(dialogue_id: int, db: db_dependency):
+    dialogue = db.query(models.Dialogue).filter(models.dialogue.id == dialogue_id).first()
+    if dialogue is None:
+        raise HTTPException(status_code=404, detail='Dialogue not found')
+    return dialogue
+'''
