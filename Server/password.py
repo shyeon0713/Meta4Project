@@ -1,1 +1,0 @@
-URL_DATABASE = 'mysql+pymysql://root:0000@localhost:3306/blogapplication'
