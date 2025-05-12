@@ -1,0 +1,2 @@
+DATABASE_URL = 'mysql+pymysql://root:yejinmysql151303%40@localhost:3306/game_suno'
+OPENAI_API_KEY = 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
