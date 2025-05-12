@@ -468,7 +468,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -488,7 +488,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &277312985
 Transform:
   m_ObjectHideFlags: 0
@@ -742,6 +742,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2089778075}
+  - {fileID: 637895829}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &492934113
@@ -1344,7 +1345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &637895829
 Transform:
   m_ObjectHideFlags: 0
@@ -1353,13 +1354,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 637895828}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 960, y: 524, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 147958889}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 458070618}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &644919544
 PrefabInstance:
@@ -1411,15 +1412,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 990443026084520874, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1292132882871186600, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2307469752097398143, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3486100129460870545, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
       propertyPath: bgmSource
@@ -1433,9 +1434,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: C_SettingWindow
       objectReference: {fileID: 0}
+    - target: {fileID: 3921818320799471263, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4510957593234320304, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8007386996010513185, guid: 0e425190674ff2f4dbec177d20cb9aea, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -5227,7 +5232,6 @@ SceneRoots:
   - {fileID: 1150687007}
   - {fileID: 839981987}
   - {fileID: 458070618}
-  - {fileID: 637895829}
   - {fileID: 277312985}
   - {fileID: 111370417}
   - {fileID: 644919544}
