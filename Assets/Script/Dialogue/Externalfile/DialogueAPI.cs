@@ -6,7 +6,7 @@ using System;
 
 public class DialogueAPI : MonoBehaviour
 {
-    private const string API_URL = "http://127.0.0.1:8000/docs#";  //서버 URL넣기
+    private const string API_URL = "http://127.0.0.1:8000/docs";  //서버 URL넣기
     public IEnumerator SendPlayerReply(string playerInput, Action<string> callback)
     {
         var json = JsonUtility.ToJson(new PlayerReply { reply = playerInput });
