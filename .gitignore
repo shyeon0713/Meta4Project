@@ -85,3 +85,4 @@ Assets/TextMesh Pro/
 # DB Sever Password
 .env
 env.json
+"env" 
