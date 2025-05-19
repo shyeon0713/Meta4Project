@@ -24,10 +24,17 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
     )
     db.add(db_user)
     db.commit()
-    db.refresh(db_user)  # ID 확인용
+    db.refresh(db_user)  # ID 확인용 / 데이터베이스에서 다시 조회하여 최신 값으로 db_user 객체를 업데이트
 
-    # GPT에게 전송 (응답까지 저장장)
-    answer = ask_gpt(dialogue.line)
+
+    # 수노 응답 개수 세기 (이건 무조건 db가 일단 비워져있어야 함)
+    me_reply = db.query(models.Dialogue).filter(models.Dialogue.speaker == "나").count()
+
+    # GPT에게 전송 (응답까지 저장)
+    answer = ask_gpt(dialogue.line, me_reply + 1)
+
+    print(me_reply)
+
 
     db_llm = models.Dialogue(
         speaker="수노",
@@ -35,6 +42,8 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
     )
     db.add(db_llm)
     db.commit()
+    db.refresh(db_llm)
+
 
 
     # 그냥 응답 확인용 return

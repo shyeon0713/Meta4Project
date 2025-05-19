@@ -119,4 +119,4 @@ Suno must speak only in Korean from the first reply onward.
 """
 
 
-player_input = "Hey… there’s something I need to ask you. Can you spare me a moment?"
+# player_input = "Hey… there’s something I need to ask you. Can you spare me a moment?"
