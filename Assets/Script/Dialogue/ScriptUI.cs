@@ -57,6 +57,7 @@ public class ScriptUI : MonoBehaviour
         {
             npcSpriteDict[npcSpriteNames[i]] = npcSpriteList[i];
         }
+        SoundSetting.Instance.PlayBgm(2);  //3번 브금
 
         OutputDialogue(currentIndex);
     }
@@ -101,7 +102,7 @@ public class ScriptUI : MonoBehaviour
             npcImage.sprite = GetSpriteFromDict(line.sprite);
 
         }
-        else  // 내가 말할 경우, 수노LD는 회색
+        else  // 내가 말할 경우, 수노LD는 투명도 190으로 조정
         {
             npcImage.sprite = GetSpriteFromDict(line.sprite);
             npcImage.color = new Color(1f, 1f,1f, Alpha); // 투명도 190으로 조정
@@ -126,7 +127,7 @@ public class ScriptUI : MonoBehaviour
         foreach (char index in text)
         {
             dialogueText.text += index;
-            SoundSetting.Instance.PlaySfx(6);  //Typtwritter1 sfx
+            SoundSetting.Instance.PlaySfx(7);  //Typtwritter1 sfx
             yield return new WaitForSeconds(delay);  //0.05f 코루틴 딜레이
         }
 

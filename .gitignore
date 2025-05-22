@@ -78,3 +78,11 @@ Packages/
 
 # Optional: Ignore specific assets
 Assets/TextMesh Pro/
+
+# python venv Setting
+.venv/
+
+# DB Sever Password
+.env
+env.json
+"env" 

@@ -25,22 +25,37 @@ public class SoundSetting : MonoBehaviour
         }
     }
 
-    private void Start()
+     void Start()
     {
+        SoundSetting.Instance.PlayBgm(6);  //6번 BGM
         // 초기 설정
         ApplySettings();
     }
 
-
-    public void PlayBGM(int index)
+    public void PlayBgm(int index)
     {
-        if (sounddata.isSfxOn)
-        {
-            sfxSource.clip = sounddata.sfxClips[index];
-            sfxSource.Play();
-        }
+        if (!sounddata.isBgmOn) return;
+
+        AudioClip newClip = sounddata.bgmClips[index];
+
+        // 현재 재생 중인 클립과 같고, 이미 재생 중이면 중복 재생 방지  0507수정
+        if (bgmSource.clip == newClip && bgmSource.isPlaying)
+            return;
+
+        bgmSource.clip = newClip;
+        bgmSource.Play();
     }
 
+    /*
+    public void PlayBgm(int index)
+    {
+        if (sounddata.isBgmOn)
+        {
+            bgmSource.clip = sounddata.bgmClips[index];
+            bgmSource.Play();
+        }
+    }
+*/
     //SoundManager.Instance.PlayBGM(index); 로 호출 -> SoundData에셋 활용
 
     // SFX 재생
@@ -54,15 +69,20 @@ public class SoundSetting : MonoBehaviour
     }
 
 
-    //SoundControl.Instance.PlaySfx(index); 로 호출 -> SoundData에셋 활용
 
+    //SoundControl.Instance.PlaySfx(index); 로 호출 -> SoundData에셋 활용
     public void ApplySettings()  //초기 설정
     {
-        float bgmDb = sounddata.isBgmOn ? Mathf.Log10(sounddata.bgmvolume) * 20f : -80f;  // Slider 초기 설정 , AudioMixer 설정활용
-        float sfxDb = sounddata.isSfxOn ? Mathf.Log10(sounddata.sfxvolume) * 20f : -80f;  // Slider 초기 설정 , AudioMixer 설정활용
+        float bgmLinear = Mathf.Clamp(sounddata.bgmvolume, 0.001f, 1f);
+        float sfxLinear = Mathf.Clamp(sounddata.sfxvolume, 0.001f, 1f);
 
-        audioMixer.SetFloat("BgmVolume", bgmDb);   // AudioMixer 초기값 설정
-        audioMixer.SetFloat("SfxVolume", sfxDb);   // AudioMixer 초기값 설정
+        float bgmDb = sounddata.isBgmOn ? Mathf.Log10(bgmLinear) * 20f : -80f;
+        float sfxDb = sounddata.isSfxOn ? Mathf.Log10(sfxLinear) * 20f : -80f;
+
+        //Debug.Log($"[ApplySettings] BGM: {bgmLinear} -> {bgmDb} dB | SFX: {sfxLinear} -> {sfxDb} dB");
+
+        audioMixer.SetFloat("Bgmvolume", bgmDb); //변수명 무조건 :Bgmvolume으로 하기
+        audioMixer.SetFloat("Sfxvolume", sfxDb); //변수명 무조건 :Sfxvolume으로 하기
     }
 
 

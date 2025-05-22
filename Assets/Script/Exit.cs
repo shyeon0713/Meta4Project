@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class Exit : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Exit : MonoBehaviour
     }
     private void GameExit()
     {
+        SoundSetting.Instance.PlaySfx(1);  // sfx1
         Application.Quit();  //¾Û Á¾·á
     }
 }
