@@ -1,105 +1,81 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class AIUI : MonoBehaviour
 {
-    public TMP_Text speaker;// Name Ç¥½Ã
+    public TMP_Text speaker;
+    public TMP_Text replynpcscript;
+    public TMP_InputField PlayerInput;
+    public Button Inputbutton;
+    public Button nextbutton;
 
-    // NPC ºÎºĞ
-    public TMP_Text NPCscript;
-    public Button nextbutton; // ½ºÅ©¸³Æ® ³Ñ±è ¹öÆ°
+    public DialogueAPI dialogueapi;
 
-    //ÇÃ·¹ÀÌ¾î ´äº¯ÀÔ·Â ºÎºĞ
-    public TMP_InputField PlayerInput;  //Áú¹® ÀÔ·Â
-    public Button Inputbutton;  //ÀÔ·Â ¹öÆ°
-  
-    public DialogueAPI dialogueService;
+    [Header("DayCheck")]
+    public DayCheck daycheck;
 
-    private extraDialogueData currentDialogue;
-    private int dialogueIndex = 0;
-
-    [Header("Scene Controller")]
-    public DayCheck sceneController;
+    [Header("AINPC_Back")]
+    public DayCheck Background;
 
     private void Start()
     {
         Inputbutton.onClick.AddListener(InputSend);
-        nextbutton.onClick.AddListener(ShowNextScript);
+        nextbutton.onClick.AddListener(PlayerSetvisible);
 
-        //ÇÃ·¹ÀÌ¾î ´äº¯ºÎºĞ ¼û±â±â
-        Inputbutton.gameObject.SetActive(false);
-        PlayerInput.gameObject.SetActive(false);
+        // Playerì˜ ì…ë ¥ìœ¼ë¡œ ë¨¼ì € ì‹œì‘
+        replynpcscript.gameObject.SetActive(false);
+        nextbutton.gameObject.SetActive(false);
 
     }
 
     void InputSend()
     {
-        string playerInput = PlayerInput.text;
+        string message = PlayerInput.text;
+        string currentSpeaker = speaker.text;
         PlayerInput.text = "";
 
-        //ÀÔ·Â ÈÄ ´Ù½Ã ¼­¹ö¿¡ Àü¼Û
-        StartCoroutine(dialogueService.SendPlayerReply(playerInput, OnDialogueReceived));
-    }
-
-    void OnDialogueReceived(string json)  
-    {
-        currentDialogue = extraDialogueData.extraFromJson(json);  //extraDialogueData¿¡¼­ ÂüÁ¶
-        dialogueIndex = 0; //ÀÓÀÇ·Î ÀÎµ¦½º¸¦ int·Î Ç¥½Ã 
-        if (currentDialogue.dialoglines != null && currentDialogue.dialoglines.Length > 0)
-        {
-            ShowCurrentScript();  
-        }
-    }
-    void ShowCurrentScript()  //ÇöÀç È­¸é¿¡ Ç¥½ÃµÇ´Â UI ¼³Á¤
-    {
-        DialogueLine line = currentDialogue.dialoglines[dialogueIndex];
-
-        // ±âº»ÀûÀ¸·Î ¸ğµç UI ¼û±è -> Á¶°Ç¹®À¸·Î UI ²¨ÁüÄÑÁü ¼³Á¤
-        speaker.gameObject.SetActive(false);
-        NPCscript.gameObject.SetActive(false);
         PlayerInput.gameObject.SetActive(false);
         Inputbutton.gameObject.SetActive(false);
-        nextbutton.gameObject.SetActive(false);
 
+        StartCoroutine(GetAndShowReply(message, currentSpeaker));
 
-        speaker.text = line.speaker;  //Name
-        NPCscript.text = line.text;
-
-        //UI Ç¥½Ã Ã³¸®
-        if (line.speaker == "NPC")   // NPC°¡ ¸»ÇÒ °æ¿ì
-        {
-            // NPC ´ë»ç - ´ÙÀ½ ¹öÆ° Ç¥½Ã
-            NPCscript.gameObject.SetActive(true);
-            nextbutton.gameObject.SetActive(true);
-        }
-        else if (line.speaker == "???")   //ÇÃ·¹ÀÌ¾î°¡ ¸»ÇÒ °æ¿ì
-        {
-            PlayerInput.gameObject.SetActive(true);
-            Inputbutton.gameObject.SetActive(true);
-        }
+        speaker.text = " ";  // UIì— ë‚¨ì€ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
     }
-    void ShowNextScript()
-    {
-        dialogueIndex++;
 
-        if (dialogueIndex < currentDialogue.dialoglines.Length)
+    IEnumerator GetAndShowReply(string message, string speakerName)
+    {
+        yield return StartCoroutine(dialogueapi.SendPlayerReply(message, speakerName));
+
+        DialogueLine reply = dialogueapi.savescript;
+
+        if (reply != null)
         {
-            ShowCurrentScript();
+            speaker.text = reply.speaker;
+            replynpcscript.text = reply.line;
+
+            replynpcscript.gameObject.SetActive(true);
+            nextbutton.gameObject.SetActive(true);
         }
         else
         {
-            // ´ëÈ­ ³¡ Ã³¸® - ÇÊ¿ä¿¡ µû¶ó UI ºñ¿ì±â -> ÃßÈÄ¿¡ ¿£µùÀÌ³ª ´ÙÀ½ ÀÏÂ÷·Î ³Ñ¾î°¡µµ·Ï ¼öÁ¤
-            NPCscript.text = "";
-            speaker.text = "";
-            nextbutton.gameObject.SetActive(false);
-
-            // ¿©±â¼­ AINPCscene.AdvanceDay()¸¦ È£ÃâÇØ¼­ ¹è°æÀ» °»½Å  -> 0516¼öÁ¤
-            // ´ÙÀ½ ³¯·Î ÀÌµ¿
-            if (sceneController != null)
-                sceneController.AdvanceDay();
-            else
-                Debug.LogWarning("AINPCscene ÀÎ½ºÅÏ½º¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            replynpcscript.text = "ìƒì„±ì‘ë‹µ ì—†ìŒ";
+            replynpcscript.gameObject.SetActive(true);
         }
     }
+
+    void PlayerSetvisible()  // next ë²„íŠ¼ì„ ëˆ„ë¥¼ ê²½ìš°, Playerì˜ ë‹µë³€ í™œì„±í™” ë° NPCìŠ¤í¬ë¦½íŠ¸ëŠ” ì´ˆê¸°í™”
+    {
+        //NPC ìŠ¤í¬ë¦½íŠ¸ ë¹„í™œì„±í™”
+        replynpcscript.text = " ";  //ì´ì „ ëŒ€ì‚¬ ì‚­ì œ
+        replynpcscript.gameObject.SetActive(false);
+        nextbutton.gameObject.SetActive(false);
+        speaker.text = " ";  //speaker ë¹„ìš°ê¸°
+
+        //Player ìŠ¤í¬ë¦½íŠ¸ ë¹„í™œì„±í™”
+        PlayerInput.gameObject.SetActive(true);
+        Inputbutton.gameObject.SetActive(true);
+    }
+
 }

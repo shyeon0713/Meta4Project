@@ -15,6 +15,7 @@ public struct DayLocationSprite
 {
     public int day;
     public string locationName;
+    public Sprite checkday;
     public Sprite background;
 }
 
@@ -27,7 +28,11 @@ public class DayCheck : MonoBehaviour
     public string apiUrl = "http://127.0.0.1:8000/savefile";
 
     [Header("Scene References")]
-    [Tooltip("배경을 표시할 UI Image 컴포넌트")]
+    [Tooltip("daycheck 표시할 UI Image 컴포넌트")]
+    public Image daygroundImage;
+
+    [Header("Scene References")]
+    [Tooltip("background 표시할 UI Image 컴포넌트")]
     public Image backgroundImage;
 
     [Header("Day-Location to Sprite Mapping")]

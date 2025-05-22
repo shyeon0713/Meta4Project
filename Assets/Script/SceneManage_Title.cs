@@ -20,6 +20,6 @@ public class SceneMange_Title: MonoBehaviour
     private void Newfile()
     {
         SoundSetting.Instance.PlaySfx(4);  // sfx1
-        SceneManager.LoadScene("Activescene");
+        Videomanager.Instance.LoadVideo(0);   //intro영상
     }
 }
