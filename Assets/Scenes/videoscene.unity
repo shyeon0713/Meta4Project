@@ -395,6 +395,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoclips:
   - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  nextlist:
+  - 
   selectedIndex: 0
 --- !u!4 &640103052
 Transform:

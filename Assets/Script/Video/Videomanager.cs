@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
+
 public class Videomanager : MonoBehaviour
 {
     public static Videomanager Instance { get; private set; }
@@ -9,9 +10,14 @@ public class Videomanager : MonoBehaviour
     [Header("videoclips")]
     public VideoClip[] videoclips;
 
+///    [Tooltip("영상이 끝난뒤 넘어가야하는 씬")]
+
+
     [HideInInspector]   //선언된 필드를 인스펙터 창에서 숨길때 사용
-    public int selectedIndex;   //리스트 인덱스 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int selectedIndex;   //영상 리스트 인덱스 
+
+    public string videoname; // 영상 이름
+   
     private void Awake()
     {
         if (Instance == null)
