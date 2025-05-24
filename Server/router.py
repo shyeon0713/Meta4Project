@@ -11,8 +11,6 @@ from Server.openai_api import ask_gpt  #open ai api 가지고 오기
 router = APIRouter()
 
 
-
-
 # 플레이어 입력 받아 db저장 api
 @router.post("/dialogue/", status_code=status.HTTP_201_CREATED)
 async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
