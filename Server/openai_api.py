@@ -15,7 +15,7 @@ def ask_gpt(player_input: str , reply_count: int, model: str = "gpt-4o-mini") ->
         "\n\n[Instruction for GPT]\n"
         "This is the 6th and final player question for today.\n"
         "You MUST end your response with the following exact line:\n"
-        "\"더 궁금한게 있다면 내일 2시 공원에서 보죠. 기다리고 있을게요요.\"\n"
+        "\"더 궁금한게 있다면 내일 2시 공원에서 보죠. 기다리고 있을게요.\"\n"
         "No extra dialogue should come after this line."
     )
     else:
