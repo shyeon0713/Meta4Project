@@ -24,11 +24,13 @@ public class AIUI : MonoBehaviour
 
     public DialogueAPI dialogueapi;
 
-    [Header("DayCheck")]
+    [Header("DayCheck Reference")]
     public DayCheck daycheck;
 
-    [Header("AINPC_Back")]
-    public DayCheck Background;
+    [Header("Advance Day Settings")]
+    [Tooltip("수노와는 총 8번 대화할 수 있다")]
+    public int responsesToAdvance = 8;
+    private int sunoResponseCount = 0;
 
     private void Start()
     {
@@ -83,8 +85,14 @@ public class AIUI : MonoBehaviour
      */
         if (reply != null)
         {
-            if (reply.speaker == "수노")
-            { SUNOImage.color = Color.white; }           
+            if (reply.speaker == "수노" && ++sunoResponseCount >= responsesToAdvance)
+            {
+                  sunoResponseCount = 0;
+                  StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));
+                  yield break;
+            }
+            
+            SUNOImage.color = Color.white; }           
           
             replynpcscript.text = reply.line;
 
@@ -96,16 +104,7 @@ public class AIUI : MonoBehaviour
 
             ShowNextScript();
         }
-
-      /*  else
-        {
-            replynpcscript.text = "생성응답 없음";
-            replynpcscript.gameObject.SetActive(true);
-        }
-
-        */
-        
-    }
+    
 
     public void ShowNextScript()
     {
@@ -149,7 +148,7 @@ public class AIUI : MonoBehaviour
             //Player 스크립트 활성화
             PlayerInput.gameObject.SetActive(true);
             Inputbutton.gameObject.SetActive(true);
-
+            lastScriptShown = false;
         }
 
 

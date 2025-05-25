@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: Activescene
+  dayValues: 01000000020000000300000004000000050000000600000007000000
   skipButton: {fileID: 969004067}
 --- !u!1 &203844586
 GameObject:
@@ -395,9 +396,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoclips:
   - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
-  nextlist:
-  - 
+  - {fileID: 32900000, guid: 93597f041b2301046a03a09975c5601e, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 87f41b2cdabd4304abb98ff1dc00a48f, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
   selectedIndex: 0
+  videoname: 
 --- !u!4 &640103052
 Transform:
   m_ObjectHideFlags: 0

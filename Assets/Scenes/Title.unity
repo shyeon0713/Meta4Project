@@ -11723,6 +11723,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoclips:
   - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 93597f041b2301046a03a09975c5601e, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 87f41b2cdabd4304abb98ff1dc00a48f, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
+  - {fileID: 32900000, guid: 2015a2112eb848b4a94bfa3c18fbf7ca, type: 3}
   selectedIndex: 0
   videoname: 
 --- !u!1 &1577745541

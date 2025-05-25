@@ -1,88 +1,156 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
-
-[System.Serializable]
-public class SaveData
-{
-    public int day;      
-    public string location;     
-}
 
 [System.Serializable]
 public struct DayLocationSprite
 {
-    public int day;
-    public string locationName;
-    public Sprite checkday;
-    public Sprite background;
+    public int day;           // Day 번호
+    public Sprite checkday;   // 체크 스프라이트
+    public Sprite background; // 배경 스프라이트
 }
-
 
 public class DayCheck : MonoBehaviour
 {
-    [Header("API Settings")]   //API 서버 세팅 부분 -> 로컬서버 연결 후에 진행해야함 제발제발까먹지말아요 제발제발
-    [Tooltip("FastAPI에서 세이브 데이터를 가져올 URL (GET)")]
-    //Tooltip : 유니티 에디터의 인스펙터 창에서 해당 필드 위에 마우스를 올렸을 때 작은 설명 창(툴팁)을 띄워 주는 역할을 함 -> 주석 비슷하게 활용
-    public string apiUrl = "http://127.0.0.1:8000/savefile";
+    [Header("UI References")]
+    public Image daycheck;         // 체크 이미지
+    public Button dayCheckButton;   // 체크 클릭 버튼
+    public Image background;       // 배경 이미지
 
-    [Header("Scene References")]
-    [Tooltip("daycheck 표시할 UI Image 컴포넌트")]
-    public Image daygroundImage;
-
-    [Header("Scene References")]
-    [Tooltip("background 표시할 UI Image 컴포넌트")]
-    public Image backgroundImage;
-
-    [Header("Day-Location to Sprite Mapping")]
-    [Tooltip("요일, 장소에 따라 배경 이미지를 설정할 데이터 리스트")]
+    [Header("Day → Sprite Mapping")]
     public DayLocationSprite[] scenelist;
 
-    private SaveData currentSave;
-
-    private void Start()
+    private SaveFile currentSave;
+    private bool initialPosted = false;
+    private int currentDay;
+    public int CurrentDay
     {
-        // 초기 데이터 로드
-        StartCoroutine(FetchSaveData());
+        get { return currentDay; }
     }
 
-    private IEnumerator FetchSaveData()
+    void Start()
     {
-        using (var request = UnityWebRequest.Get(apiUrl))
+        // UI 모두 숨기기
+        daycheck.gameObject.SetActive(false);
+        dayCheckButton.gameObject.SetActive(false);
+        background.gameObject.SetActive(false);
+
+        // 체크 클릭 리스너
+        dayCheckButton.onClick.AddListener(OnDayCheckClicked);
+
+        // 서버에서 현재 세이브 불러오기
+        StartCoroutine(
+            Save_api.Instance.GetServerState(
+                onSuccess: OnGetSuccess,
+                onError: OnGetError
+            )
+        );
+    }
+
+    void OnGetSuccess(SaveFile save)
+    {
+        currentSave = save;
+
+        // 처음 실행 시 초기값 세팅 필요
+        if (save.day < 1 && !initialPosted)
         {
-            yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                currentSave = JsonUtility.FromJson<SaveData>(request.downloadHandler.text);
-                ApplySceneSettings();
-            }
-            else  // 테스트 후 주석 처리
-            {
-                Debug.LogError($"SaveData fetch failed: {request.error}");
-            }
+            currentSave.day = 1;
+            currentSave.likeability = 0;
+            currentSave.last_dialogue_id = 0;
+            currentSave.last_speaker = string.Empty;
+            currentSave.last_line = string.Empty;
+
+            StartCoroutine(
+                Save_api.Instance.PostServerState(
+                    currentSave,
+                    onSuccess: () =>
+                    {
+                        initialPosted = true;
+                        currentDay = 1;
+                        ShowDayCheck();
+                    },
+                    onError: err =>
+                    {
+                        Debug.LogError("초기값 POST 실패: " + err);
+                        currentDay = 1;
+                        ShowDayCheck();
+                    }
+                )
+            );
+        }
+        else
+        {
+            // 기존 저장된 Day 사용
+            currentDay = currentSave.day;
+            ShowDayCheck();
         }
     }
 
-    private void ApplySceneSettings()
+    void OnGetError(string err)
     {
-        Debug.Log($"Day: {currentSave.day}, Location: {currentSave.location}");
+        Debug.LogWarning("세이브 로드 실패: " + err);
+        currentDay = 1;
+        ShowDayCheck();
+    }
+
+    /// <summary>
+    /// 체크 스프라이트만 표시
+    /// </summary>
+    void ShowDayCheck()
+    {
         foreach (var entry in scenelist)
         {
-            if (entry.day == currentSave.day && entry.locationName == currentSave.location)
+            if (entry.day == currentDay)
             {
-                backgroundImage.sprite = entry.background;
+                daycheck.sprite = entry.checkday;
+                daycheck.gameObject.SetActive(true);
+                dayCheckButton.gameObject.SetActive(true);
                 return;
             }
         }
+        Debug.LogWarning($"Day {currentDay}에 매핑된 체크 이미지가 없습니다.");
     }
 
-    public void AdvanceDay()
+    /// <summary>
+    /// 체크 클릭 시 Day 배경 표시
+    /// </summary>
+    void OnDayCheckClicked()
     {
-        // 다음 날로 이동
-        currentSave.day = (currentSave.day + 1) % 7;
-        ApplySceneSettings();
+        daycheck.gameObject.SetActive(false);
+        dayCheckButton.gameObject.SetActive(false);
+
+        foreach (var entry in scenelist)
+        {
+            if (entry.day == currentDay)
+            {
+                background.sprite = entry.background;
+                background.gameObject.SetActive(true);
+                break;
+            }
+        }
     }
 
-}
+    /// <summary>
+    /// AIUI에서 호출: 다음 Day로 저장 및 UI 갱신
+    /// </summary>
+    public IEnumerator AdvanceDayAndSave(int nextDay)
+    {
+        // 다음 Day로 증가
+        currentSave.day = nextDay;
 
+        // 기존 필드(호감도, 대사 등)는 currentSave에 보존됨
+
+        yield return StartCoroutine(
+            Save_api.Instance.PostServerState(
+                currentSave,
+                onSuccess: () =>
+                {
+                    currentDay = currentSave.day;
+                    background.gameObject.SetActive(false);
+                    ShowDayCheck();
+                },
+                onError: err => Debug.LogError("Save POST 실패: " + err)
+            )
+        );
+    }
+}

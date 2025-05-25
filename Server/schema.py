@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel  #Pydantic을 이용한 데이터 유효성 검사 모델
 
 # 데이터 검증 스키마
@@ -15,5 +16,8 @@ class SaveBase(BaseModel):
     last_dialogue_id: int
     last_speaker: str
     last_line: str
+    last_dialogue_id: Optional[int] = None
+    last_speaker:Optional[str] = None
+    last_line:Optional[str] = None
     class Config:
         orm_mode = True
