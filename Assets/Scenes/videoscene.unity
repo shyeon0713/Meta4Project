@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: Activescene
-  dayValues: 01000000020000000300000004000000050000000600000007000000
+  dayValues: 00000000010000000200000003000000040000000500000006000000
   skipButton: {fileID: 969004067}
 --- !u!1 &203844586
 GameObject:

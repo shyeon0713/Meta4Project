@@ -1230,37 +1230,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77aff6458588224f8f40eca074da6e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiUrl: http://127.0.0.1:8000/save/
   daycheck: {fileID: 2050777083}
-  background: {fileID: 866513969}
   dayCheckButton: {fileID: 1725512778}
+  background: {fileID: 866513969}
   scenelist:
   - day: 1
-    locationName: "\uC9D1 \uC55E"
     checkday: {fileID: -8088552992171272462, guid: 583b204f175763540a06baa60740774e, type: 3}
     background: {fileID: -8088552992171272462, guid: 32008209cc4ced345bf87d3c2d95973b, type: 3}
   - day: 2
-    locationName: "\uB180\uC774\uD130"
     checkday: {fileID: -609157439628190469, guid: 900a1b8ae573a4d43bb90fdf820a93c3, type: 3}
     background: {fileID: -609157439628190469, guid: 8e23272fad06b644486a58edfcbee7e0, type: 3}
   - day: 3
-    locationName: "\uD64D\uB300 \uAC70\uB9AC"
     checkday: {fileID: -5145758910363298198, guid: 0e3827035d7dcc646857ea829651dd55, type: 3}
     background: {fileID: -5145758910363298198, guid: 995a9595eab42c64f8283604f7bae3fe, type: 3}
   - day: 4
-    locationName: "\uBAA8\uAD50"
     checkday: {fileID: -4181944041499448885, guid: e296b39743a2cef4d9794d14f166cc60, type: 3}
     background: {fileID: -4181944041499448885, guid: 1fb7f4e93d8f56a4c8236cae7393e1ba, type: 3}
   - day: 5
-    locationName: "\uB3C4\uC11C\uAD00"
     checkday: {fileID: 6241566998892548270, guid: 919ec76188f0c1f438f9cbb0e3a4e598, type: 3}
     background: {fileID: 6241566998892548270, guid: 32e1a67f3b69d8a43b5c74e1e7ab4532, type: 3}
   - day: 6
-    locationName: "\uC2DC\uC7A5"
     checkday: {fileID: -9143006755501729204, guid: 3d0a825952d6e7048918e654833c070f, type: 3}
     background: {fileID: -9143006755501729204, guid: 52cfc57e799b63c46a0a39ec73fcd345, type: 3}
   - day: 7
-    locationName: "\uBC14\uB2E4"
     checkday: {fileID: 8714405167284752433, guid: 6ce4ed0a5f440a5458cb4559e98f80d7, type: 3}
     background: {fileID: 8714405167284752433, guid: 2a4cfa3c77d01e845a78e6dbdea3bc74, type: 3}
 --- !u!1 &866335918
@@ -3321,7 +3313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4570,7 +4562,7 @@ MonoBehaviour:
   SUNOImage: {fileID: 1879805731}
   dialogueapi: {fileID: 2129247591}
   daycheck: {fileID: 839981988}
-  Background: {fileID: 839981988}
+  responsesToAdvance: 8
 --- !u!114 &2129247591
 MonoBehaviour:
   m_ObjectHideFlags: 0

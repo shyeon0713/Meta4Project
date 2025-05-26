@@ -47,7 +47,7 @@ public class Save_api : MonoBehaviour
 
     }
         public IEnumerator PostServerState(SaveFile data, Action onSuccess, Action<string> onError = null)
-        {
+        {   //json Á÷·ÄÈ­
             string json = JsonUtility.ToJson(data);
             byte[] body = System.Text.Encoding.UTF8.GetBytes(json);
 

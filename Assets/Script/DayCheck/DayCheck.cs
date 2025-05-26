@@ -55,10 +55,10 @@ public class DayCheck : MonoBehaviour
         if (save.day < 1 && !initialPosted)
         {
             currentSave.day = 1;
-            currentSave.likeability = 0;
+            currentSave.likeability = 3.0f;
             currentSave.last_dialogue_id = 0;
-            currentSave.last_speaker = string.Empty;
-            currentSave.last_line = string.Empty;
+            currentSave.last_speaker = "_";
+            currentSave.last_line = "_";
 
             StartCoroutine(
                 Save_api.Instance.PostServerState(
@@ -111,9 +111,6 @@ public class DayCheck : MonoBehaviour
         Debug.LogWarning($"Day {currentDay}에 매핑된 체크 이미지가 없습니다.");
     }
 
-    /// <summary>
-    /// 체크 클릭 시 Day 배경 표시
-    /// </summary>
     void OnDayCheckClicked()
     {
         daycheck.gameObject.SetActive(false);
@@ -130,9 +127,6 @@ public class DayCheck : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// AIUI에서 호출: 다음 Day로 저장 및 UI 갱신
-    /// </summary>
     public IEnumerator AdvanceDayAndSave(int nextDay)
     {
         // 다음 Day로 증가

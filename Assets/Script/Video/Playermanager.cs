@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
@@ -6,14 +6,14 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 public class Playermanager : MonoBehaviour
 {
-    [Header("ºñµğ¿À Àç»ı ÈÄ Activescene·Î¸¸ ³Ñ¾î°¨")]
+    [Header("ë¹„ë””ì˜¤ ì¬ìƒ í›„ Activesceneë¡œë§Œ ë„˜ì–´ê°")]
     public string nextSceneName = "Activescene";
 
-    [Header("Videomanager¿¡¼­ °ü¸®ÇÏ´Â Å¬¸³ ÀÎµ¦½º")]
+    [Header("Videomanagerì—ì„œ ê´€ë¦¬í•˜ëŠ” í´ë¦½ ì¸ë±ìŠ¤")]
     private int clipIndex;
 
-    [Header("°¢ Å¬¸³¿¡ ´ëÀÀÇÏ´Â Day °ª")]
-    [Tooltip("videoclips.Length¿Í µ¿ÀÏÇÑ ±æÀÌ¿©¾ß ÇÕ´Ï´Ù.")]
+    [Header("ê° í´ë¦½ì— ëŒ€ì‘í•˜ëŠ” Day ê°’")]
+    [Tooltip("videoclips.Lengthì™€ ë™ì¼í•œ ê¸¸ì´ì—¬ì•¼ í•©ë‹ˆë‹¤.")]
     public int[] dayValues;
 
     private VideoPlayer vp;
@@ -24,13 +24,14 @@ public class Playermanager : MonoBehaviour
     string lastline;
 
 
-    public Button skipButton;  //½ºÅµ¹öÆ° Ãß°¡
+    public Button skipButton;  //ìŠ¤í‚µë²„íŠ¼ ì¶”ê°€
     private void Awake()
     {
+        Debug.Log("[Playermanager] Awake()");
         vp = GetComponent<VideoPlayer>();
         if(vp == null)
         {
-            Debug.LogError("ºñµğ¿À°¡ ¾ø¾î¿ä");
+            Debug.LogError("ë¹„ë””ì˜¤ê°€ ì—†ì–´ìš”");
             return;
         }
 
@@ -41,30 +42,31 @@ public class Playermanager : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("[Playermanager] Start() â€“ clipIndex=" + clipIndex);
         clipIndex = Videomanager.Instance.selectedIndex;
         var clips = Videomanager.Instance.videoclips;
 
 
-        // À¯È¿¼º °Ë»ç
+        // ìœ íš¨ì„± ê²€ì‚¬
         if (clips == null || clips.Length == 0)
         {
-            Debug.LogError("Videomanager¿¡ Å¬¸³ÀÌ ¾ø½À´Ï´Ù!");
+            Debug.LogError("Videomanagerì— í´ë¦½ì´ ì—†ìŠµë‹ˆë‹¤!");
             return;
         }
         if (dayValues == null || clipIndex < 0 || clipIndex >= dayValues.Length)
         {
-            Debug.LogError("dayValues ¹è¿­ÀÇ ±æÀÌ°¡ videoclips¿Í ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù!");
+            Debug.LogError("dayValues ë°°ì—´ì˜ ê¸¸ì´ê°€ videoclipsì™€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!");
             return;
         }
         if (clipIndex < 0 || clipIndex >= clips.Length)
         {
-            Debug.LogError($"Àß¸øµÈ selectedIndex: {clipIndex}");
+            Debug.LogError($"ì˜ëª»ëœ selectedIndex: {clipIndex}");
             return;
         }
 
 
 
-        skipButton.onClick.AddListener(SkipVideo);   //SKip ¹öÆ° ¸®½º³Ê
+        skipButton.onClick.AddListener(SkipVideo);   //SKip ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
 
 
         vp.clip = clips[clipIndex];
@@ -72,20 +74,21 @@ public class Playermanager : MonoBehaviour
     }
 
 
-    void VideoFinished(VideoPlayer source)   // ¿µ»óÀÌ ³¡³­ ÈÄ 
+    void VideoFinished(VideoPlayer source)   // ì˜ìƒì´ ëë‚œ í›„ 
     {
         // if (string.IsNullOrEmpty(nextSceneName[))
         // {
-        //      Debug.LogError("¾ÀÀÌ ¾øÀ½");
+        //      Debug.LogError("ì”¬ì´ ì—†ìŒ");
         //     return;
         //  }
-
+        Debug.Log("[Playermanager] VideoFinished() fired");
         StartCoroutine(UpdateDayAndLoadScene(dayValues[clipIndex]));
     }
 
-    private void SkipVideo()   //Skip ¹öÆ° ¸®½º³Ê
+    private void SkipVideo()   //Skip ë²„íŠ¼ ë¦¬ìŠ¤ë„ˆ
     {
-        SoundSetting.Instance.PlaySfx(4);  //È¿°úÀ½
+        Debug.Log("[Playermanager] SkipVideo() called");
+        SoundSetting.Instance.PlaySfx(4);  //íš¨ê³¼ìŒ
         vp.loopPointReached -= VideoFinished;
         if (vp.isPlaying) vp.Stop();
         StartCoroutine(UpdateDayAndLoadScene(dayValues[clipIndex]));
@@ -93,41 +96,61 @@ public class Playermanager : MonoBehaviour
 
     private IEnumerator UpdateDayAndLoadScene(int day)
     {
-        string url = "http://127.0.0.1:8000/save/";    //fastapi ¼­¹ö  
-       
-        var savefile = new SaveFile
+        Debug.Log($"â–¶[Playermanager] ì§„ì…: clipIndex={clipIndex}, day={day}");
+        string url = "http://127.0.0.1:8000/save/";
+        Debug.Log($"â–¶ URL: {url}");
+
+        // Intro ì˜ìƒ(ì¸ë±ìŠ¤ 0)ì— í•´ë‹¹í•˜ëŠ” ì´ˆê¸° ì„¸íŒ…
+        SaveFile savefile;
+        if (day == 0)
         {
-            day = day,
-            likeability = likeability,  // È£°¨µµ (floatÀÎÁÙ ¾Ë¾Ò´Âµ¥ ¼­¹ö¿¡¼­´Â int¶ó°í ¶ä ¼öÁ¤ ºÎÅ¹)
-            last_dialogue_id = lastdialogueid,  //¸¶Áö¸· ´ë»ç ÀÎµ¦½º (int)
-            last_speaker = lastspeaker,  // ¸¶Áö¸· ¹ßÈ­ÀÚ (string)
-            last_line = lastline   // ¸¶Áö¸· ´ë»ç (string)
-        };
+            // Intro ì˜ìƒì¸ ê²½ìš°ì—ëŠ” Day1 ì´ˆê¸°ê°’ì„ ê°•ì œ ì„¸íŒ…
+            savefile = new SaveFile
+            {
+                day = 1,    // ê¸°ë³¸ Day 1
+                likeability = 3.0f,    // ì´ˆê¸° í˜¸ê°ë„
+                last_dialogue_id = 1,    // ëŒ€ì‚¬ IDëŠ” 0 (ì„œë²„ì—ì„œ NULLë¡œ ë§¤í•‘í•˜ë„ë¡)
+                last_speaker = "",   // ë¹ˆ ë¬¸ìì—´
+                last_line = ""
+            };
+        }
+        else
+        {
+            // ì¼ë°˜ ì˜ìƒ(ì¸ë±ìŠ¤ 1,2,3â€¦)ì¸ ê²½ìš°ì—ëŠ” day ë§¤ê°œë³€ìˆ˜ê°’ì„ ê·¸ëŒ€ë¡œ ì‚¬ìš©
+            savefile = new SaveFile
+            {
+                day = day,
+                likeability = likeability,
+                last_dialogue_id = lastdialogueid,
+                last_speaker = lastspeaker,
+                last_line = lastline
+            };
+        }
 
-
-    
+        // json ì§ë ¬í™” -> ì´ê²ƒë•Œë¬¸ì— ì„œë²„ì— ë§ˆì§€ë§‰ ëŒ€ì‚¬,ëŒ€ì‚¬ì¸ë±ìŠ¤,ë°œí™”ìë¥¼ ê¼­ ì…ë ¥í•´ì¤˜ì•¼í•¨
         string json = JsonUtility.ToJson(savefile);
+        Debug.Log("â–¶ ë³´ë‚¼ JSON: " + json);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
 
-        // Post ¿äÃ» »ı¼º
-        var req = new UnityWebRequest(url, "POST");  //POST·Î ¿äÃ»
+        // Post ìš”ì²­ ìƒì„±
+        var req = new UnityWebRequest(url, "POST");  //POSTë¡œ ìš”ì²­
         req.uploadHandler = new UploadHandlerRaw(bodyRaw);
         req.downloadHandler = new DownloadHandlerBuffer();
         req.SetRequestHeader("Content-Type", "application/json");
 
 
-        // ¿äÃ» Àü¼Û
+        // ìš”ì²­ ì „ì†¡
         yield return req.SendWebRequest();
 
 
         if (req.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError($"Day ¾÷µ¥ÀÌÆ® ½ÇÆĞ: HTTP {req.responseCode} | {req.error}");
-            Debug.LogError($"¼­¹ö ÀÀ´ä º»¹®: {req.downloadHandler.text}");
+            Debug.LogError($"Day ì—…ë°ì´íŠ¸ ì‹¤íŒ¨: HTTP {req.responseCode} | {req.error}");
+            Debug.LogError($"ì„œë²„ ì‘ë‹µ ë³¸ë¬¸: {req.downloadHandler.text}");
         }
         else
         {
-            // ¼º°øÇßÀ¸¸é ¾À ÀüÈ¯
+            // ì„±ê³µí–ˆìœ¼ë©´ ì”¬ ì „í™˜
             SceneManager.LoadScene(nextSceneName);
         }
     }
@@ -140,4 +163,4 @@ public class Playermanager : MonoBehaviour
 
 
 
-//StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay)); -> Day2 ÀÌ»óÀÇ ÄÆ¾À
+//StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay)); -> Day2 ì´ìƒì˜ ì»·ì”¬
