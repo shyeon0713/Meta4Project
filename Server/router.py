@@ -1,7 +1,9 @@
 from fastapi import APIRouter, FastAPI, HTTPException, Depends, status
+from fastapi.responses import JSONResponse 
 from sqlalchemy.orm import Session
 from Server import models
 from typing import List
+import traceback
 from Server.schema import DialogueBase, SaveBase
 from Server.database import db_dependency  #의존성 주입
 from Server.openai_api import ask_gpt  #open ai api 가지고 오기
@@ -9,7 +11,6 @@ from Server.openai_api import ask_gpt  #open ai api 가지고 오기
 
 # 라우터임을 명시, 라우터임을 선언
 router = APIRouter()
-
 
 
 
@@ -96,18 +97,35 @@ async def read_dialogue(db: db_dependency):
 # save 생성 api
 @router.post("/save/", status_code=status.HTTP_201_CREATED)
 async def create_save(save:SaveBase, db: db_dependency):
-    db_save = models.Save(**save.dict())
-    db.add(db_save)
-    db.commit()
-    db.refresh(db_save)  #새로 생성된 id포함하여 리턴
-    return db_save
+        try:
+             
+             if save.last_dialogue_id == 0:
+                  save.last_dialogue_id = None
 
+             db_save = models.Save(**save.dict())
+             db.add(db_save)
+             db.commit()
+             db.refresh(db_save)  #새로 생성된 id포함하여 리턴
+             return db_save
+        
+        except Exception as e:
+            # 서버 콘솔에 전체 traceback 출력
+             traceback.print_exc()
+            # 클라이언트에 상세 에러 메시지 반환
+             return JSONResponse(
+                status_code=500,
+                content={
+                    "error":  "save failed",
+                    "detail": str(e)
+                }
+            )
+        
 # save (모두) 읽기 api
 @router.get("/save/all", response_model=list[SaveBase], status_code=status.HTTP_200_OK)
 async def read_save(db: db_dependency):
     save = (
         db.query(models.Save)
-        .order_by(models.Save.primary_key.asc())
+        .order_by(models.Save.id.asc())
         .all()  #결과가 없다면 항상 빈 리스트 반환
     )
     return save

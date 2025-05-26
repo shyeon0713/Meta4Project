@@ -109,7 +109,7 @@ public class Playermanager : MonoBehaviour
             {
                 day = 1,    // 기본 Day 1
                 likeability = 3.0f,    // 초기 호감도
-                last_dialogue_id = 1,    // 대사 ID는 0 (서버에서 NULL로 매핑하도록)
+                last_dialogue_id = 0,    // 대사 ID는 0 (서버에서 NULL로 매핑하도록)
                 last_speaker = "",   // 빈 문자열
                 last_line = ""
             };

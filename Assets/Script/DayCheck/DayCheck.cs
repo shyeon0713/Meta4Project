@@ -113,6 +113,7 @@ public class DayCheck : MonoBehaviour
 
     void OnDayCheckClicked()
     {
+        SoundSetting.Instance.PlaySfx(8);  // sfx8 -> book, 책넘기는 소리
         daycheck.gameObject.SetActive(false);
         dayCheckButton.gameObject.SetActive(false);
 

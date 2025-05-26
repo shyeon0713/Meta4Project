@@ -17,6 +17,6 @@ class Save(Base):
     primary_key = Column(Integer, primary_key=True, autoincrement=True)
     day = Column(Integer)
     likeability = Column(Float)
-    last_dialogue_id = Column(Integer, ForeignKey('dialogue.id'))  #dialogue id 가지고 옴
+    last_dialogue_id = Column(Integer, ForeignKey('dialogue.id'),nullable=True)  #dialogue id 가지고 옴
     last_speaker = Column(String(100))
     last_line = Column(Text)

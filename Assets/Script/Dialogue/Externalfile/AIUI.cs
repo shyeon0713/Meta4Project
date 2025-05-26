@@ -108,6 +108,7 @@ public class AIUI : MonoBehaviour
 
     public void ShowNextScript()
     {
+        SoundSetting.Instance.PlaySfx(9);  // sfx9
         if (currentIndex < sentences.Length)  // 아직 마지막 대사까지 보여주지 못한 경우
         {
 

@@ -13,9 +13,10 @@ class DialogueBase(BaseModel):
 class SaveBase(BaseModel):
     day: int
     likeability: float
-    last_dialogue_id: int
-    last_speaker: str
-    last_line: str
+    #last_dialogue_id: int
+    #last_speaker: str
+    #last_line: str
+
     last_dialogue_id: Optional[int] = None
     last_speaker:Optional[str] = None
     last_line:Optional[str] = None
