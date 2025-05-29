@@ -42,6 +42,9 @@ public class Playermanager : MonoBehaviour
 
     void Start()
     {
+        SoundSetting.Instance.bgmSource.Stop();
+        // 모든 브금 완전 정지 -> 현재 SoundManager내에 일시정지, 완전 정지 메서드를 따로 구현하지 않아 직접 호출
+        // 일시정지 : SoundSetting.Instance.bgmSource.Pause();
         Debug.Log("[Playermanager] Start() – clipIndex=" + clipIndex);
         clipIndex = Videomanager.Instance.selectedIndex;
         var clips = Videomanager.Instance.videoclips;

@@ -34,6 +34,7 @@ public class AIUI : MonoBehaviour
 
     private void Start()
     {
+        SoundSetting.Instance.PlayBgm(3);  //3번 BGM
         speaker.text = "나";
         SUNOImage.color = new Color(170f / 255f, 170f / 255f, 170f / 255f); //수노는 회색
         Inputbutton.onClick.AddListener(InputSend);

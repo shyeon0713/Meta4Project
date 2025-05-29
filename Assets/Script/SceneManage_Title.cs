@@ -11,7 +11,8 @@ public class SceneMange_Title: MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        
+
+        SoundSetting.Instance.PlayBgm(6);  //6번 BGM
         Bt1 = GetComponent<Button>();
         Bt1.onClick.AddListener(Newfile);
 

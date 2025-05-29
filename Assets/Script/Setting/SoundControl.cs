@@ -3,16 +3,15 @@ using UnityEngine.UI;
 
 public class SoundControl : MonoBehaviour
 {
-    [SerializeField] 
-    private GameObject uiPanel;  // Canvas (혹은 Panel)
-
-    public SoundData sounddata;
+    [SerializeField]
+    [Header("UI Component")]
     public Slider bgmslider;
     public Slider sfxslider;
-
     public Button bgmbutton;
     public Button sfxbutton;
 
+
+    [Header("Change sprite")]
     //이미지 교체
     public Sprite bgmOnSprite;
     public Sprite bgmOffSprite;
@@ -30,88 +29,40 @@ public class SoundControl : MonoBehaviour
         bgmButtonImage = bgmbutton.GetComponent<Image>();
         sfxButtonImage = sfxbutton.GetComponent<Image>();
 
-        LoadSettings();
-        SyncUIToData();  // 슬라이더, 버튼 이미지 업데이트
+        //UI 초기값 동기화
+        bgmslider.value = SoundSetting.Instance.sounddata.bgmvolume;
+        sfxslider.value = SoundSetting.Instance.sounddata.sfxvolume;
+        ChangesIcons(); // 버튼 이미지 교체
 
-       //이벤트 리스너 추가
-         bgmslider.onValueChanged.AddListener(Set_BgmVolume);
-         sfxslider.onValueChanged.AddListener(Set_SfxVolume);
-        bgmbutton.onClick.AddListener(BgmOn);
-        sfxbutton.onClick.AddListener(SfxOn);
+        //slider 이벤트 리스너 추가
+        bgmslider.onValueChanged.AddListener(SoundSetting.Instance.SetBgmVolume);
+        sfxslider.onValueChanged.AddListener(SoundSetting.Instance.SetSfxVolume);
 
-        //오디오 믹서 값 적용 (슬라이더 초기값 설정 이후)
-        SoundSetting.Instance.ApplySettings();
 
+        //button 이벤트 리스너 추가
+        bgmbutton.onClick.AddListener(() =>
+        {
+            SoundSetting.Instance.BgmOnOff();
+            ChangesIcons();  //버튼 이미지 교체
+        });
+        sfxbutton.onClick.AddListener(() =>
+        {
+            SoundSetting.Instance.SfxOnOff();
+            ChangesIcons(); //버튼 이미지 교체
+        });
     }
 
-    void SyncUIToData()   //UI 동기화 문제 해결 0508수정 
+    private void ChangesIcons()
     {
-        bgmslider.value = sounddata.bgmvolume;  //bgm값 가져오기
-        sfxslider.value = sounddata.sfxvolume;  //sfx값 가져오기
-        UpdateButtonImages();
-    }
-
-    public void Set_BgmVolume(float vloume)
-    {
-        sounddata.bgmvolume = vloume;
-        SoundSetting.Instance.ApplySettings();
-        SaveSettings();
-    }
-
-    public void Set_SfxVolume(float vloume)
-    {
-        sounddata.sfxvolume = vloume;
-        SoundSetting.Instance.ApplySettings();
-        SaveSettings();
-    }
-
-    public void BgmOn()
-    {
-        sounddata.isBgmOn = !sounddata.isBgmOn;
-        SoundSetting.Instance.ApplySettings();
-        UpdateButtonImages(); 
-        SaveSettings();       
-    }
-
-    public void SfxOn()
-    {
-        sounddata.isSfxOn = !sounddata.isSfxOn;
-        SoundSetting.Instance.ApplySettings();
-        UpdateButtonImages();
-        SaveSettings();
-    }
-
-    private void UpdateButtonImages()
-    {
-        bgmButtonImage.sprite = sounddata.isBgmOn ? bgmOnSprite : bgmOffSprite;
-        sfxButtonImage.sprite = sounddata.isSfxOn ? sfxOnSprite : sfxOffSprite;
-    }
-    public void CloseWindow()
-    {
-        uiPanel.SetActive(false);
-    }
-
-    public void OpenWindow()
-    {
-        uiPanel.SetActive(true);
-    }
-    private void SaveSettings()  //세팅 저장 -> PlayerPrefs 활용
-    {
-        PlayerPrefs.SetFloat("Bgmvolume", sounddata.bgmvolume);
-        PlayerPrefs.SetFloat("Sfxvolume", sounddata.sfxvolume);
-        PlayerPrefs.SetInt("BgmOn", sounddata.isBgmOn ? 1 : 0);
-        PlayerPrefs.SetInt("SfxOn", sounddata.isSfxOn ? 1 : 0);
-        PlayerPrefs.Save();   
-    }
-
-    private void LoadSettings()  //세팅 가져오기 -> PlayerPrefs 활용
-    {
-        sounddata.bgmvolume = PlayerPrefs.GetFloat("Bgmvolume", 1f);
-        sounddata.sfxvolume = PlayerPrefs.GetFloat("Sfxvolume", 1f);
-        sounddata.isBgmOn = PlayerPrefs.GetInt("BgmOn", 1) == 1;
-        sounddata.isSfxOn = PlayerPrefs.GetInt("SfxOn", 1) == 1;
-    }
+        var data = SoundSetting.Instance.sounddata;
 
 
+        bgmslider.value = data.bgmvolume;
+        sfxslider.value = data.sfxvolume;
+
+
+        bgmButtonImage.sprite = data.isBgmOn ? bgmOnSprite : bgmOffSprite;
+        sfxButtonImage.sprite = data.isSfxOn ? sfxOnSprite : sfxOffSprite;
+    }
 
 }
