@@ -1142,8 +1142,8 @@ MonoBehaviour:
   background: {fileID: 866513969}
   scenelist:
   - day: 1
-    checkday: {fileID: -8088552992171272462, guid: 583b204f175763540a06baa60740774e, type: 3}
-    background: {fileID: -8088552992171272462, guid: 32008209cc4ced345bf87d3c2d95973b, type: 3}
+    checkday: {fileID: -9143006755501729204, guid: 3d0a825952d6e7048918e654833c070f, type: 3}
+    background: {fileID: -9143006755501729204, guid: 52cfc57e799b63c46a0a39ec73fcd345, type: 3}
   - day: 2
     checkday: {fileID: -609157439628190469, guid: 900a1b8ae573a4d43bb90fdf820a93c3, type: 3}
     background: {fileID: -609157439628190469, guid: 8e23272fad06b644486a58edfcbee7e0, type: 3}
@@ -1356,7 +1356,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8088552992171272462, guid: 32008209cc4ced345bf87d3c2d95973b, type: 3}
+  m_Sprite: {fileID: -4181944041499448885, guid: 1fb7f4e93d8f56a4c8236cae7393e1ba, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2016,7 +2016,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3667,7 +3667,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 60
-  m_CharacterLimit: 50
+  m_CharacterLimit: 60
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -4686,8 +4686,9 @@ MonoBehaviour:
   nextbutton: {fileID: 375888596}
   SUNOImage: {fileID: 1879805731}
   dialogueapi: {fileID: 2129247591}
+  dayCheck: {fileID: 0}
   daycheck: {fileID: 839981988}
-  responsesToAdvance: 8
+  responsesToAdvance: 5
 --- !u!114 &2129247591
 MonoBehaviour:
   m_ObjectHideFlags: 0

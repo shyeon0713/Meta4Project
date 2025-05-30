@@ -12,6 +12,8 @@ public struct DayLocationSprite
 
 public class DayCheck : MonoBehaviour
 {
+    public bool IsInitialized { get; private set; } = false;
+
     [Header("UI References")]
     public Image daycheck;         // 체크 이미지
     public Button dayCheckButton;   // 체크 클릭 버튼
@@ -50,15 +52,16 @@ public class DayCheck : MonoBehaviour
     void OnGetSuccess(SaveFile save)
     {
         currentSave = save;
+        IsInitialized = true;
 
         // 처음 실행 시 초기값 세팅 필요
         if (save.day < 1 && !initialPosted)
         {
-            currentSave.day = 1;
-            currentSave.likeability = 3.0f;
-            currentSave.last_dialogue_id = 0;
-            currentSave.last_speaker = "_";
-            currentSave.last_line = "_";
+            // currentSave.day = 1;
+            //  currentSave.likeability = 3.0f;
+            //  currentSave.last_dialogue_id = 0;
+            //  currentSave.last_speaker = "_";
+            //  currentSave.last_line = "_";
 
             StartCoroutine(
                 Save_api.Instance.PostServerState(
@@ -86,9 +89,18 @@ public class DayCheck : MonoBehaviour
         }
     }
 
-    void OnGetError(string err)
+    void OnGetError(string err)   //에러 확인
     {
         Debug.LogWarning("세이브 로드 실패: " + err);
+        currentSave = new SaveFile
+        {
+            day = 1,
+            likeability = 3.0f,
+            last_dialogue_id = 0,
+            last_speaker = "_",
+            last_line = "_"
+        };
+        IsInitialized = true;            // ← 로드 실패 케이스도 준비 완료로 처리
         currentDay = 1;
         ShowDayCheck();
     }

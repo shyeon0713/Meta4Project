@@ -35,32 +35,48 @@ public class SoundControl : MonoBehaviour
         ChangesIcons(); // 버튼 이미지 교체
 
         //slider 이벤트 리스너 추가
+     //   bgmslider.onValueChanged.AddListener(SoundSetting.Instance.SetBgmVolume);
+      //  sfxslider.onValueChanged.AddListener(SoundSetting.Instance.SetSfxVolume);
+
+
+    }
+    void OnEnable()
+    {
+        // 활성화될 때만 리스너 등록
         bgmslider.onValueChanged.AddListener(SoundSetting.Instance.SetBgmVolume);
         sfxslider.onValueChanged.AddListener(SoundSetting.Instance.SetSfxVolume);
 
+        bgmbutton.onClick.AddListener(OnOffBgm);
+        sfxbutton.onClick.AddListener(OnOffSfx);
+    }
 
-        //button 이벤트 리스너 추가
-        bgmbutton.onClick.AddListener(() =>
-        {
-            SoundSetting.Instance.BgmOnOff();
-            ChangesIcons();  //버튼 이미지 교체
-        });
-        sfxbutton.onClick.AddListener(() =>
-        {
-            SoundSetting.Instance.SfxOnOff();
-            ChangesIcons(); //버튼 이미지 교체
-        });
+    void Disable()
+    { 
+        bgmslider.onValueChanged.RemoveListener(SoundSetting.Instance.SetBgmVolume);
+        sfxslider.onValueChanged.RemoveListener(SoundSetting.Instance.SetSfxVolume);
+
+        bgmbutton.onClick.RemoveListener(OnOffBgm);
+        sfxbutton.onClick.RemoveListener(OnOffSfx);
+    }
+
+    private void OnOffBgm( )
+    {
+        SoundSetting.Instance.BgmOnOff();
+        ChangesIcons();
+    }
+
+    private void OnOffSfx( )
+    {
+        SoundSetting.Instance.SfxOnOff();
+        ChangesIcons();
     }
 
     private void ChangesIcons()
     {
         var data = SoundSetting.Instance.sounddata;
 
-
-        bgmslider.value = data.bgmvolume;
-        sfxslider.value = data.sfxvolume;
-
-
+   //     bgmslider.value = data.bgmvolume;
+  //      sfxslider.value = data.sfxvolume;
         bgmButtonImage.sprite = data.isBgmOn ? bgmOnSprite : bgmOffSprite;
         sfxButtonImage.sprite = data.isSfxOn ? sfxOnSprite : sfxOffSprite;
     }

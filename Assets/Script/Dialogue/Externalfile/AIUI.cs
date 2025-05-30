@@ -21,15 +21,16 @@ public class AIUI : MonoBehaviour
     private bool lastScriptShown = false;  // 마지막 대사까지 출력되는지 여부 확인
     // 2문장씩 나눠서 출력 시키기 -> 0522
 
-
     public DialogueAPI dialogueapi;
+
+    public DayCheck dayCheck;
 
     [Header("DayCheck Reference")]
     public DayCheck daycheck;
 
     [Header("Advance Day Settings")]
-    [Tooltip("수노와는 총 8번 대화할 수 있다")]
-    public int responsesToAdvance = 8;
+    [Tooltip("수노와는 총 5번 대화할 수 있다")]
+    public int responsesToAdvance = 5;
     private int sunoResponseCount = 0;
 
     private void Start()
@@ -71,29 +72,33 @@ public class AIUI : MonoBehaviour
         DialogueLine reply = dialogueapi.savescript;
         speaker.text = reply.speaker;
 
-     /*   if (reply == null)
-        {
-            Debug.LogError("reply가 null입니다!");
-            yield break;
-        }
+        /*   if (reply == null)
+           {
+               Debug.LogError("reply가 null입니다!");
+               yield break;
+           }
 
-        Debug.Log($"reply.speaker: {reply.speaker}, reply.line: {reply.line}");
+           Debug.Log($"reply.speaker: {reply.speaker}, reply.line: {reply.line}");
 
-        if (speaker == null) Debug.LogError("speaker(Text) 참조가 없습니다!");
-        if (replynpcscript == null) Debug.LogError("replynpcscript(Text) 참조가 없습니다!");
-        if (nextbutton == null) Debug.LogError("nextbutton(Button) 참조가 없습니다!");
+           if (speaker == null) Debug.LogError("speaker(Text) 참조가 없습니다!");
+           if (replynpcscript == null) Debug.LogError("replynpcscript(Text) 참조가 없습니다!");
+           if (nextbutton == null) Debug.LogError("nextbutton(Button) 참조가 없습니다!");
 
-     */
+        */
         if (reply != null)
         {
-            if (reply.speaker == "수노" && ++sunoResponseCount >= responsesToAdvance)
+            if (reply.speaker == "수노")
             {
-                  sunoResponseCount = 0;
-                  StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));
-                  yield break;
+                sunoResponseCount++;
+                if (sunoResponseCount >= responsesToAdvance)
+                {
+                    StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));  // 다음요일로 넘어가기
+                    yield break;
+                }
+                SUNOImage.color = Color.white;
             }
-            
-            SUNOImage.color = Color.white; }           
+           
+        }         
           
             replynpcscript.text = reply.line;
 
@@ -154,6 +159,21 @@ public class AIUI : MonoBehaviour
         }
 
 
+    }
+
+
+
+    void SomeMethodThatAdvancesDay(int nextDay)
+    {
+        // ① 초기화 플래그 검사
+        if (!dayCheck.IsInitialized)
+        {
+            Debug.LogError("세이브 정보가 아직 준비되지 않았습니다! AdvanceDayAndSave 호출을 취소합니다.");
+            return;
+        }
+
+        // ② 준비가 끝났으면 안전하게 코루틴 실행
+        StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay));
     }
 
 }
