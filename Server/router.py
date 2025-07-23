@@ -10,6 +10,19 @@ from Server.openai_api import ask_gpt  #open ai api 가지고 오기
 # 라우터임을 명시, 라우터임을 선언
 router = APIRouter()
 
+# 새로시작 버튼을 눌렀을 경우의 처음 정해진 player의 대사 전송 및 저장 api
+@router.post("/dialogue/start", status_code=status.HTTP_201_CREATED)
+
+
+
+
+
+
+
+
+
+
+
 
 # 플레이어 입력 받아 db저장 api
 @router.post("/dialogue/", status_code=status.HTTP_201_CREATED)
@@ -17,7 +30,7 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
 
     # 플레이어의 답변 db저장용
     db_user = models.Dialogue(
-        speaker="나",
+        speaker="player",
         line=dialogue.line
     )
     db.add(db_user)
@@ -25,17 +38,12 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
     db.refresh(db_user)  # ID 확인용 / 데이터베이스에서 다시 조회하여 최신 값으로 db_user 객체를 업데이트
 
 
-    # 수노 응답 개수 세기 (이건 무조건 db가 일단 비워져있어야 함)
-    me_reply = db.query(models.Dialogue).filter(models.Dialogue.speaker == "나").count()
-
     # GPT에게 전송 (응답까지 저장)
-    answer = ask_gpt(dialogue.line, me_reply + 1)
-
-    print(me_reply)
+    answer = ask_gpt(dialogue.line)
 
 
     db_llm = models.Dialogue(
-        speaker="수노",
+        speaker="suno",
         line=answer
     )
     db.add(db_llm)
@@ -50,6 +58,8 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency):
         "llm_id": db_llm.id,
         "response": answer
     }
+
+
 
 
 # open ai test api
