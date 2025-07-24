@@ -7,6 +7,7 @@ class Dialogue(Base):
     __tablename__ = "dialogue"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    day = Column(Integer, default= 1) #day 추가
     speaker = Column(String(100))
     line = Column(Text)
 

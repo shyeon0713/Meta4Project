@@ -3,6 +3,7 @@ from pydantic import BaseModel  #Pydantic을 이용한 데이터 유효성 검�
 # 데이터 검증 스키마
 # log용
 class DialogueBase(BaseModel):
+    day: int #day 추가
     speaker: str  #SQLAlchemy에서는 text타입이 존재하지만 Pydantic(BaseModel)에서는 text타입이 존재하지 않는다.
     line: str
     class Config:
