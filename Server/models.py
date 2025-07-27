@@ -10,6 +10,7 @@ class Dialogue(Base):
     day = Column(Integer, default= 1) #day 추가
     speaker = Column(String(100))
     line = Column(Text)
+    likeability = Column(Float, default= 2.5)  #호감도 추가
 
 # save db
 class Save(Base):

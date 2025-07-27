@@ -4,7 +4,7 @@ from Server import models
 from typing import List
 from Server.schema import DialogueBase, SaveBase
 from Server.database import db_dependency  #의존성 주입
-from Server.openai_api import ask_gpt  #open ai api 가지고 오기
+from Server.openai_api import ask_gpt_with_context  #open ai api 가지고 오기
 
 from typing import Optional  # 첫 날 save없을 경우. 해당 인자는 정수(or 다른 지정한 것) int일수도 있고, 없으면 None일 수도 있다는 것.
 
@@ -28,10 +28,8 @@ async def newGame_start(db: db_dependency):
     db.commit()
     db.refresh(db_user)  # ID 확인용 / 데이터베이스에서 다시 조회하여 최신 값으로 db_user 객체를 업데이트
 
-
     # GPT에게 전송 (응답까지 저장)
-    answer = ask_gpt(player_line)
-
+    answer = ask_gpt_with_context(player_line)
 
     db_llm = models.Dialogue(
         day = 1,  # day추가
@@ -49,7 +47,7 @@ async def newGame_start(db: db_dependency):
         "llm_id": db_llm.id,
         "response": answer
     }
-
+# ============================================================================================
 
 
 
@@ -63,15 +61,17 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
         if not save_state:
             raise HTTPException(status_code=404, detail="Save not found")
         current_day = save_state.day
+        saved_likeability = save_state.likeability if hasattr(save_state, 'likeability') else 2.5  #hasattr - save_state 객체에 'likeability'라는 속성(attribute) 이 있는지 확인
     else:
         # 세이브 없이 새로시작 후 진행하는 경우 - 현재 dialogue에서 최대 day 찾기
         last_dialogue = db.query(models.Dialogue).order_by(models.Dialogue.id.desc()).first()
         current_day = last_dialogue.day if last_dialogue else 1
+        saved_likeability = None  #나중에 계산
 
 
     # 플레이어의 답변 db저장용
     db_user = models.Dialogue(
-        day = current_day,  # day추가
+        day = current_day,  #day추가
         speaker="player",
         line=dialogue.line
     )
@@ -80,21 +80,52 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     db.refresh(db_user)  # ID 확인용 / 데이터베이스에서 다시 조회하여 최신 값으로 db_user 객체를 업데이트
 
 
-    # 여기 사이에 gpt에게 이전 대화나 정보들을 주어서 일관성을 유지하도록 할 수 있는 코드가 추가적으로 필요함.
+    
+    # 과거 대화한 대사들을 가지고옴
+    dialogue_history = (
+        db.query(models.Dialogue)
+        .filter(models.Dialogue.day == current_day)
+        .order_by(models.Dialogue.id.asc())
+        .limit(6)
+        .all()[::-1]
+    )
+
+    # 현재 호감도 결정 (아직 시기상조, 과거 대사가지고오는것부터 완료해야함)
+    '''
+    if save_id:
+        # 세이브 불러온 경우: 세이브된 호감도 사용
+        current_likeability = saved_likeability
+    else:
+        # 새로시작 후 연속진행: dialogue 테이블에서 가장 최근 호감도 찾기
+        current_likeability = get_latest_affection_from_dialogue(db, current_day)
+    '''
 
 
-    # GPT에게 전송 (응답까지 저장)
-    answer = ask_gpt(dialogue.line)
+    current_likeability = saved_likeability  #일단 오류 안나게 임시방편
+
+    # GPT에게 전송 (응답, 현 day, 이전 대화, 현 호감도)
+    answer = ask_gpt_with_context(dialogue.line, current_day, dialogue_history, current_likeability)
+
+
+
+
+    new_likeability = current_likeability
+
 
 
     db_llm = models.Dialogue(
         day = current_day,  # day추가
         speaker="suno",
-        line=answer
+        line=answer,
+        likeability=new_likeability
     )
     db.add(db_llm)
     db.commit()
     db.refresh(db_llm)
+
+
+
+    # day종료조건 판단하는 함수를 불러와야함. (dayCheck.py import)
 
 
 
@@ -104,6 +135,8 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
         "llm_id": db_llm.id,
         "response": answer
     }
+
+
 
 
 
