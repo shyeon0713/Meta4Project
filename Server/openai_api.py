@@ -27,6 +27,7 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
 
 
 # 과거의 몇 문장을 가지고와서 대사 입력하고 전송시 같이 전송하여 문맥을 gpt가 파악할 수 있도록 한다.
+# 호감도와 수노의 응답을 반환
 def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, affection: float, model: str = "gpt-4o-mini") -> tuple[float, str]:
     # 과거 대화들을 가지고옴
     conversation_context = ""
@@ -38,11 +39,15 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
     
 
     #아직 여기 day체크 미추가
+
+
+
+    
     system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
     지금까지의 대화: {conversation_context}"""
 
 
-    # 호감도 판단 정보도 필요해...
+    # 호감도 판단을 여기서 해야함. (가지고 온 이전 대화들을 넘겨주면서)
 
 
     response = openai.ChatCompletion.create(
@@ -57,5 +62,16 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
 
 
 
+'''
+최근 대화 기록 (6줄 정도)
 
+GPT에 보냄
 
+GPT 응답 수신
+
+조건 키워드 충족 여부 판단 (check_day_goals())
+
+수노가 마지막 퇴장 문장 말했는지 확인 (check_day_completion_by_suno())
+
+감정 변화 업데이트
+'''

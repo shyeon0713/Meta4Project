@@ -81,13 +81,13 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
 
 
     
-    # 과거 대화한 대사들을 가지고옴
+    # 과거 대화한 대사들을 가지고옴 (최신부터 6개, 객체리스트로 반환)
     dialogue_history = (
         db.query(models.Dialogue)
         .filter(models.Dialogue.day == current_day)
-        .order_by(models.Dialogue.id.asc())
+        .order_by(models.Dialogue.id.desc())
         .limit(6)
-        .all()[::-1]
+        .all()
     )
 
     # 현재 호감도 결정 (아직 시기상조, 과거 대사가지고오는것부터 완료해야함)
