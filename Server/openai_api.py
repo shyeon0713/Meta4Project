@@ -2,13 +2,14 @@ import openai
 import os
 from dotenv import load_dotenv
 import Server.suno as suno
-import Server.day_prompts.day_1 as day_1
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 # 일단 이건 맥락없이 단순 gpt 호출 (게임 진행 중, 우리가 이전에 입력했던 말을 기억하지 못함.)
+# (일단필요없을듯)
+'''
 def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:    
     system_prompt = f"{suno.SUNO_SYSTEM_PROMPT}\n\n{day_1.DAY_OBJECTIVE}"
 
@@ -21,6 +22,7 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
         temperature=0.8
     )
     return response.choices[0].message.content
+    '''
 
 
 
@@ -38,17 +40,18 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
             conversation_context += f"Suno: {dialogue.line}\n"
     
 
-    #아직 여기 day체크 미추가
+    # 아직 여기 day체크 미추가 (목표 달성 여부 딕셔너리를 같이 넘겨서 프롬프팅 해야할듯.)
+    # llm이 목표달성여부 파악해서 마지막대사를 자연스럽게 말할 수 있도록한다.
 
 
-
-    
+    # 보낼 시스템 프롬프트
     system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
-    지금까지의 대화: {conversation_context}"""
+    지금까지의 대화 (최신순): {conversation_context}"""
 
 
     # 호감도 판단을 여기서 해야함. (가지고 온 이전 대화들을 넘겨주면서)
 
+    
 
     response = openai.ChatCompletion.create(
         model=model,
@@ -58,7 +61,10 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
         ],
         temperature=0.8
     )
-    return response.choices[0].message.content
+    return response.choices[0].message.content  #수노의 답변을 반환
+
+
+
 
 
 

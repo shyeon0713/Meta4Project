@@ -2,8 +2,10 @@ import Server.day_prompts.day_1 as day_1
 
 # day조건 판단 함수
 
+
+
+# day별 프롬프트 반환
 def get_day_prompt(day: int) -> str:
-    """Day별 프롬프트 반환"""
     day_prompts = {
         1: day_1.DAY_OBJECTIVE,
         # 2: day_2.DAY_OBJECTIVE,  # 추후 추가
@@ -12,6 +14,8 @@ def get_day_prompt(day: int) -> str:
     return day_prompts.get(day, day_1.DAY_OBJECTIVE)  # 기본값은 day_1
 
 
+# day별 목표(goal)반환 (일단필요없을듯)
+'''
 def get_day_goals(day: int):
     day_prompts = {
         1: day_1.DAY_GOALS,
@@ -19,6 +23,7 @@ def get_day_goals(day: int):
         # 3: day_3.DAY_GOALS,  # 추후 추가
     }
     return day_prompts.get(day, day_1.DAY_GOALS)  # 기본값은 day_1
+    '''
 
 
 
@@ -32,7 +37,6 @@ def check_day_goals(day: int, dialogue_history: list):
         return {}  # 또는 raise NotImplementedError
 
     goals_achieved = {goal: False for goal in goal_dict}
-
 
 
     for dialogue in dialogue_history:
@@ -61,17 +65,14 @@ def check_day_goals(day: int, dialogue_history: list):
 
 
 
-
-
 # 현재 day의 대화가 완료 조건을 만족하는지 확인
+# 모든 목표가 달성이 되었고, llm에서 마지막 대사를 발화를 했는지 판단. -> true면 다음 day로 진행
 # 완료유무를 판단하여 day를 넘기는 역할
 def check_day_completion(day: int, dialogue_history: list) -> bool:
     # 대사 없으면 false
     if not dialogue_history:
         return False
     
-
-
     # 가장 최근 Suno의 대사 확인
     latest_suno_line = None
     for dialogue in dialogue_history:
@@ -84,7 +85,7 @@ def check_day_completion(day: int, dialogue_history: list) -> bool:
     
     # Day별 완료 조건 확인
     if day == 1:
-        completion_phrase = "Let's meet tomorrow at 2pm in the park. I'll be going now."
+        completion_phrase = "오늘은 일단 여기까지 하죠. 내일 오후 2시에 공원에서 만나요. 이만 가볼게요."
         return completion_phrase in latest_suno_line
     # elif day == 2:
     #     completion_phrase_2 = "다음 day 2 완료 문구"

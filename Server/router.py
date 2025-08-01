@@ -104,15 +104,15 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     current_likeability = saved_likeability  #일단 오류 안나게 임시방편
 
     # GPT에게 전송 (응답, 현 day, 이전 대화, 현 호감도)
+    # GPT의 대답을 가지고 옴
     answer = ask_gpt_with_context(dialogue.line, current_day, dialogue_history, current_likeability)
 
 
-
-
+    # 호감도 변화
     new_likeability = current_likeability
 
 
-
+    # llm의 답변 db저장
     db_llm = models.Dialogue(
         day = current_day,  # day추가
         speaker="suno",
@@ -125,8 +125,9 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
 
 
 
-    # day종료조건 판단하는 함수를 불러와야함. (dayCheck.py import)
-
+    # day종료조건 판단하는 함수를 불러와야함. (dayCheck.py import -> 딕셔너리 반환)
+    # 만약 day조건을 다 달성했다면, 수노가 마지막 대사를 뱉었는지(day 완료 조건을 만족하는지) 점검해야함.
+    # day조건 달성 + 수노 마지막 대사 뱉었음 -> 그럼 다음 day로 넘어가도록함.
 
 
     # 그냥 응답 확인용 return
