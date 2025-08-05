@@ -5,6 +5,10 @@ from typing import List
 from Server.schema import DialogueBase, SaveBase
 from Server.database import db_dependency  #의존성 주입
 from Server.openai_api import ask_gpt_with_context  #open ai api 가지고 오기
+from Server.dayCheck import check_day_goals, check_day_completion
+
+
+
 
 from typing import Optional  # 첫 날 save없을 경우. 해당 인자는 정수(or 다른 지정한 것) int일수도 있고, 없으면 None일 수도 있다는 것.
 
@@ -131,6 +135,17 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     # day종료조건 판단하는 함수를 불러와야함. (dayCheck.py import -> 딕셔너리 반환)
     # 만약 day조건을 다 달성했다면, 수노가 마지막 대사를 뱉었는지(day 완료 조건을 만족하는지) 점검해야함.
     # day조건 달성 + 수노 마지막 대사 뱉었음 -> 그럼 다음 day로 넘어가도록함.
+
+    checkDayGoals = check_day_goals(current_day, dialogue_history)
+    checkDayCompletion = check_day_completion(current_day, dialogue_history)
+    if checkDayGoals and checkDayCompletion:
+        current_day += 1
+        # 뭔가 여기에 day가 넘어갔다는 걸 알리는 무언가든 자시든 해야할 것 같음...
+    else:
+        pass
+
+
+
 
 
     # 그냥 응답 확인용 return
