@@ -20,9 +20,10 @@ async def newGame_start(db: db_dependency):
 
     # 플레이어의 답변 db저장용
     db_user = models.Dialogue(
-        day = 1,  # day추가
+        day = 1,  #day추가
         speaker="player",
-        line=player_line
+        line=player_line,
+        likeability = 0  #플레이어의 호감도는 필요없어서 디폴트 0
     )
     db.add(db_user)
     db.commit()
@@ -34,7 +35,8 @@ async def newGame_start(db: db_dependency):
     db_llm = models.Dialogue(
         day = 1,  # day추가
         speaker="suno",
-        line=answer
+        line=answer,
+        likeability = 2.5
     )
     db.add(db_llm)
     db.commit()
@@ -73,7 +75,8 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     db_user = models.Dialogue(
         day = current_day,  #day추가
         speaker="player",
-        line=dialogue.line
+        line=dialogue.line,
+        likeability = 0
     )
     db.add(db_user)
     db.commit()

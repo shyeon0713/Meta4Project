@@ -2,6 +2,7 @@ import openai
 import os
 from dotenv import load_dotenv
 import Server.suno as suno
+from Server.dayCheck import check_day_goals
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -39,17 +40,46 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
         else:
             conversation_context += f"Suno: {dialogue.line}\n"
     
+    
 
     # 아직 여기 day체크 미추가 (목표 달성 여부 딕셔너리를 같이 넘겨서 프롬프팅 해야할듯.)
     # llm이 목표달성여부 파악해서 마지막대사를 자연스럽게 말할 수 있도록한다.
+    
+    # 데이 목표를 가지고온다 (현재 목표 달성 상태 계산)
+    goals_achieved = check_day_goals (day, dialogue_history)
 
+    # day goals 달성 상태 text프롬프트
+    goals_status_text = "Current Goal Achievement Status:\n"
+    for goal, achieved in goals_achieved.items():  #딕셔너리(dict)에서 (key, value) 쌍을 하나씩 꺼내주는 함수
+        status = "Achieved" if achieved else "Not Achieved"
+        goals_status_text += f"- {goal}: {status}\n"
 
-    # 보낼 시스템 프롬프트
-    system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
-    지금까지의 대화 (최신순): {conversation_context}"""
 
 
     # 호감도 판단을 여기서 해야함. (가지고 온 이전 대화들을 넘겨주면서)
+
+
+
+
+
+
+
+
+
+
+    
+    # 보낼 시스템 프롬프트
+    system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
+
+    Conversation so far (most recent first): {conversation_context}
+
+    Current goal completion status: {goals_status_text}
+    
+    If the player has achieved all the goals, Suno should say the final line to wrap up the day.
+
+    """
+
+
 
     
 

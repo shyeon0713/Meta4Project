@@ -14,6 +14,7 @@ def get_day_prompt(day: int) -> str:
     return day_prompts.get(day, day_1.DAY_OBJECTIVE)  # 기본값은 day_1
 
 
+
 # day별 목표(goal)반환 (일단필요없을듯)
 '''
 def get_day_goals(day: int):
