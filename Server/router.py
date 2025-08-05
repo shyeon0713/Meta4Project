@@ -4,7 +4,7 @@ from Server import models
 from typing import List
 from Server.schema import DialogueBase, SaveBase
 from Server.database import db_dependency  #의존성 주입
-from Server.openai_api import ask_gpt_with_context  #open ai api 가지고 오기
+from Server.openai_api import ask_gpt, ask_gpt_with_context  #open ai api 가지고 오기
 from Server.dayCheck import check_day_goals, check_day_completion
 
 
@@ -34,7 +34,7 @@ async def newGame_start(db: db_dependency):
     db.refresh(db_user)  # ID 확인용 / 데이터베이스에서 다시 조회하여 최신 값으로 db_user 객체를 업데이트
 
     # GPT에게 전송 (응답까지 저장)
-    answer = ask_gpt_with_context(player_line)
+    answer = ask_gpt(player_line)
 
     db_llm = models.Dialogue(
         day = 1,  # day추가

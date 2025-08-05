@@ -9,10 +9,9 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 # 일단 이건 맥락없이 단순 gpt 호출 (게임 진행 중, 우리가 이전에 입력했던 말을 기억하지 못함.)
-# (일단필요없을듯)
-'''
+# 게임 시작 맨 처음 start api에서 사용. (그럼 이제 서로 주고 받고 하나의 세트만이 완성될 것.)
 def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:    
-    system_prompt = f"{suno.SUNO_SYSTEM_PROMPT}\n\n{day_1.DAY_OBJECTIVE}"
+    system_prompt = f"{suno.SUNO_SYSTEM_PROMPT}"
 
     response = openai.ChatCompletion.create(
         model=model,
@@ -23,7 +22,6 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
         temperature=0.8
     )
     return response.choices[0].message.content
-    '''
 
 
 
