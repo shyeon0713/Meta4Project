@@ -67,12 +67,12 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
         if not save_state:
             raise HTTPException(status_code=404, detail="Save not found")
         current_day = save_state.day
-        saved_likeability = save_state.likeability if hasattr(save_state, 'likeability') else 2.5  #hasattr - save_state 객체에 'likeability'라는 속성(attribute) 이 있는지 확인
+        current_likeability = save_state.likeability if hasattr(save_state, 'likeability') else 2.5  #hasattr - save_state 객체에 'likeability'라는 속성(attribute) 이 있는지 확인
     else:
         # 세이브 없이 새로시작 후 진행하는 경우 - 현재 dialogue에서 최대 day 찾기
         last_dialogue = db.query(models.Dialogue).order_by(models.Dialogue.id.desc()).first()
         current_day = last_dialogue.day if last_dialogue else 1
-        saved_likeability = None  #나중에 계산
+        current_likeability = 2.5  #새로시작 후 연속진행: dialogue 테이블에서 가장 최근 호감도 찾기
 
 
     # 플레이어의 답변 db저장용
@@ -97,18 +97,7 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
         .all()
     )
 
-    # 현재 호감도 결정 (아직 시기상조, 과거 대사가지고오는것부터 완료해야함)
-    '''
-    if save_id:
-        # 세이브 불러온 경우: 세이브된 호감도 사용
-        current_likeability = saved_likeability
-    else:
-        # 새로시작 후 연속진행: dialogue 테이블에서 가장 최근 호감도 찾기
-        current_likeability = get_latest_affection_from_dialogue(db, current_day)
-    '''
 
-
-    current_likeability = saved_likeability  #일단 오류 안나게 임시방편
 
     # GPT에게 전송 (응답, 현 day, 이전 대화, 현 호감도)
     # GPT의 대답을 가지고 옴
@@ -116,14 +105,14 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
 
 
     # 호감도 변화
-    new_likeability = current_likeability
+    new_likeability = answer[0]
 
 
     # llm의 답변 db저장
     db_llm = models.Dialogue(
         day = current_day,  # day추가
         speaker="suno",
-        line=answer,
+        line=answer[1],
         likeability=new_likeability
     )
     db.add(db_llm)
@@ -140,7 +129,7 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     checkDayCompletion = check_day_completion(current_day, dialogue_history)
     if checkDayGoals and checkDayCompletion:
         current_day += 1
-        # 뭔가 여기에 day가 넘어갔다는 걸 알리는 무언가든 자시든 해야할 것 같음...
+        # 뭔가 여기에 day가 넘어갔다는 걸 알리는 무언가든 자시든 해야할 것 같음... (일단 유니티 내에서는 필요 x)
     else:
         pass
 

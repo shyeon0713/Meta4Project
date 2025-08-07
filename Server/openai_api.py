@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 import Server.suno as suno
 from Server.dayCheck import check_day_goals
+from Server.affectionCheck import calculate_affection_change_baseline
+import re  #정규표현식 모듈. llm응답에서 정해진 패턴을 찾아서 숫자만 추출 (re.search(패턴, 텍스트))
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -28,8 +30,8 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
 
 
 # 과거의 몇 문장을 가지고와서 대사 입력하고 전송시 같이 전송하여 문맥을 gpt가 파악할 수 있도록 한다.
-# 호감도와 수노의 응답을 반환
-def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, affection: float, model: str = "gpt-4o-mini") -> tuple[float, str]:
+# 호감도와 수노의 응답을 반환 (tuple[float, str])
+def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, model: str = "gpt-4o-mini") -> tuple[float, str]:
     # 과거 대화들을 가지고옴
     conversation_context = ""
     for dialogue in dialogue_history:
@@ -46,7 +48,7 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
     # 데이 목표를 가지고온다 (현재 목표 달성 상태 계산)
     goals_achieved = check_day_goals (day, dialogue_history)
 
-    # day goals 달성 상태 text프롬프트
+    # day goals 달성 상태 text
     goals_status_text = "Current Goal Achievement Status:\n"
     for goal, achieved in goals_achieved.items():  #딕셔너리(dict)에서 (key, value) 쌍을 하나씩 꺼내주는 함수
         status = "Achieved" if achieved else "Not Achieved"
@@ -54,14 +56,24 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
 
 
 
-    # 호감도 판단을 여기서 해야함. (가지고 온 이전 대화들을 넘겨주면서)
-
-
-
-
-
-
-
+    # 호감도 판단을 여기서 해야함.
+    # 가지고 온 이전 대화들을 넘겨주면서, 1차 코드로 판단, 2차 llm이 대화 분위기보며 판단.
+    # 그래서 여기에 호감도 관련 판단 코드필요 (프롬프트로 같이 넘기려면)
+    
+    # 일단 코드로 호감도 먼저 판단
+    baseline_change = calculate_affection_change_baseline(player_input)
+    
+    # 호감도 상태 설명
+    if current_affection >= 4.5:
+        affection_description = "Feels very trusting and warm"
+    elif current_affection >= 4.0:
+        affection_description = "Begins to trust and let go of hostility"
+    elif current_affection >= 3.5:
+        affection_description = "Stops speaking harshly and starts to believe the player might not have killed her sister. Begins to show respect."
+    elif current_affection >= 2.0:
+        affection_description = "Suspicious of the player"
+    else:
+        affection_description = "Very distrustful and cold"
 
 
 
@@ -69,18 +81,38 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
     # 보낼 시스템 프롬프트
     system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
 
-    Conversation so far (most recent first): {conversation_context}
+    Conversation so far (most recent):  
+    {conversation_context}
 
-    Current goal completion status: {goals_status_text}
-    
-    If the player has achieved all the goals, Suno should say the final line to wrap up the day.
+    Current goal completion status:  
+    {goals_status_text}
 
+    If all daily goals for Day {day} are completed, Suno must say the pre-defined closing line for this day (from the Day {day} script), and the day will end.
+    This must happen **regardless of affection score** once all goals are achieved.
+
+    Current affection level: {current_affection:.1f}/5.0 ({affection_description})
+
+    ADDITIONAL INSTRUCTIONS:
+    Code analysis suggests affinity change: {baseline_change:+.1f}
+
+    Please consider:
+    - Overall tone and sincerity of the player
+    - Context that code analysis might miss (sarcasm, deeper meaning, etc.)
+    - Emotional weight of the conversation
+    - How this fits with Suno's personality and current state
+
+    You must respond as Suno, then add this line:
+    [AffinityChange: X.X] 
+
+    Consider both the code suggestion ({baseline_change:+.1f}) and your own contextual judgment based on the Affinity System rules above.
+    If they align, use similar values. If context suggests different, adjust accordingly.
+    Range: -2.0 to +2.0 per interaction.
+
+    Day 7 ending condition: If day={day} AND affection>=4.5 AND truth mostly understood, use ending phrases from the Ending Trigger section.
     """
 
 
-
-    
-
+    # llm에 프롬프트와 함께 플레이어의 입력 전송
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -89,7 +121,38 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, af
         ],
         temperature=0.8
     )
-    return response.choices[0].message.content  #수노의 답변을 반환
+
+    full_reply = response.choices[0].message.content  #수노의 답변을 반환
+
+
+    # LLM의 호감도 변화 파싱
+    match = re.search(r"\[AffinityChange:\s*([+-]?\d+(\.\d+)?)\]", full_reply)
+    if match:
+        llm_change = float(match.group(1))  #0: 정규표현식 전체, 1: 뒤에올 +0.5만 파싱, 2: .5의 소숫점만 파싱 (그걸 float로 소수로 바꿈)
+        suno_reply = full_reply.replace(match.group(0), "").strip() #전체 대사에서 [AffinityChange: +0.5] 줄 제거 -> 수노의 대사만 들어가게 함
+    else:
+        # LLM이 형식을 지키지 않은 경우 베이스라인 사용
+        llm_change = baseline_change #코드로 계산해둔 호감도 그냥 사용
+        suno_reply = full_reply.strip()
+        print(f"Warning: LLM didn't provide affinity change, using baseline: {baseline_change}")
+    
+
+    # 최종 호감도 계산
+    # 코드와 LLM 판단의 가중평균 (코드 30%, LLM 70%)
+    final_change = (baseline_change * 0.3) + (llm_change * 0.7)
+    
+    # 극단적인 변화 제한 (-2.0 ~ +2.0)
+    final_change = max(-2.0, min(2.0, final_change))
+    
+    # 최종 호감도 적용
+    new_affection = max(0.0, min(5.0, current_affection + final_change))
+    
+    # 디버깅용 로그
+    print(f"Affection Debug - Baseline: {baseline_change:+.1f}, LLM: {llm_change:+.1f}, Final: {final_change:+.1f}, New: {new_affection:.1f}")
+
+
+
+    return new_affection, suno_reply
 
 
 
