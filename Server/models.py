@@ -11,6 +11,7 @@ class Dialogue(Base):
     speaker = Column(String(100))
     line = Column(Text)
     likeability = Column(Float, default= 2.5)  #호감도 추가
+    affection_change = Column(Float, default= 0) #호감도 변화 정도 추가
 
 # save db
 class Save(Base):

@@ -7,6 +7,7 @@ class DialogueBase(BaseModel):
     speaker: str  #SQLAlchemy에서는 text타입이 존재하지만 Pydantic(BaseModel)에서는 text타입이 존재하지 않는다.
     line: str
     likeability: float  #호감도 추가
+    affection_change: float #호감도 변화 정도 추가
     class Config:
         orm_mode = True
 

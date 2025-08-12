@@ -31,7 +31,7 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
 
 # 과거의 몇 문장을 가지고와서 대사 입력하고 전송시 같이 전송하여 문맥을 gpt가 파악할 수 있도록 한다.
 # 호감도와 수노의 응답을 반환 (tuple[float, str])
-def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, model: str = "gpt-4o-mini") -> tuple[float, str]:
+def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, model: str = "gpt-4o-mini") -> tuple[float, float, str]:
     # 과거 대화들을 가지고옴
     conversation_context = ""
     for dialogue in dialogue_history:
@@ -152,7 +152,7 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
 
 
 
-    return new_affection, suno_reply
+    return new_affection, final_change, suno_reply
 
 
 

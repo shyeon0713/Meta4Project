@@ -27,7 +27,8 @@ async def newGame_start(db: db_dependency):
         day = 1,  #day추가
         speaker="player",
         line=player_line,
-        likeability = 0  #플레이어의 호감도는 필요없어서 디폴트 0
+        likeability = 0,  #플레이어의 호감도는 필요없어서 디폴트 0
+        affection_change = 0  #플레이어 변화값도 없음
     )
     db.add(db_user)
     db.commit()
@@ -40,7 +41,8 @@ async def newGame_start(db: db_dependency):
         day = 1,  # day추가
         speaker="suno",
         line=answer,
-        likeability = 2.5
+        likeability = 2.5,
+        affection_change = 0  #초기 변화량이 없으니까 0
     )
     db.add(db_llm)
     db.commit()
@@ -80,7 +82,8 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
         day = current_day,  #day추가
         speaker="player",
         line=dialogue.line,
-        likeability = 0
+        likeability = 0,
+        affection_change = 0  #플레이어 변화값도 없음
     )
     db.add(db_user)
     db.commit()
@@ -112,8 +115,9 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     db_llm = models.Dialogue(
         day = current_day,  # day추가
         speaker="suno",
-        line=answer[1],
-        likeability=new_likeability
+        line=answer[2],
+        likeability=new_likeability,
+        affection_change = answer[1]
     )
     db.add(db_llm)
     db.commit()
@@ -186,7 +190,7 @@ async def read_dialogue(db: db_dependency):
 
 
 
-# save
+# save ====================================================================================================
 # save 생성 api
 @router.post("/save/", status_code=status.HTTP_201_CREATED)
 async def create_save(save:SaveBase, db: db_dependency):
