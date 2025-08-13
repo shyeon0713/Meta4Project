@@ -18,6 +18,8 @@ class Save(Base):
     __tablename__ = "save"
 
     primary_key = Column(Integer, primary_key=True, autoincrement=True)
+    slot_number = Column(Integer, unique=True, nullable=False)  #슬롯 번호 저장 칼럼 추가
+
     day = Column(Integer)
     likeability = Column(Float)
     last_dialogue_id = Column(Integer, ForeignKey('dialogue.id'))  #dialogue id 가지고 옴

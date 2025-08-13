@@ -2,7 +2,7 @@ from fastapi import APIRouter, FastAPI, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 from Server import models
 from typing import List
-from Server.schema import DialogueBase, SaveBase
+from Server.schema import DialogueBase, SaveBase, SaveOutBase, SaveUpdateBase
 from Server.database import db_dependency  #의존성 주입
 from Server.openai_api import ask_gpt, ask_gpt_with_context  #open ai api 가지고 오기
 from Server.dayCheck import check_day_goals, check_day_completion
@@ -56,6 +56,13 @@ async def newGame_start(db: db_dependency):
         "response": answer
     }
 # ============================================================================================
+
+
+
+# save 불러오기 (이어하기 눌렀을 경우)
+# 클라이언트가 저장 목록에서 save_id 선택
+# 해당 세이브 정보를 불러오고 → UI 및 state를 복원
+# => 이건 다이얼로그 측에서 해야할 듯
 
 
 
@@ -124,7 +131,6 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     db.refresh(db_llm)
 
 
-
     # day종료조건 판단하는 함수를 불러와야함. (dayCheck.py import -> 딕셔너리 반환)
     # 만약 day조건을 다 달성했다면, 수노가 마지막 대사를 뱉었는지(day 완료 조건을 만족하는지) 점검해야함.
     # day조건 달성 + 수노 마지막 대사 뱉었음 -> 그럼 다음 day로 넘어가도록함.
@@ -136,8 +142,6 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
         # 뭔가 여기에 day가 넘어갔다는 걸 알리는 무언가든 자시든 해야할 것 같음... (일단 유니티 내에서는 필요 x)
     else:
         pass
-
-
 
 
 
@@ -153,20 +157,10 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
 
 
 
-# open ai test api
-@router.get("/dialogue/{dialogue_id}")
-async def bring_dialogue(id: int, db: db_dependency):
-    llm_line = db.query(models.Dialogue).filter(models.Dialogue.id == id).first()
-    if not llm_line:
-        raise HTTPException(status_code=404, detail="Dialogue not found")
-    return {
-        "speaker": llm_line.speaker,
-        "line": llm_line.line
-        }
-
-
-
-
+# save 불러오기 (이어하기 눌렀을 경우)
+# 클라이언트가 저장 목록에서 save_id 선택
+# 해당 세이브 정보를 불러오고 → UI 및 state를 복원
+# => 이건 다이얼로그 측에서 해야할 듯
 
 
 # log버튼 눌렀을 시 기존에 쌓인 로그들 불러오는 api
@@ -191,10 +185,10 @@ async def read_dialogue(db: db_dependency):
 
 
 # save ====================================================================================================
-# save 생성 api
+# save 저장 api
 @router.post("/save/", status_code=status.HTTP_201_CREATED)
 async def create_save(save:SaveBase, db: db_dependency):
-    db_save = models.Save(**save.dict())
+    db_save = models.Save(**save.model_dump())  #클라이언트에서 받은 JSON 데이터를 SQLAlchemy 모델 객체로 변환
     db.add(db_save)
     db.commit()
     db.refresh(db_save)  #새로 생성된 id포함하여 리턴
@@ -203,7 +197,7 @@ async def create_save(save:SaveBase, db: db_dependency):
 
 
 # save (모두) 읽기 api
-@router.get("/save/all", response_model=list[SaveBase], status_code=status.HTTP_200_OK)
+@router.get("/save/all", response_model=list[SaveOutBase], status_code=status.HTTP_200_OK)
 async def read_save(db: db_dependency):
     save = (
         db.query(models.Save)
@@ -214,13 +208,31 @@ async def read_save(db: db_dependency):
 
 
 
-# save 저장하기 api 추가 필요
+# save 덮어쓰기 (저장 덮어쓰기)
+# 덮어쓰기 API 추가 필요
+@router.put("/save/{slot_number}", response_model=SaveOutBase, status_code=status.HTTP_200_OK)
+async def update_save(slot_number: int, save: SaveUpdateBase, db: db_dependency):
+    # 슬롯 번호 유효성 검증
+    if slot_number < 1 or slot_number > 10:
+        raise HTTPException(status_code=400, detail="슬롯 번호는 1~10 사이여야 합니다.")
+    
+    db_save = db.query(models.Save).filter(models.Save.slot_number == slot_number).first()
+    if not db_save:
+        raise HTTPException(status_code=404, detail="해당 슬롯을 찾을 수 없습니다.")
+    
+    # 업데이트
+    for key, value in save.model_dump(exclude_unset=True).items():
+        setattr(db_save, key, value)
+    
+    db.commit()
+    db.refresh(db_save)
+    return db_save
 
 
 
-# save 불러오기 (이어하기 눌렀을 경우)
-# 클라이언트가 저장 목록에서 save_id 선택
-# 해당 세이브 정보를 불러오고 → UI 및 state를 복원
+
+
+
 
 
 
@@ -234,4 +246,17 @@ async def read_dialogue(dialogue_id: int, db: db_dependency):
     if dialogue is None:
         raise HTTPException(status_code=404, detail='Dialogue not found')
     return dialogue
+'''
+
+# open ai test api
+'''
+@router.get("/dialogue/{dialogue_id}")
+async def bring_dialogue(dialogue_id: int, db: db_dependency):
+    llm_line = db.query(models.Dialogue).filter(models.Dialogue.id == dialogue_id).first()
+    if not llm_line:
+        raise HTTPException(status_code=404, detail="Dialogue not found")
+    return {
+        "speaker": llm_line.speaker,
+        "line": llm_line.line
+        }
 '''
