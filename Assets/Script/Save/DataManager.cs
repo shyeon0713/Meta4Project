@@ -4,7 +4,7 @@ using System.IO;
 public static class DataManager
 {
     private static string SavePath => Path.Combine(Application.persistentDataPath, "saves.json");
-    public const int MaxSlots = 6;
+    public const int MaxSlots = 7;
 
     public static SaveSlotsData Load()
     {

@@ -34,11 +34,6 @@ public class AIUI : MonoBehaviour
     [Header("DayCheck Reference")]
     public DayCheck daycheck;
 
-    [Header("Advance Day Settings")]
-    [Tooltip("수노와는 총 5번 대화할 수 있다")]
-    public int responsesToAdvance = 5;
-    private int sunoResponseCount = 0;
-
 
 
     private void Start()
@@ -73,8 +68,8 @@ public class AIUI : MonoBehaviour
     IEnumerator GetAndShowReply(string message, string speakerName)
     {
 
-   //     Debug.Log("▶ GetAndShowReply 시작");
-   //     if (dialogueapi == null) Debug.LogError("dialogueapi가 null입니다!");
+        //     Debug.Log("▶ GetAndShowReply 시작");
+        //     if (dialogueapi == null) Debug.LogError("dialogueapi가 null입니다!");
 
         yield return StartCoroutine(dialogueapi.SendPlayerReply(message, speakerName));
 
@@ -97,18 +92,18 @@ public class AIUI : MonoBehaviour
         if (reply != null)
         {
             if (reply.speaker == "수노")
-            {
-                sunoResponseCount++;
-                if (sunoResponseCount >= responsesToAdvance)
+            {  // 서버에서 SUNO가 대화의 끝을 알리는 대사와 currentday+1 신호를 보냄
+
+                //    if ( >=)  //currentday가 + 1 경우 
                 {
-                    StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));  // 다음요일로 넘어가기
-                    yield break;
+                    //      StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));  // 다음요일로 넘어가기
+                    //         yield break;
+                    //    }
+                    SUNOImage.color = Color.white;
                 }
-                SUNOImage.color = Color.white;
+
             }
-           
-        }         
-          
+
             replynpcscript.text = reply.line;
 
             sentences = Regex.Split(reply.line, @"(?<=[\.!\?\,])\s+");  //. / ! / ? / , 뒤의 공백을 기준으로 분리
@@ -119,6 +114,7 @@ public class AIUI : MonoBehaviour
 
             ShowNextScript();
         }
+    }
 
 
     public void ShowNextScript()
