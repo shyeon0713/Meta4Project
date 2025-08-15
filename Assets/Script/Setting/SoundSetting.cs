@@ -39,6 +39,15 @@ public class SoundSetting : MonoBehaviour
         // 구독 해제 – 메모리 누수 방지
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)  
+        // 문제 -> 실제로 OnSceneLoaded라는 메서드가 정의되어 있지 않음 
+    {
+        // 예시 : 새로운 씬이 로드될 때 사운드 설정을 다시 적용
+        // (필요에 따라 여기서 원하는 로직을 넣으면 됩니다)
+        ApplySettings();                     // 볼륨·OnOff 상태를 현재 씬에 적용
+        Debug.Log($"[SoundSetting] Scene \"{scene.name}\" loaded. Settings reapplied.");
+    }
     #endregion
 
 
