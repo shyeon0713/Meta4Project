@@ -24,11 +24,19 @@ public class SoundUI : MonoBehaviour
     private Image bgmButtonImage;
     private Image sfxButtonImage;
 
-    private void Awake()
+    public void Awake()
     {
+        // 개발 중에 놓친 할당을 즉시 알리기
+        //Debug.Log(bgmslider != null, "bgmSlider가 할당되지 않았음!");
+        Debug.Assert(sfxslider != null, "sfxSlider가 할당되지 않았음!");
+        Debug.Assert(bgmbutton != null, "bgmToggle이 할당되지 않았음!");
+        Debug.Assert(sfxbutton != null, "sfxToggle이 할당되지 않았음!");
+       
         // 버튼의 Image 컴포넌트를 캐시 (한 번만 찾는다)
         bgmButtonImage = bgmbutton.GetComponent<Image>();
         sfxButtonImage = sfxbutton.GetComponent<Image>();
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -52,16 +60,12 @@ public class SoundUI : MonoBehaviour
         SoundSetting.OnSfxVolumeChanged += UpdateSfxSlider;
         SoundSetting.OnBgmOnOffChanged += UpdateBgmIcon;
         SoundSetting.OnSfxOnOffChanged += UpdateSfxIcon;
+
     }
 
     private void OnDisable()
     {
-        // ---- 구독 해제 (메모리 누수 방지) ----
-        bgmslider.onValueChanged.RemoveListener(OnBgmSliderChanged);
-        sfxslider.onValueChanged.RemoveListener(OnSfxSliderChanged);
-        bgmbutton.onClick.RemoveListener(OnBgmButtonClicked);
-        sfxbutton.onClick.RemoveListener(OnSfxButtonClicked);
-
+       
         SoundSetting.OnBgmVolumeChanged -= UpdateBgmSlider;
         SoundSetting.OnSfxVolumeChanged -= UpdateSfxSlider;
         SoundSetting.OnBgmOnOffChanged -= UpdateBgmIcon;
