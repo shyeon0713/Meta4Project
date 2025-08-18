@@ -1,11 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Net.Sockets;
+using System.Text;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.Video;
-using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 public class Playermanager : MonoBehaviour
 {
+    private const string API_URL = "http://127.0.0.1:8000/dialogue/start";  //startapi주소
+    private const string url = "http://127.0.0.1:8000/save/";
+
     [Header("비디오 재생 후 Activescene로만 넘어감")]
     public string nextSceneName = "Activescene";
 
@@ -18,13 +26,17 @@ public class Playermanager : MonoBehaviour
 
     private VideoPlayer vp;
 
+    [Header("Save 변수들")]
     float likeability;
     int lastdialogueid;
     string lastspeaker;
     string lastline;
 
-
+    [Header("버튼")]
     public Button skipButton;  //스킵버튼 추가
+    // Startapi 추가 
+    // Startapi -> 스킵버튼 + 영상재생이 종료된 후
+
     private void Awake()
     {
         Debug.Log("[Playermanager] Awake()");
@@ -50,7 +62,7 @@ public class Playermanager : MonoBehaviour
         var clips = Videomanager.Instance.videoclips;
 
 
-        // 유효성 검사
+        // 유효성 검사 -> 추후에 주석처리 하기
         if (clips == null || clips.Length == 0)
         {
             Debug.LogError("Videomanager에 클립이 없습니다!");
@@ -68,8 +80,8 @@ public class Playermanager : MonoBehaviour
         }
 
 
-
         skipButton.onClick.AddListener(SkipVideo);   //SKip 버튼 리스너
+        skipButton.onClick.AddListener(CallStartAPI);  //API를 호출하는 코루틴 메서드
 
 
         vp.clip = clips[clipIndex];
@@ -77,6 +89,7 @@ public class Playermanager : MonoBehaviour
     }
 
 
+    #region 영상을 끝까지 시청할 경우 -> 영상종료 후, 다음씬 이동 + StartAPI호출
     void VideoFinished(VideoPlayer source)   // 영상이 끝난 후 
     {
         // if (string.IsNullOrEmpty(nextSceneName[))
@@ -84,23 +97,72 @@ public class Playermanager : MonoBehaviour
         //      Debug.LogError("씬이 없음");
         //     return;
         //  }
+
+        // 영상 종료
         Debug.Log("[Playermanager] VideoFinished() fired");
         StartCoroutine(UpdateDayAndLoadScene(dayValues[clipIndex]));
-    }
 
+
+        //StartAPI 호출
+        StartCoroutine(StartapiConnect());
+    }
+    #endregion
+
+    #region   스킵버튼을 눌렀을 경우 -> 영상종료 후, 다음씬 이동 + StartAPI 호출
     private void SkipVideo()   //Skip 버튼 리스너
     {
         Debug.Log("[Playermanager] SkipVideo() called");
         SoundSetting.Instance.PlaySfx(4);  //효과음
-        vp.loopPointReached -= VideoFinished;
-        if (vp.isPlaying) vp.Stop();
+
+        vp.loopPointReached -= VideoFinished;  //비디오 이벤트 제거
+        if (vp.isPlaying) vp.Stop();   //비디오 정지
+
         StartCoroutine(UpdateDayAndLoadScene(dayValues[clipIndex]));
+
     }
 
+
+    private void CallStartAPI()   //StartAPI 호출 용도
+    {
+        StartCoroutine(StartapiConnect());
+    }
+
+
+
+    private IEnumerator StartapiConnect()
+    {
+        // Start API 호출
+        string startapi = "string";
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(startapi);
+
+        // 요청 생성만 하고 아직 body, 헤더가 지정되지 않음
+        UnityWebRequest request = new UnityWebRequest(API_URL, UnityWebRequest.kHttpVerbPOST);
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "text/plain");
+
+            yield return request.SendWebRequest();
+        }
+        else   // startapi연결이 제대로 진행되지 않은 경우
+        {
+            Debug.LogError($"API Error: {request.error} | Code: {request.responseCode}");
+            Debug.LogError($"Response Body: {request.downloadHandler.text}");
+        }
+
+
+    }
+
+    #endregion
+
+
+    #region 다음씬 넘어가기전에 초기설정값 전송
     private IEnumerator UpdateDayAndLoadScene(int day)
     {
         Debug.Log($"▶[Playermanager] 진입: clipIndex={clipIndex}, day={day}");
-        string url = "http://127.0.0.1:8000/save/";
+       
         Debug.Log($"▶ URL: {url}");
 
         // Intro 영상(인덱스 0)에 해당하는 초기 세팅
@@ -164,6 +226,6 @@ public class Playermanager : MonoBehaviour
     }
 }
 
-
+#endregion
 
 //StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay)); -> Day2 이상의 컷씬
