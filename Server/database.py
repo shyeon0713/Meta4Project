@@ -11,8 +11,7 @@ import os
 
 load_dotenv() #.env에 정의된 내용을 환경 변수로 등록
 DATABASE_URL = os.getenv("DATABASE_URL") #등록된 환경변수 중 하나를 가져옴
-if not DATABASE_URL:
-    raise RuntimeError(f"DATABASE_URL is not set (got {DATABASE_URL!r})")
+
 # engine 객체를 생성하면 SQLAlchemy가 해당 데이터베이스와 연결을 설정하고 SQL 명령을 실행할 수 있도록 한다.
 # 데이터베이스 연결 설정
 engine = create_engine(DATABASE_URL)
