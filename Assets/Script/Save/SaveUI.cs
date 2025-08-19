@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class SaveSlotUI : MonoBehaviour
+public class SaveUI : MonoBehaviour
 {
     [Header("UI References")]
     public TMP_Text dayText;
@@ -24,8 +24,10 @@ public class SaveSlotUI : MonoBehaviour
         slotButton.onClick.AddListener(() => onSlotSelected?.Invoke(slotIndex));
     }
 
-    public void Populate(SaveFile data)// 전달받은 저장 데이터로 UI와 하트를 갱신
-    {
+    #region 전달받은 저장 데이터로 UI와 하트(호감도)를 갱신
+    public void Populate(SaveFile data) 
+    { 
+
         if (data == null)
         {
             dayText.text = "0";
@@ -38,8 +40,8 @@ public class SaveSlotUI : MonoBehaviour
         }
     }
 
-
-    public void UpdateHearts(float value)//likeability 값에 따라 하트 이미지를 채우기
+    //likeability 값에 따라 하트 이미지를 채우기
+    public void UpdateHearts(float value) 
     {
         for (int i = 0; i < hearts.Length; i++)
         {
@@ -54,5 +56,7 @@ public class SaveSlotUI : MonoBehaviour
         if (hearts != null && hearts.Length > 0)
             UpdateHearts(0f);
     }
+
+    #endregion
 }
 

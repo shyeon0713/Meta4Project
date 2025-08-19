@@ -4,8 +4,8 @@ using System;
 using System.Collections;
 
 
-
-public class Save_api : MonoBehaviour
+/*
+ * public class Save_api : MonoBehaviour
 {
     public static Save_api Instance { get; private set; }
 
@@ -66,3 +66,4 @@ public class Save_api : MonoBehaviour
 
 
 
+*/

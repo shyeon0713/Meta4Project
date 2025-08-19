@@ -22,7 +22,7 @@ public class DayCheck : MonoBehaviour
     [Header("Day → Sprite Mapping")]
     public DayLocationSprite[] scenelist;
 
-    private SaveFile currentSave;
+  
     private bool initialPosted = false;
     private int currentDay;
     public int CurrentDay
@@ -42,10 +42,10 @@ public class DayCheck : MonoBehaviour
 
         // 서버에서 현재 세이브 불러오기
         StartCoroutine(
-            Save_api.Instance.GetServerState(
+
                 onSuccess: OnGetSuccess,
                 onError: OnGetError
-            )
+            );
         );
     }
 

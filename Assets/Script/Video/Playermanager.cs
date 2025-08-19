@@ -27,10 +27,11 @@ public class Playermanager : MonoBehaviour
     private VideoPlayer vp;
 
     [Header("Save 변수들")]
-    float likeability;
-    int lastdialogueid;
-    string lastspeaker;
-    string lastline;
+    float likeability;  // 호감도
+    int lastdialogueid;  // 마지막 대사 인덱스
+    string lastspeaker;  // 마지막 발화자
+    string lastline;  // 마지막 대사
+    int slotnumber; // 세이브 슬롯 넘버
 
     [Header("버튼")]
     public Button skipButton;  //스킵버튼 추가
@@ -100,9 +101,7 @@ public class Playermanager : MonoBehaviour
 
         // 영상 종료
         Debug.Log("[Playermanager] VideoFinished() fired");
-        StartCoroutine(UpdateDayAndLoadScene(dayValues[clipIndex]));
-
-
+        
         //StartAPI 호출
         StartCoroutine(StartapiConnect());
     }
@@ -117,10 +116,11 @@ public class Playermanager : MonoBehaviour
         vp.loopPointReached -= VideoFinished;  //비디오 이벤트 제거
         if (vp.isPlaying) vp.Stop();   //비디오 정지
 
-        StartCoroutine(UpdateDayAndLoadScene(dayValues[clipIndex]));
 
+        //StartAPI 호출
+        StartCoroutine(StartapiConnect());
     }
-
+    #endregion
 
     private void CallStartAPI()   //StartAPI 호출 용도
     {
@@ -145,6 +145,10 @@ public class Playermanager : MonoBehaviour
             request.SetRequestHeader("Content-Type", "text/plain");
 
             yield return request.SendWebRequest();
+
+
+            SceneManager.LoadScene(nextSceneName);   // StartAPI 연동 후, 다음 씬으로 이동
+            OnDestroy();
         }
         else   // startapi연결이 제대로 진행되지 않은 경우
         {
@@ -155,77 +159,14 @@ public class Playermanager : MonoBehaviour
 
     }
 
-    #endregion
+  
 
 
-    #region 다음씬 넘어가기전에 초기설정값 전송
-    private IEnumerator UpdateDayAndLoadScene(int day)
-    {
-        Debug.Log($"▶[Playermanager] 진입: clipIndex={clipIndex}, day={day}");
-       
-        Debug.Log($"▶ URL: {url}");
-
-        // Intro 영상(인덱스 0)에 해당하는 초기 세팅
-        SaveFile savefile;
-        if (day == 0)
-        {
-            // Intro 영상인 경우에는 Day1 초기값을 강제 세팅
-            savefile = new SaveFile
-            {
-                day = 1,    // 기본 Day 1
-                likeability = 3.0f,    // 초기 호감도
-                last_dialogue_id = 0,    // 대사 ID는 0 (서버에서 NULL로 매핑하도록)
-                last_speaker = "",   // 빈 문자열
-                last_line = ""
-            };
-        }
-        else
-        {
-            // 일반 영상(인덱스 1,2,3…)인 경우에는 day 매개변수값을 그대로 사용
-            savefile = new SaveFile
-            {
-                day = day,
-                likeability = likeability,
-                last_dialogue_id = lastdialogueid,
-                last_speaker = lastspeaker,
-                last_line = lastline
-            };
-        }
-
-        // json 직렬화 -> 이것때문에 서버에 마지막 대사,대사인덱스,발화자를 꼭 입력해줘야함
-        string json = JsonUtility.ToJson(savefile);
-        Debug.Log("▶ 보낼 JSON: " + json);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-
-        // Post 요청 생성
-        var req = new UnityWebRequest(url, "POST");  //POST로 요청
-        req.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        req.downloadHandler = new DownloadHandlerBuffer();
-        req.SetRequestHeader("Content-Type", "application/json");
-
-
-        // 요청 전송
-        yield return req.SendWebRequest();
-
-
-        if (req.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError($"Day 업데이트 실패: HTTP {req.responseCode} | {req.error}");
-            Debug.LogError($"서버 응답 본문: {req.downloadHandler.text}");
-        }
-        else
-        {
-            // 성공했으면 씬 전환
-            SceneManager.LoadScene(nextSceneName);
-        }
-    }
     private void OnDestroy()
     {
         if (vp != null)
             vp.loopPointReached -= VideoFinished;
     }
 }
-
-#endregion
 
 //StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay)); -> Day2 이상의 컷씬
