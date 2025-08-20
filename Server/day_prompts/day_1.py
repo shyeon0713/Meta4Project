@@ -42,9 +42,9 @@ DAY_GOALS = {
     },
     "player_learns_name": {
         "description": "Player learns Suno's name",
-        "korean_keywords": ["이름", "누구", "이름이", "부르면", "수노"],
+        "korean_keywords": ["이름", "누구", "이름이", "부르면"],
         "context_indicators": ["처음", "소개", "뭐라고", "불러", "누구세요"],
-        "suno_response_patterns": ["수노", "제 이름", "이름은", "불러", "수노입니다", "수노예요", "제 이름은 수노"]
+        "suno_response_patterns": ["제 이름", "이름은", "불러", "수노입니다", "수노예요", "제 이름은 수노"]
     },
     "learns_about_sister": {
         "description": "Player learns Suno has an older sister",

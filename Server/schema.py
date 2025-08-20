@@ -1,4 +1,8 @@
 from pydantic import BaseModel  #Pydantic을 이용한 데이터 유효성 검사 모델
+import json
+from typing import Optional
+
+
 
 # 데이터 검증 스키마
 # log용
@@ -24,6 +28,7 @@ class SaveBase(BaseModel):  #클라(유니티)에서 서버로 데이터를 보�
     last_dialogue_id: int
     last_speaker: str
     last_line: str
+    goals_achieved: Optional[str] = "{}"  # JSON 문자열, 기본값은 빈 딕셔너리
 
 
 # save 조회시 출력용 스키마 (필요한 필드만 추출)
@@ -44,5 +49,4 @@ class SaveUpdateBase(BaseModel):  #slot_number 제외한 업데이트 스키마
     last_dialogue_id: int
     last_speaker: str
     last_line: str
-
-#
+    goals_achieved: Optional[str] = "{}"  # JSON 문자열 추가

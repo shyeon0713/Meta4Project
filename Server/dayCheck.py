@@ -1,5 +1,6 @@
 import Server.day_prompts.day_1 as day_1
 
+
 # day조건 판단 함수
 
 
@@ -30,14 +31,25 @@ def get_day_goals(day: int):
 
 # 목표 하나하나의 달성 여부 판단
 # 해당 Day목표 달성 여부를 Boolen딕셔너리로 반환
-def check_day_goals(day: int, dialogue_history: list):
+def check_day_goals(day: int, dialogue_history: list, goals_achieved: dict = None):
     if day == 1:
         from Server.day_prompts.day_1 import DAY_GOALS
         goal_dict = DAY_GOALS
     else:
-        return {}  # 또는 raise NotImplementedError
+        if goals_achieved:
+            return goals_achieved
+        else:
+            return {}
 
-    goals_achieved = {goal: False for goal in goal_dict}
+
+    # 기존 달성 상태가 없으면 초기화
+    if goals_achieved is None:
+        goals_achieved = {goal: False for goal in goal_dict}
+    else:
+        # 새로운 목표가 추가된 경우 False로 초기화
+        for goal in goal_dict:
+            if goal not in goals_achieved:
+                goals_achieved[goal] = False
 
 
     for dialogue in dialogue_history:

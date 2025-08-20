@@ -31,7 +31,7 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
 
 # 과거의 몇 문장을 가지고와서 대사 입력하고 전송시 같이 전송하여 문맥을 gpt가 파악할 수 있도록 한다.
 # 호감도와 수노의 응답을 반환 (tuple[float, str])
-def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, model: str = "gpt-4o-mini") -> tuple[float, float, str]:
+def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, goals_achieved:dict, model: str = "gpt-4o-mini") -> tuple[float, float, str]:
     # 과거 대화들을 가지고옴
     conversation_context = ""
     for dialogue in dialogue_history:
@@ -46,7 +46,7 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     # llm이 목표달성여부 파악해서 마지막대사를 자연스럽게 말할 수 있도록한다.
     
     # 데이 목표를 가지고온다 (현재 목표 달성 상태 계산)
-    goals_achieved = check_day_goals (day, dialogue_history)
+    goals_achieved = check_day_goals (day, dialogue_history, goals_achieved)
 
     # day goals 달성 상태 text
     goals_status_text = "Current Goal Achievement Status:\n"
@@ -111,15 +111,25 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     Day 7 ending condition: If day={day} AND affection>=4.5 AND truth mostly understood, use ending phrases from the Ending Trigger section.
     """
 
+    # 메시지 구성 개선
+    messages = [{"role": "system", "content": system_prompt}]
+    
+    # dialogue_history를 role에 맞게 추가
+    for dialogue in dialogue_history:
+        role = "user" if dialogue.speaker == "player" else "assistant"
+        messages.append({"role": role, "content": dialogue.line})
+    
+    # 현재 플레이어 입력 추가
+    messages.append({"role": "user", "content": player_input})
+
 
     # llm에 프롬프트와 함께 플레이어의 입력 전송
     response = openai.ChatCompletion.create(
         model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": player_input}
-        ],
-        temperature=0.8
+        messages=messages,
+        temperature=0.8,
+        frequency_penalty=0.5, # 같은 말 반복 억제
+        presence_penalty=0.6   # 새로운 주제 유도
     )
 
     full_reply = response.choices[0].message.content  #수노의 답변을 반환
