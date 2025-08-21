@@ -24,8 +24,24 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
         temperature=0.8
     )
     return response.choices[0].message.content
+# =========================================================================================
 
 
+
+
+# 각 데이의 마지막 대사 가지고오는 함수
+def get_day_completion_phrase(day: int) -> str:
+    try:
+        if day == 1:
+            from Server.day_prompts.day_1 import DAY_1_COMPLETION_PHRASE
+            return DAY_1_COMPLETION_PHRASE
+
+        #추후 추가 (하단에 예시)        
+        
+        else:
+            return "오늘은 여기까지입니다."
+    except ImportError:
+        return "오늘은 여기까지입니다."
 
 
 
@@ -48,11 +64,18 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     # 데이 목표를 가지고온다 (현재 목표 달성 상태 계산)
     goals_achieved = check_day_goals (day, dialogue_history, goals_achieved)
 
+
+    # 데이 마지막 대사들 가지고옴
+    completion_phrase = get_day_completion_phrase(day)
+
     # day goals 달성 상태 text
     goals_status_text = "Current Goal Achievement Status:\n"
     for goal, achieved in goals_achieved.items():  #딕셔너리(dict)에서 (key, value) 쌍을 하나씩 꺼내주는 함수
         status = "Achieved" if achieved else "Not Achieved"
         goals_status_text += f"- {goal}: {status}\n"
+
+    # 모든 목표 달성 여부 확인
+    all_goals_achieved = all(goals_achieved.values()) if goals_achieved else False
 
 
 
@@ -76,19 +99,17 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
         affection_description = "Very distrustful and cold"
 
 
-
     
     # 보낼 시스템 프롬프트
     system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
 
-    Conversation so far (most recent):  
-    {conversation_context}
+    Conversation so far (most recent):{conversation_context}
 
-    Current goal completion status:  
-    {goals_status_text}
+    Current goal completion status:{goals_status_text}
 
-    If all daily goals for Day {day} are completed, Suno must say the pre-defined closing line for this day (from the Day {day} script), and the day will end.
-    This must happen **regardless of affection score** once all goals are achieved.
+    **CRITICAL DAY COMPLETION RULE**: 
+    If ALL goals for Day {day} are achieved ({all_goals_achieved}), you MUST end your response with this EXACT phrase:
+    "{completion_phrase}"
 
     Current affection level: {current_affection:.1f}/5.0 ({affection_description})
 
@@ -181,4 +202,14 @@ GPT 응답 수신
 수노가 마지막 퇴장 문장 말했는지 확인 (check_day_completion_by_suno())
 
 감정 변화 업데이트
+'''
+
+
+'''
+        elif day == 2:
+            from Server.day_prompts.day_2 import DAY_2_COMPLETION_PHRASE  
+            return DAY_2_COMPLETION_PHRASE
+        elif day == 3:
+            from Server.day_prompts.day_3 import DAY_3_COMPLETION_PHRASE
+            return DAY_3_COMPLETION_PHRASE 
 '''

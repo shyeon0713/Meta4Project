@@ -98,7 +98,7 @@ def check_day_completion(day: int, dialogue_history: list) -> bool:
     
     # Day별 완료 조건 확인
     if day == 1:
-        completion_phrase = "오늘은 일단 여기까지 하죠. 내일 오후 2시에 공원에서 만나요. 이만 가볼게요."
+        completion_phrase = day_1.DAY_1_COMPLETION_PHRASE
         return completion_phrase in latest_suno_line
     # elif day == 2:
     #     completion_phrase_2 = "다음 day 2 완료 문구"
