@@ -64,18 +64,20 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     # 데이 목표를 가지고온다 (현재 목표 달성 상태 계산)
     goals_achieved = check_day_goals (day, dialogue_history, goals_achieved)
 
-
     # 데이 마지막 대사들 가지고옴
     completion_phrase = get_day_completion_phrase(day)
 
-    # day goals 달성 상태 text
+    # day goals 달성 상태 text (이건 gpt에게 달성상태를 전해주는 용도)
     goals_status_text = "Current Goal Achievement Status:\n"
     for goal, achieved in goals_achieved.items():  #딕셔너리(dict)에서 (key, value) 쌍을 하나씩 꺼내주는 함수
         status = "Achieved" if achieved else "Not Achieved"
         goals_status_text += f"- {goal}: {status}\n"
 
-    # 모든 목표 달성 여부 확인
-    all_goals_achieved = all(goals_achieved.values()) if goals_achieved else False
+    # 모든 목표 달성 여부 확인 (딕셔너리 값의 모든 목표들이 true일때만 all_goals_achieved = true)
+    if goals_achieved:
+        all_goals_achieved = all(goals_achieved.values()) #딕셔너리 값들만의 모음
+    else:
+        all_goals_achieved = False
 
 
 
@@ -132,7 +134,7 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     Day 7 ending condition: If day={day} AND affection>=4.5 AND truth mostly understood, use ending phrases from the Ending Trigger section.
     """
 
-    # 메시지 구성 개선
+    # 메시지 구성 개선  (시스템 프롬프트, 각자 이때까지 말했던 대사, 현재 플레이어의 대사 3개가 messages에 담김)
     messages = [{"role": "system", "content": system_prompt}]
     
     # dialogue_history를 role에 맞게 추가
