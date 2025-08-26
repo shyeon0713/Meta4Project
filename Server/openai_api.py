@@ -70,7 +70,7 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     # day goals 달성 상태 text (이건 gpt에게 달성상태를 전해주는 용도)
     goals_status_text = "Current Goal Achievement Status:\n"
     for goal, achieved in goals_achieved.items():  #딕셔너리(dict)에서 (key, value) 쌍을 하나씩 꺼내주는 함수
-        status = "Achieved" if achieved else "Not Achieved"
+        status = "True" if achieved else "False"
         goals_status_text += f"- {goal}: {status}\n"
 
     # 모든 목표 달성 여부 확인 (딕셔너리 값의 모든 목표들이 true일때만 all_goals_achieved = true)
@@ -113,6 +113,11 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     If ALL goals for Day {day} are achieved ({all_goals_achieved}), you MUST end your response with this EXACT phrase:
     "{completion_phrase}"
 
+    Rules:
+    - Do not repeat the same idea or phrase.
+    - Build your response in Suno’s tone, then conclude with the phrase.
+    - Mention each idea only once.
+
     Current affection level: {current_affection:.1f}/5.0 ({affection_description})
 
     ADDITIONAL INSTRUCTIONS:
@@ -150,8 +155,8 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
-        temperature=0.8,
-        frequency_penalty=0.5, # 같은 말 반복 억제
+        temperature=0.6,
+        frequency_penalty=1.2, # 같은 말 반복 억제
         presence_penalty=0.6   # 새로운 주제 유도
     )
 
