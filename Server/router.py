@@ -6,6 +6,8 @@ from Server.schema import DialogueBase, SaveBase, SaveOutBase, SaveUpdateBase
 from Server.database import db_dependency  #의존성 주입
 from Server.openai_api import ask_gpt, ask_gpt_with_context  #open ai api 가지고 오기
 from Server.dayCheck import check_day_goals, check_day_completion
+import json  # 목표달성이 json딕셔너리로 소통해야하기 때문.
+
 
 
 
@@ -48,6 +50,11 @@ async def newGame_start(db: db_dependency):
     db.commit()
     db.refresh(db_llm)
 
+    import Server.day_prompts.day_1 as day_1
+    goals_achieved = {goal: False for goal in day_1.DAY_GOALS}  #일단 무조건 시작이면 초기화
+
+    print(goals_achieved)
+
 
     # 그냥 응답 확인용 return
     return {
@@ -77,11 +84,19 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
             raise HTTPException(status_code=404, detail="Save not found")
         current_day = save_state.day
         current_likeability = save_state.likeability if hasattr(save_state, 'likeability') else 2.5  #hasattr - save_state 객체에 'likeability'라는 속성(attribute) 이 있는지 확인
+        
+        # 기존 목표 달성 상태 로드
+        try:
+            goals_achieved = json.loads(save_state.goals_achieved) if save_state.goals_achieved else {}
+        except (json.JSONDecodeError, TypeError):
+            goals_achieved = {}
+    
     else:
         # 세이브 없이 새로시작 후 진행하는 경우 - 현재 dialogue에서 최대 day 찾기
         last_dialogue = db.query(models.Dialogue).order_by(models.Dialogue.id.desc()).first()
         current_day = last_dialogue.day if last_dialogue else 1
         current_likeability = 2.5  #새로시작 후 연속진행: dialogue 테이블에서 가장 최근 호감도 찾기
+        goals_achieved = {}  # 새로 시작이므로 빈 딕셔너리
 
 
     # 플레이어의 답변 db저장용
@@ -109,9 +124,9 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
 
 
 
-    # GPT에게 전송 (응답, 현 day, 이전 대화, 현 호감도)
+    # GPT에게 전송 (응답, 현 day, 이전 대화, 현 호감도, 달성현황)
     # GPT의 대답을 가지고 옴
-    answer = ask_gpt_with_context(dialogue.line, current_day, dialogue_history, current_likeability)
+    answer = ask_gpt_with_context(dialogue.line, current_day, dialogue_history, current_likeability, goals_achieved)
 
 
     # 호감도 변화
@@ -130,15 +145,41 @@ async def create_dialogue(dialogue:DialogueBase, db: db_dependency, save_id: Opt
     db.commit()
     db.refresh(db_llm)
 
+    # 목표 달성 상태 업데이트하기 위한 대사 히스토리 업데이트 (업데이트된 히스토리 다시 가져오기)
+    updated_dialogue_history = (
+        db.query(models.Dialogue)
+        .filter(models.Dialogue.day == current_day)
+        .order_by(models.Dialogue.id.desc())
+        .limit(6)
+        .all()
+    )
+
 
     # day종료조건 판단하는 함수를 불러와야함. (dayCheck.py import -> 딕셔너리 반환)
     # 만약 day조건을 다 달성했다면, 수노가 마지막 대사를 뱉었는지(day 완료 조건을 만족하는지) 점검해야함.
     # day조건 달성 + 수노 마지막 대사 뱉었음 -> 그럼 다음 day로 넘어가도록함.
 
-    checkDayGoals = check_day_goals(current_day, dialogue_history)
-    checkDayCompletion = check_day_completion(current_day, dialogue_history)
-    if checkDayGoals and checkDayCompletion:
+    goals_achieved = check_day_goals(current_day, updated_dialogue_history, goals_achieved)
+    checkDayCompletion = check_day_completion(current_day, updated_dialogue_history)
+
+    # 디버깅용 목표체크
+    print(goals_achieved)
+
+    if goals_achieved: 
+        # goals_achieved 딕셔너리 안의 value들(True/False)만 뽑아옴
+        values = goals_achieved.values()
+
+        # values가 전부 True인지 확인
+        all_goals_achieved = all(values)
+    else:
+        # goals_achieved가 None 이거나 비어있으면
+        all_goals_achieved = False
+
+
+    if all_goals_achieved and checkDayCompletion:
         current_day += 1
+        goals_achieved = {} #Day넘어가면 목표 초기화
+        print(current_day)  #그냥 디버그 확인용
         # 뭔가 여기에 day가 넘어갔다는 걸 알리는 무언가든 자시든 해야할 것 같음... (일단 유니티 내에서는 필요 x)
     else:
         pass

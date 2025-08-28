@@ -24,14 +24,30 @@ def ask_gpt(player_input: str, model: str = "gpt-4o-mini") -> str:
         temperature=0.8
     )
     return response.choices[0].message.content
+# =========================================================================================
 
 
+
+
+# 각 데이의 마지막 대사 가지고오는 함수
+def get_day_completion_phrase(day: int) -> str:
+    try:
+        if day == 1:
+            from Server.day_prompts.day_1 import DAY_1_COMPLETION_PHRASE
+            return DAY_1_COMPLETION_PHRASE
+
+        #추후 추가 (하단에 예시)        
+        
+        else:
+            return "오늘은 여기까지입니다."
+    except ImportError:
+        return "오늘은 여기까지입니다."
 
 
 
 # 과거의 몇 문장을 가지고와서 대사 입력하고 전송시 같이 전송하여 문맥을 gpt가 파악할 수 있도록 한다.
 # 호감도와 수노의 응답을 반환 (tuple[float, str])
-def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, model: str = "gpt-4o-mini") -> tuple[float, float, str]:
+def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, current_affection: float, goals_achieved:dict, model: str = "gpt-4o-mini") -> tuple[float, float, str]:
     # 과거 대화들을 가지고옴
     conversation_context = ""
     for dialogue in dialogue_history:
@@ -46,13 +62,22 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     # llm이 목표달성여부 파악해서 마지막대사를 자연스럽게 말할 수 있도록한다.
     
     # 데이 목표를 가지고온다 (현재 목표 달성 상태 계산)
-    goals_achieved = check_day_goals (day, dialogue_history)
+    goals_achieved = check_day_goals (day, dialogue_history, goals_achieved)
 
-    # day goals 달성 상태 text
+    # 데이 마지막 대사들 가지고옴
+    completion_phrase = get_day_completion_phrase(day)
+
+    # day goals 달성 상태 text (이건 gpt에게 달성상태를 전해주는 용도)
     goals_status_text = "Current Goal Achievement Status:\n"
     for goal, achieved in goals_achieved.items():  #딕셔너리(dict)에서 (key, value) 쌍을 하나씩 꺼내주는 함수
-        status = "Achieved" if achieved else "Not Achieved"
+        status = "True" if achieved else "False"
         goals_status_text += f"- {goal}: {status}\n"
+
+    # 모든 목표 달성 여부 확인 (딕셔너리 값의 모든 목표들이 true일때만 all_goals_achieved = true)
+    if goals_achieved:
+        all_goals_achieved = all(goals_achieved.values()) #딕셔너리 값들만의 모음
+    else:
+        all_goals_achieved = False
 
 
 
@@ -76,19 +101,22 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
         affection_description = "Very distrustful and cold"
 
 
-
     
     # 보낼 시스템 프롬프트
     system_prompt = f"""{suno.SUNO_SYSTEM_PROMPT}
 
-    Conversation so far (most recent):  
-    {conversation_context}
+    Conversation so far (most recent):{conversation_context}
 
-    Current goal completion status:  
-    {goals_status_text}
+    Current goal completion status:{goals_status_text}
 
-    If all daily goals for Day {day} are completed, Suno must say the pre-defined closing line for this day (from the Day {day} script), and the day will end.
-    This must happen **regardless of affection score** once all goals are achieved.
+    **CRITICAL DAY COMPLETION RULE**: 
+    If ALL goals for Day {day} are achieved ({all_goals_achieved}), you MUST end your response with this EXACT phrase:
+    "{completion_phrase}"
+
+    Rules:
+    - Do not repeat the same idea or phrase.
+    - Build your response in Suno’s tone, then conclude with the phrase.
+    - Mention each idea only once.
 
     Current affection level: {current_affection:.1f}/5.0 ({affection_description})
 
@@ -111,15 +139,25 @@ def ask_gpt_with_context(player_input: str, day: int, dialogue_history: list, cu
     Day 7 ending condition: If day={day} AND affection>=4.5 AND truth mostly understood, use ending phrases from the Ending Trigger section.
     """
 
+    # 메시지 구성 개선  (시스템 프롬프트, 각자 이때까지 말했던 대사, 현재 플레이어의 대사 3개가 messages에 담김)
+    messages = [{"role": "system", "content": system_prompt}]
+    
+    # dialogue_history를 role에 맞게 추가
+    for dialogue in dialogue_history:
+        role = "user" if dialogue.speaker == "player" else "assistant"
+        messages.append({"role": role, "content": dialogue.line})
+    
+    # 현재 플레이어 입력 추가
+    messages.append({"role": "user", "content": player_input})
+
 
     # llm에 프롬프트와 함께 플레이어의 입력 전송
     response = openai.ChatCompletion.create(
         model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": player_input}
-        ],
-        temperature=0.8
+        messages=messages,
+        temperature=0.6,
+        frequency_penalty=1.2, # 같은 말 반복 억제
+        presence_penalty=0.6   # 새로운 주제 유도
     )
 
     full_reply = response.choices[0].message.content  #수노의 답변을 반환
@@ -171,4 +209,14 @@ GPT 응답 수신
 수노가 마지막 퇴장 문장 말했는지 확인 (check_day_completion_by_suno())
 
 감정 변화 업데이트
+'''
+
+
+'''
+        elif day == 2:
+            from Server.day_prompts.day_2 import DAY_2_COMPLETION_PHRASE  
+            return DAY_2_COMPLETION_PHRASE
+        elif day == 3:
+            from Server.day_prompts.day_3 import DAY_3_COMPLETION_PHRASE
+            return DAY_3_COMPLETION_PHRASE 
 '''

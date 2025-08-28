@@ -25,3 +25,4 @@ class Save(Base):
     last_dialogue_id = Column(Integer, ForeignKey('dialogue.id'))  #dialogue id 가지고 옴
     last_speaker = Column(String(100))
     last_line = Column(Text)
+    goals_achieved = Column(Text)  #Josn 문자열로 저장 (목표 저장위함 추가)

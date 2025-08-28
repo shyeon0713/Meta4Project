@@ -1,5 +1,6 @@
 import Server.day_prompts.day_1 as day_1
 
+
 # day조건 판단 함수
 
 
@@ -30,14 +31,25 @@ def get_day_goals(day: int):
 
 # 목표 하나하나의 달성 여부 판단
 # 해당 Day목표 달성 여부를 Boolen딕셔너리로 반환
-def check_day_goals(day: int, dialogue_history: list):
+def check_day_goals(day: int, dialogue_history: list, goals_achieved: dict = None):
     if day == 1:
         from Server.day_prompts.day_1 import DAY_GOALS
         goal_dict = DAY_GOALS
     else:
-        return {}  # 또는 raise NotImplementedError
+        if goals_achieved:
+            return goals_achieved
+        else:
+            return {}
 
-    goals_achieved = {goal: False for goal in goal_dict}
+
+    # 기존 달성 상태가 없으면 초기화
+    if goals_achieved is None:
+        goals_achieved = {goal: False for goal in goal_dict}
+    else:
+        # 새로운 목표가 추가된 경우 False로 초기화
+        for goal in goal_dict:
+            if goal not in goals_achieved:
+                goals_achieved[goal] = False
 
 
     for dialogue in dialogue_history:
@@ -86,7 +98,7 @@ def check_day_completion(day: int, dialogue_history: list) -> bool:
     
     # Day별 완료 조건 확인
     if day == 1:
-        completion_phrase = "오늘은 일단 여기까지 하죠. 내일 오후 2시에 공원에서 만나요. 이만 가볼게요."
+        completion_phrase = day_1.DAY_1_COMPLETION_PHRASE
         return completion_phrase in latest_suno_line
     # elif day == 2:
     #     completion_phrase_2 = "다음 day 2 완료 문구"
