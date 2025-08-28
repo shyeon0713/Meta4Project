@@ -19,7 +19,7 @@ public class DayCheckUI : MonoBehaviour
     [Header("현재 배경")]
     public Image background;       // 배경 이미지 
 
-    [Header("Day1부터 Day7까지의 리소스 리스트)]
+    [Header("Day1부터 Day7까지의 리소스 리스트")]
     public DayLocationSprite[] scenelist;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
