@@ -34,7 +34,7 @@ public class DayCheckUI : MonoBehaviour
         background.gameObject.SetActive(false);
 
         // 체크 클릭 리스너
-        dayCheckButton.onClick.AddListener(OnDayCheckClicked);  //화면 클릭 시, 리스너 추가
+        dayCheckButton.onClick.AddListener(OnDayCheckClikced);  //화면 클릭 시, 리스너 추가
 
     }
 

@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections;
-using System.Net.Sockets;
+//using System.Net.Sockets;
 using System.Text;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager.Requests;
+//using Unity.VisualScripting;
+//using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
+
 public class Playermanager : MonoBehaviour
 {
     private const string API_URL = "http://127.0.0.1:8000/dialogue/start";  //startapi주소
-    private const string url = "http://127.0.0.1:8000/save/";
+   // private const string url = "http://127.0.0.1:8000/save/";
 
     [Header("비디오 재생 후 Activescene로만 넘어감")]
     public string nextSceneName = "Activescene";
@@ -35,16 +36,21 @@ public class Playermanager : MonoBehaviour
 
     [Header("버튼")]
     public Button skipButton;  //스킵버튼 추가
-    // Startapi 추가 
-    // Startapi -> 스킵버튼 + 영상재생이 종료된 후
+                               // Startapi 추가 
+                               // Startapi -> 스킵버튼 + 영상재생이 종료된 후
+
+   
+    private bool isCallingApi = false;  // API 호출 중복 방지
 
     private void Awake()
     {
-        Debug.Log("[Playermanager] Awake()");
+       // Debug.Log("[Playermanager] Awake()");
         vp = GetComponent<VideoPlayer>();
+
         if(vp == null)
         {
             Debug.LogError("비디오가 없어요");
+            enabled = false;
             return;
         }
 
@@ -59,6 +65,7 @@ public class Playermanager : MonoBehaviour
         // 모든 브금 완전 정지 -> 현재 SoundManager내에 일시정지, 완전 정지 메서드를 따로 구현하지 않아 직접 호출
         // 일시정지 : SoundSetting.Instance.bgmSource.Pause();
         Debug.Log("[Playermanager] Start() – clipIndex=" + clipIndex);
+        //현재 재생되는 영상 인덱스
         clipIndex = Videomanager.Instance.selectedIndex;
         var clips = Videomanager.Instance.videoclips;
 

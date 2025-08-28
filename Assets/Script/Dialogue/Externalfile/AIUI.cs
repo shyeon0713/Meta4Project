@@ -196,7 +196,7 @@ public class AIUI : MonoBehaviour
         }
 
         // ② 준비가 끝났으면 안전하게 코루틴 실행
-        StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay));
+        //StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay));
     }
 
 }
