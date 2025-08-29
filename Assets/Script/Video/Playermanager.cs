@@ -2,6 +2,8 @@
 using System.Collections;
 //using System.Net.Sockets;
 using System.Text;
+using UnityEditor.PackageManager.Requests;
+
 //using Unity.VisualScripting;
 //using UnityEditor.PackageManager.Requests;
 using UnityEngine;
@@ -64,6 +66,8 @@ public class Playermanager : MonoBehaviour
         SoundSetting.Instance.bgmSource.Stop();
         // 모든 브금 완전 정지 -> 현재 SoundManager내에 일시정지, 완전 정지 메서드를 따로 구현하지 않아 직접 호출
         // 일시정지 : SoundSetting.Instance.bgmSource.Pause();
+
+
         Debug.Log("[Playermanager] Start() – clipIndex=" + clipIndex);
         //현재 재생되는 영상 인덱스
         clipIndex = Videomanager.Instance.selectedIndex;
@@ -87,9 +91,9 @@ public class Playermanager : MonoBehaviour
             return;
         }
 
+        skipButton.onClick.RemoveAllListeners(); // 기존의 리스너 제거
 
         skipButton.onClick.AddListener(SkipVideo);   //SKip 버튼 리스너
-        skipButton.onClick.AddListener(CallStartAPI);  //API를 호출하는 코루틴 메서드
 
 
         vp.clip = clips[clipIndex];
@@ -106,11 +110,14 @@ public class Playermanager : MonoBehaviour
         //     return;
         //  }
 
-        // 영상 종료
+        // 영상 종료 확인
         Debug.Log("[Playermanager] VideoFinished() fired");
-        
-        //StartAPI 호출
-        StartCoroutine(StartapiConnect());
+
+        if (!isCallingApi)   // 영상이 끝났을 경우
+        {
+            //StartAPI 호출
+            StartCoroutine(StartapiConnect());
+        }
     }
     #endregion
 
@@ -120,32 +127,33 @@ public class Playermanager : MonoBehaviour
         Debug.Log("[Playermanager] SkipVideo() called");
         SoundSetting.Instance.PlaySfx(4);  //효과음
 
-        vp.loopPointReached -= VideoFinished;  //비디오 이벤트 제거
-        if (vp.isPlaying) vp.Stop();   //비디오 정지
+        if (vp != null) {
+
+            vp.loopPointReached -= VideoFinished;  //비디오 이벤트 제거
+            if (vp.isPlaying) vp.Stop();   //비디오 정지
+        }
 
 
-        //StartAPI 호출
-        StartCoroutine(StartapiConnect());
+        if (!isCallingApi)   // 영상이 끝났을 경우
+        {
+            //StartAPI 호출 (중복 방지)
+            StartCoroutine(StartapiConnect());
+        }
     }
     #endregion
-
-    private void CallStartAPI()   //StartAPI 호출 용도
-    {
-        StartCoroutine(StartapiConnect());
-    }
-
 
 
     private IEnumerator StartapiConnect()
     {
+        // 중복 호출을 방지하기 위해 플래그 설정
+        isCallingApi = true;
+
         // Start API 호출
         string startapi = "string";
         byte[] bodyRaw = Encoding.UTF8.GetBytes(startapi);
 
         // 요청 생성만 하고 아직 body, 헤더가 지정되지 않음
-        UnityWebRequest request = new UnityWebRequest(API_URL, UnityWebRequest.kHttpVerbPOST);
-
-        if (request.result == UnityWebRequest.Result.Success)
+        using (UnityWebRequest request = new UnityWebRequest(API_URL, UnityWebRequest.kHttpVerbPOST))
         {
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
@@ -153,27 +161,22 @@ public class Playermanager : MonoBehaviour
 
             yield return request.SendWebRequest();
 
-
-            SceneManager.LoadScene(nextSceneName);   // StartAPI 연동 후, 다음 씬으로 이동
-            OnDestroy();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                SceneManager.LoadScene(nextSceneName);   // StartAPI 연동 후, 다음 씬으로 이동
+            
+            }
+            else   // startapi연결이 제대로 진행되지 않은 경우
+            {
+                Debug.LogError($"[Playermanager] API ❌ 오류 : {request.error} | Code: {request.responseCode}");
+                Debug.LogError("[Playermanager] Response Body: " + request.downloadHandler.text);
+            }
         }
-        else   // startapi연결이 제대로 진행되지 않은 경우
-        {
-            Debug.LogError($"API Error: {request.error} | Code: {request.responseCode}");
-            Debug.LogError($"Response Body: {request.downloadHandler.text}");
-        }
 
-
+        isCallingApi=false;
     }
 
-  
-
-
-    private void OnDestroy()
-    {
-        if (vp != null)
-            vp.loopPointReached -= VideoFinished;
-    }
+ 
 }
 
 //StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay)); -> Day2 이상의 컷씬

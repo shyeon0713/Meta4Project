@@ -24,16 +24,13 @@ public class AIUI : MonoBehaviour
     private string[] sentences; //문장별 분할 결과
     private int currentIndex = 0; //현재 읽어야 할 문장 인덱스
 
+    public int talkchance = 0;  // 대화할 수 있는 기회는 총 5번
+
     private bool lastScriptShown = false;  // 마지막 대사까지 출력되는지 여부 확인
     // 2문장씩 나눠서 출력 시키기 -> 0522
 
     public DialogueAPI dialogueapi;
-
     public DayCheck dayCheck;
-
-    [Header("DayCheck Reference")]
-    public DayCheck daycheck;
-
 
 
     private void Start()
@@ -51,6 +48,7 @@ public class AIUI : MonoBehaviour
 
     }
 
+    #region 플레이어 입력시 UI 설정
     void InputSend()
     {
         string message = PlayerInput.text;
@@ -65,6 +63,9 @@ public class AIUI : MonoBehaviour
         speaker.text = " ";  // UI에 남은 텍스트 초기화
     }
 
+    #endregion
+
+    #region DialogueAPI 연결-> 답변 출력 UI
     IEnumerator GetAndShowReply(string message, string speakerName)
     {
 
@@ -89,20 +90,27 @@ public class AIUI : MonoBehaviour
            if (nextbutton == null) Debug.LogError("nextbutton(Button) 참조가 없습니다!");
 
         */
+        talkchance++;  // 조건 검사 전에 대화 횟수 증가
         if (reply != null)
         {
             if (reply.speaker == "수노")
-            {  // 서버에서 SUNO가 대화의 끝을 알리는 대사와 currentday+1 신호를 보냄
+            {  
 
-                //    if ( >=)  //currentday가 + 1 경우 
-                {
-                    //      StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));  // 다음요일로 넘어가기
-                    //         yield break;
-                    //    }
+                   if (talkchance >=5 ) {   // 대화 기회는 총 5번까지
+
+                    //  StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));  
+                    // 다음요일로 넘어가기 -> 문제 현재 서버에서 currentday+1을 판단하여 저장
+                    // Daycheck.cs에 임시로 day를 판단하는 코루틴을 제작하여
+                    // 이부분에는 판단을 하여 다음날로 넘어가도록 임의구현
+                    // 추후에는 변경 -> 노션 작성
+                    yield return StartCoroutine(dayCheck.LogDayCheck(dayCheck.CurrentDay, talkchance));
+                    //
+                        yield break;
+                   }
                     SUNOImage.color = Color.white;
-                }
-
             }
+
+        }
 
             replynpcscript.text = reply.line;
 
@@ -113,10 +121,12 @@ public class AIUI : MonoBehaviour
             nextbutton.gameObject.SetActive(true);
 
             ShowNextScript();
-        }
     }
+    
 
+    #endregion
 
+    #region 답변이 1줄 이상일 경우, 이후 대사 출력 / ShowNextScript()
     public void ShowNextScript()
     {
         SoundSetting.Instance.PlaySfx(9);  // sfx9
@@ -167,7 +177,10 @@ public class AIUI : MonoBehaviour
 
     }
 
+    #endregion
 
+
+    #region 타이포 이펙트
     IEnumerator TypeEffect(string sentence, Action onComplete = null)     //타이핑 효과 코루틴
         // Action 활용 System 네임스페이스에 정의된 파라미터 없고 반환값도 없는(delegate void) 대표 델리게이트
         { replynpcscript.text = "";
@@ -185,18 +198,7 @@ public class AIUI : MonoBehaviour
             // .Invoke(); Action 델리게이트(메서드 포인터)를 실제로 호출하는 메서드
         }
 
+    #endregion
 
-    void SomeMethodThatAdvancesDay(int nextDay)
-    {
-        // ① 초기화 플래그 검사
-        if (!dayCheck.IsInitialized)
-        {
-            Debug.LogError("세이브 정보가 아직 준비되지 않았습니다! AdvanceDayAndSave 호출을 취소합니다.");
-            return;
-        }
-
-        // ② 준비가 끝났으면 안전하게 코루틴 실행
-        //StartCoroutine(dayCheck.AdvanceDayAndSave(nextDay));
-    }
 
 }
