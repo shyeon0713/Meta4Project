@@ -1175,6 +1175,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 839981987}
+  - component: {fileID: 839981989}
+  - component: {fileID: 839981988}
   m_Layer: 0
   m_Name: DialogueManager
   m_TagString: Untagged
@@ -1197,6 +1199,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &839981988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839981986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97283e72aeaad9d4a8dd6b67564d36ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  daycheck: {fileID: 2050777083}
+  dayCheckButton: {fileID: 1725512778}
+  background: {fileID: 866513969}
+  scenelist:
+  - day: 1
+    checkday: {fileID: -8088552992171272462, guid: 583b204f175763540a06baa60740774e, type: 3}
+    background: {fileID: -8088552992171272462, guid: 32008209cc4ced345bf87d3c2d95973b, type: 3}
+  - day: 2
+    checkday: {fileID: -609157439628190469, guid: 900a1b8ae573a4d43bb90fdf820a93c3, type: 3}
+    background: {fileID: 862078527286037932, guid: ae3b0a3cfaca1ab4585f4f0942f43886, type: 3}
+  - day: 3
+    checkday: {fileID: -5145758910363298198, guid: 0e3827035d7dcc646857ea829651dd55, type: 3}
+    background: {fileID: -5145758910363298198, guid: 995a9595eab42c64f8283604f7bae3fe, type: 3}
+  - day: 4
+    checkday: {fileID: -4181944041499448885, guid: e296b39743a2cef4d9794d14f166cc60, type: 3}
+    background: {fileID: -4181944041499448885, guid: 68cd9d24abea8f745a9445e09ff80120, type: 3}
+  - day: 5
+    checkday: {fileID: 6241566998892548270, guid: 919ec76188f0c1f438f9cbb0e3a4e598, type: 3}
+    background: {fileID: 6241566998892548270, guid: 31aaac6abdc3d8f409879c30eccbb578, type: 3}
+  - day: 6
+    checkday: {fileID: -9143006755501729204, guid: 3d0a825952d6e7048918e654833c070f, type: 3}
+    background: {fileID: -9143006755501729204, guid: 7d5accbdc4241e34fa20ca744d192cbb, type: 3}
+  - day: 7
+    checkday: {fileID: 8714405167284752433, guid: 6ce4ed0a5f440a5458cb4559e98f80d7, type: 3}
+    background: {fileID: 7533761981684921848, guid: e0b73acf8551c424f9d2dcb895bf8535, type: 3}
+--- !u!114 &839981989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839981986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77aff6458588224f8f40eca074da6e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentDay: 1
 --- !u!1 &866335918
 GameObject:
   m_ObjectHideFlags: 0
@@ -4024,7 +4076,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -8088552992171272462, guid: 32008209cc4ced345bf87d3c2d95973b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4331,9 +4383,9 @@ MonoBehaviour:
   Inputbutton: {fileID: 492934115}
   nextbutton: {fileID: 375888596}
   SUNOImage: {fileID: 1879805731}
+  talkchance: 0
   dialogueapi: {fileID: 2129247591}
   dayCheck: {fileID: 0}
-  daycheck: {fileID: 0}
 --- !u!114 &2129247591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4349,6 +4401,12 @@ MonoBehaviour:
   savescript:
     speaker: 
     line: 
+    day: 0
+    affection_change: 0
+    likeability: 0
+  day: 0
+  likeability: 0
+  affection_change: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -37,14 +37,29 @@ public class AIUI : MonoBehaviour
     {
 
         SoundSetting.Instance.PlayBgm(3);  //3번 BGM
-        speaker.text = "나";
-        SUNOImage.color = new Color(170f / 255f, 170f / 255f, 170f / 255f); //수노는 회색
+        // SUNOImage.color = new Color(170f / 255f, 170f / 255f, 170f / 255f); //수노는 회색
+        
         Inputbutton.onClick.AddListener(InputSend);
         nextbutton.onClick.AddListener(ShowNextScript);
 
-        // Player의 입력으로 먼저 시작
-        replynpcscript.gameObject.SetActive(false);
-        nextbutton.gameObject.SetActive(false);
+        StartCoroutine(ShowFirstPlayerLine());
+    }
+
+    private IEnumerator ShowFirstPlayerLine()
+    {
+        // DB에서 첫 대사 가져오기
+        yield return StartCoroutine(dialogueapi.GetFirstPlayerLine());
+
+        DialogueLine firstLine = dialogueapi.savescript;
+        speaker.text = firstLine.speaker;
+        sentences = Regex.Split(firstLine.line, @"(?<=[\.!\?\,])\s+");  //. / ! / ? / , 뒤의 공백을 기준으로 분리
+        currentIndex = 0;
+
+        replynpcscript.gameObject.SetActive(true);
+        nextbutton.gameObject.SetActive(true);
+
+
+        ShowNextScript();
 
     }
 
@@ -53,12 +68,13 @@ public class AIUI : MonoBehaviour
     {
         string message = PlayerInput.text;
         string currentSpeaker = speaker.text;
-        PlayerInput.text = "";
+
+        SUNOImage.color = new Color(170f / 255f, 170f / 255f, 170f / 255f); //수노는 회색
 
         PlayerInput.gameObject.SetActive(false);
         Inputbutton.gameObject.SetActive(false);
 
-        StartCoroutine(GetAndShowReply(message, currentSpeaker));
+        StartCoroutine(GetAndShowReply(message, currentSpeaker, dialogueapi.day, dialogueapi.likeability, dialogueapi.affection_change));
 
         speaker.text = " ";  // UI에 남은 텍스트 초기화
     }
@@ -66,30 +82,13 @@ public class AIUI : MonoBehaviour
     #endregion
 
     #region DialogueAPI 연결-> 답변 출력 UI
-    IEnumerator GetAndShowReply(string message, string speakerName)
+    IEnumerator GetAndShowReply(string message, string speakerName,int day, float likeability, float affection_change)
     {
-
-        //     Debug.Log("▶ GetAndShowReply 시작");
-        //     if (dialogueapi == null) Debug.LogError("dialogueapi가 null입니다!");
-
-        yield return StartCoroutine(dialogueapi.SendPlayerReply(message, speakerName));
+        yield return StartCoroutine(dialogueapi.SendPlayerReply(message, speakerName,day,likeability, affection_change));
 
         DialogueLine reply = dialogueapi.savescript;
         speaker.text = reply.speaker;
 
-        /*   if (reply == null)
-           {
-               Debug.LogError("reply가 null입니다!");
-               yield break;
-           }
-
-           Debug.Log($"reply.speaker: {reply.speaker}, reply.line: {reply.line}");
-
-           if (speaker == null) Debug.LogError("speaker(Text) 참조가 없습니다!");
-           if (replynpcscript == null) Debug.LogError("replynpcscript(Text) 참조가 없습니다!");
-           if (nextbutton == null) Debug.LogError("nextbutton(Button) 참조가 없습니다!");
-
-        */
         talkchance++;  // 조건 검사 전에 대화 횟수 증가
         if (reply != null)
         {
