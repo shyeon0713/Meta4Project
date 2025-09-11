@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f962563ab19b9f4090a4b439dacc923, type: 3}
   m_Name: SoundData
   m_EditorClassIdentifier: 
-  bgmvolume: 1
-  sfxvolume: 1
+  bgmvolume: 0.33311754
+  sfxvolume: 0.6657107
   isBgmOn: 1
   isSfxOn: 1
   bgmClips:
@@ -36,3 +36,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a847ceaa90c98f64ca3647d0f466f08d, type: 3}
   - {fileID: 8300000, guid: 7c954dd5a5becd149ae7ce8205bcb1e2, type: 3}
   - {fileID: 8300000, guid: 30ee06d9ab81de2498eab2dc34f9fe75, type: 3}
+  - {fileID: 8300000, guid: d689311939d94dd4885f4c0ec4394562, type: 3}
+  - {fileID: 8300000, guid: 8b718a63164a82c44b00d335e3d18bfb, type: 3}
