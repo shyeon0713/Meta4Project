@@ -39,7 +39,7 @@ public class DialogueAPI : MonoBehaviour
     #region 플레이어 처음대사 출력
     public IEnumerator GetFirstPlayerLine()
     {
-        string url = API_URL;
+        string url = API_URL + "/logs";
         UnityWebRequest request = UnityWebRequest.Get(url);
 
         yield return request.SendWebRequest();

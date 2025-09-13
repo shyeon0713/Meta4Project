@@ -23,14 +23,20 @@ public class DayCheckUI : MonoBehaviour
     public DayLocationSprite[] scenelist;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    public DialogueAPI dialogueapi;
 
     private int currentDay;  // 현재 DAY -> 띄워야할 DAYCheck
 
+
     private void Start()
     {
+        currentDay = dialogueapi.day;
+
+        ShowDayCheck();
+
         // 모든 리소스 false
-        daycheck.gameObject.SetActive(false);
-        dayCheckButton.gameObject.SetActive(false);
+        daycheck.gameObject.SetActive(true);
+        dayCheckButton.gameObject.SetActive(true);
         background.gameObject.SetActive(false);
 
         // 체크 클릭 리스너
@@ -69,7 +75,11 @@ public class DayCheckUI : MonoBehaviour
             if (entry.day == currentDay)  // 현재day와 리스트의 있는 데이(인덱스)가 동일할 경우
             {
                 background.sprite = entry.background;
+
                 background.gameObject.SetActive(true);  // 배경이 화면에 출력
+
+                daycheck.gameObject.SetActive(false);
+                dayCheckButton.gameObject.SetActive(false);
                 break;
             }
         }

@@ -94,7 +94,6 @@ public class AIUI : MonoBehaviour
         {
             if (reply.speaker == "수노")
             {  
-
                    if (talkchance >=5 ) {   // 대화 기회는 총 5번까지
 
                     //  StartCoroutine(daycheck.AdvanceDayAndSave(daycheck.CurrentDay + 1));  

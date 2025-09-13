@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,11 +9,11 @@ using UnityEngine.Networking;
 public class DayCheck : MonoBehaviour
 {
     [SerializeField]
-    private int currentDay = 1;
-
+    private int currentDay;
     public int CurrentDay => currentDay;
 
     private const string URL = "http://127.0.0.1:8000/save/";
+
 
     #region Day가 끝날 경우 다음날로 넘어가기 전에 신호보내기
     public IEnumerator LogDayCheck(int dayNumber, int talkchance)
