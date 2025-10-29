@@ -1,2 +1,3 @@
 # ShaderLab(.shader) 
 *.shader linguist-vendored
+*.hlsl   linguist-vendored
