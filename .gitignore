@@ -77,4 +77,6 @@ crashlytics-build.properties
 Packages/
 
 # Optional: Ignore specific assets
-Assets/TextMesh Pro/
+TextMesh Pro/
+
+*.shader
